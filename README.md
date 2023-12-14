@@ -1,4 +1,4 @@
-### Go to site-> [MOB Cut Studio]()
+### Go to site-> [Online Store]()
 
 ### Installation Guide:
 

@@ -25,6 +25,7 @@ module.exports = {
     'import/order': ['error', { 'newlines-between': 'always' }],
     'import/no-duplicates': 'error',
     'no-restricted-globals': ['error', 'event'],
-    'no-console': 'warn',
+    'import/prefer-default-export': 'off',
+    'no-console': 'off',
   },
 };

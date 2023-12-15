@@ -2,11 +2,20 @@
   "compilerOptions": {
     "typeRoots" : ["node_modules/@types", "src/types"],
     "target": "es5",
+    "module": "commonjs",
     "lib": [
       "dom",
       "dom.iterable",
       "esnext"
     ],
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "strictPropertyInitialization": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noImplicitAny": true,
+    "types": [ "node" ],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -15,7 +24,6 @@
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
-    "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
@@ -24,6 +32,6 @@
   },
   "include": [
     "src",
-    ".eslintrc.js"
+    ".eslintrc.js",
   ]
 }

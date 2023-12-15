@@ -1,8 +1,13 @@
 import React from 'react';
 
-const Main = () => (
-  <header className="h-100 w-100">
-  </header>
-);
+import { useData } from '../hooks/index.ts';
 
-export default Main;
+export const Main: React.FC = () => {
+  const data = useData();
+
+  console.log(data);
+
+  return (
+    <div></div>
+  );
+};

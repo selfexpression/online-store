@@ -1,9 +1,7 @@
 import React from 'react';
 
-import Main from './Main.tsx';
+import { Main } from './Main.tsx';
 
-const App = () => (
+export const App: React.FC = () => (
   <Main />
 );
-
-export default App;

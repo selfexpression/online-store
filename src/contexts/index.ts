@@ -1,3 +1,5 @@
 import { createContext } from 'react';
 
-export const DataApiContext = createContext({});
+import { Database } from '../types/aliases.ts';
+
+export const DataApiContext = createContext<Database[]>([]);

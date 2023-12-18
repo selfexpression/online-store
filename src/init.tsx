@@ -7,7 +7,8 @@ import {
 
 import { App } from './components/App.tsx';
 import { DataApiContext } from './contexts/index.ts';
-import { DataApi } from './interfaces/index.ts';
+import { Database } from './types/aliases.ts';
+import { isValidData } from './types/predicates.ts';
 
 const runApp = async (): Promise<void> => {
   const firebaseConfig = {
@@ -20,14 +21,24 @@ const runApp = async (): Promise<void> => {
     measurementId: process.env.REACT_APP_MEASUREMENT_ID,
   };
 
-  const dataApi: DataApi = {
-    getHaircareData: async () => {
-      const app = initializeApp(firebaseConfig);
-      const db = getFirestore(app);
-      const querySnapshot = await getDocs(collection(db, 'haircare'));
-      return querySnapshot.docs.map((doc) => doc.data());
-    },
-  };
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const coll: Database[] = await new Promise((resolve, reject) => {
+    getDocs(collection(db, 'cosmetics'))
+      .then((querySnapshot) => {
+        const data: Database[] = querySnapshot.docs.map((doc) => {
+          const docData = doc.data() as Database;
+          if (!isValidData(docData)) {
+            console.error('Invalid data received from the database');
+          }
+          return docData;
+        });
+        resolve(data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
 
   const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement,
@@ -35,7 +46,7 @@ const runApp = async (): Promise<void> => {
 
   root.render(
     <React.StrictMode>
-      <DataApiContext.Provider value={dataApi}>
+      <DataApiContext.Provider value={coll}>
         <App />
       </DataApiContext.Provider>
     </React.StrictMode>,

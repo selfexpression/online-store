@@ -5,7 +5,7 @@ export type Product = {
   price: number;
 }
 
-export type Database = {
+export type Data = {
   name: string;
   id: number;
   goods: Product[];

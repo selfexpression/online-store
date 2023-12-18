@@ -1,4 +1,4 @@
-import { Database, Product } from './aliases.ts';
+import { Data, Product } from './aliases.ts';
 
 export const isValidProduct = (product: Product): product is Product => {
   const {
@@ -13,7 +13,7 @@ export const isValidProduct = (product: Product): product is Product => {
   );
 };
 
-export const isValidData = (data: Database): data is Database => {
+export const isValidData = (data: Data): data is Data => {
   const { name, id, goods } = data;
 
   return (

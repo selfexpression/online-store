@@ -7,7 +7,7 @@ import {
 
 import { App } from './components/App.tsx';
 import { DataApiContext } from './contexts/index.ts';
-import { Database } from './types/aliases.ts';
+import { Data } from './types/aliases.ts';
 import { isValidData } from './types/predicates.ts';
 
 const runApp = async (): Promise<void> => {
@@ -23,11 +23,11 @@ const runApp = async (): Promise<void> => {
 
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
-  const coll: Database[] = await new Promise((resolve, reject) => {
+  const coll: Data[] = await new Promise((resolve, reject) => {
     getDocs(collection(db, 'cosmetics'))
       .then((querySnapshot) => {
-        const data: Database[] = querySnapshot.docs.map((doc) => {
-          const docData = doc.data() as Database;
+        const data: Data[] = querySnapshot.docs.map((doc) => {
+          const docData = doc.data() as Data;
           if (!isValidData(docData)) {
             console.error('Invalid data received from the database');
           }

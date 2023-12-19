@@ -1,5 +1,4 @@
+import { Firestore } from '@firebase/firestore';
 import { createContext } from 'react';
 
-import { Data } from '../types/aliases.ts';
-
-export const DataApiContext = createContext<Data[]>([]);
+export const DataApiContext = createContext<Firestore>({} as Firestore);

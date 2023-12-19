@@ -1,14 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { initializeApp } from 'firebase/app';
-import {
-  getFirestore, collection, getDocs,
-} from 'firebase/firestore';
+import { getFirestore } from 'firebase/firestore';
+import { Provider } from 'react-redux';
 
 import { App } from './components/App.tsx';
 import { DataApiContext } from './contexts/index.ts';
-import { Data } from './types/aliases.ts';
-import { isValidData } from './types/predicates.ts';
+import { store } from './slices/index.ts';
 
 const runApp = async (): Promise<void> => {
   const firebaseConfig = {
@@ -23,22 +21,6 @@ const runApp = async (): Promise<void> => {
 
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
-  const coll: Data[] = await new Promise((resolve, reject) => {
-    getDocs(collection(db, 'cosmetics'))
-      .then((querySnapshot) => {
-        const data: Data[] = querySnapshot.docs.map((doc) => {
-          const docData = doc.data() as Data;
-          if (!isValidData(docData)) {
-            console.error('Invalid data received from the database');
-          }
-          return docData;
-        });
-        resolve(data);
-      })
-      .catch((error) => {
-        reject(error);
-      });
-  });
 
   const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement,
@@ -46,9 +28,11 @@ const runApp = async (): Promise<void> => {
 
   root.render(
     <React.StrictMode>
-      <DataApiContext.Provider value={coll}>
-        <App />
-      </DataApiContext.Provider>
+      <Provider store={store}>
+        <DataApiContext.Provider value={db}>
+          <App />
+        </DataApiContext.Provider>
+      </Provider>
     </React.StrictMode>,
   );
 };

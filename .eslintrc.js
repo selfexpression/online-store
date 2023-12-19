@@ -16,6 +16,7 @@ module.exports = {
     quotes: ['error', 'single'],
     semi: ['error', 'always'],
     eqeqeq: ['error', 'always'],
+    'no-param-reassign': 'off',
     'no-undef': 'error',
     'no-unused-vars': 'error',
     'prefer-const': 'error',

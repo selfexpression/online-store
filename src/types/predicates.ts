@@ -1,25 +1,15 @@
-import { Data, Product } from './aliases.ts';
+import { Product } from './aliases.ts';
 
 export const isValidProduct = (product: Product): product is Product => {
   const {
-    name, id, brand, price,
+    name, categoryID, brand, price, inStock,
   } = product;
 
   return (
     typeof name === 'string'
-    && typeof id === 'number'
-    && typeof brand === 'string'
-    && typeof price === 'number'
-  );
-};
-
-export const isValidData = (data: Data): data is Data => {
-  const { name, id, goods } = data;
-
-  return (
-    typeof name === 'string'
-    && typeof id === 'number'
-    && Array.isArray(goods)
-    && goods.every((item) => isValidProduct(item))
+    && typeof categoryID === 'number'
+    && (typeof brand === 'string' || brand === null)
+    && (typeof price === 'number' || price === null)
+    && typeof inStock === 'boolean'
   );
 };

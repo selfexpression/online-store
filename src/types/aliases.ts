@@ -1,12 +1,15 @@
+import { InitialState as DatabaseState } from '../slices/databaseSlice.ts';
+
 export type Product = {
   name: string;
-  brand: string;
-  id: number;
-  price: number;
+  brand: string | null;
+  categoryID: number;
+  price: number | null;
+  inStock: boolean;
 }
 
-export type Data = {
-  name: string;
-  id: number;
-  goods: Product[];
+export type Database = Product[];
+
+export type DatabaseStateType = {
+  database: DatabaseState;
 }

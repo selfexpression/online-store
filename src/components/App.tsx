@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { Main } from './Main.tsx';
+import { Store } from './Store.tsx';
 
 export const App: React.FC = () => (
-  <Main />
+  <Store />
 );

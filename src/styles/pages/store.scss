@@ -1,0 +1,27 @@
+
+.collection-products {
+  scroll-snap-type: y mandatory;
+
+    .collection-wrapper {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+
+      .collection-item {
+        box-sizing: border-box;
+        flex-basis: 33.3333%;
+        scroll-snap-align: start;
+      
+        border: 1px solid #f7f7f7;
+
+        .item-image {
+          height: 20em;
+          width: 100%;
+        
+          object-fit: contain;
+          object-position: center;
+          border-bottom: 1px solid #f7f7f7;;
+         }
+      }
+    }
+}

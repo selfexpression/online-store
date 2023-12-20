@@ -6,6 +6,7 @@ export type Product = {
   categoryID: number;
   price: number | null;
   inStock: boolean;
+  id: number;
 }
 
 export type Database = Product[];

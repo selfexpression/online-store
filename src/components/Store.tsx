@@ -43,19 +43,26 @@ export const Store: React.FC = () => {
 
   return (
     <header>
-      {/* <main>
+      <main className="collection-products">
         <div className="collection-wrapper">
-          {goods.map((item) => {
-            <div key={item.id} className="collection-item">
-              <img src="" alt="" />
-              <div className="item-info">
-                <h3 className="item-name">{item.name}</h3>
-                <span className="item-price">{item.price}</span>
+          {goods.map(({
+            name, id, price, brand,
+          }) => (
+            <div key={id} className="collection-item">
+              <img
+                src={`assets/product-images/${id}.jpg`}
+                alt={name}
+                loading="lazy"
+                className="item-image"
+              />
+              <div className="text-center">
+                <h3>{`${brand} ${name}`}</h3>
+                <span>{`${price}₽`}</span>
               </div>
-            </div>;
-          })}
+            </div>
+          ))}
         </div>
-      </main> */}
+      </main>
     </header>
   );
 };

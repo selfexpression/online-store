@@ -39,12 +39,12 @@ export const Store: React.FC = () => {
           }) => (
             <div key={id} className="collection-item">
               <img
-                src={`assets/product-images/${id}.jpg`}
+                src={`product-images/${id}.jpg`}
                 alt={name}
                 loading="lazy"
                 className="item-image"
               />
-              <div className="text-center">
+              <div className="uppercase text-center">
                 <h3>{`${brand} ${name}`}</h3>
                 <span>{price ? `${price}₽` : ''}</span>
               </div>

@@ -187,3 +187,7 @@ $flex-align-self-values: map.merge($auto-value, $flex-align-items-values);
 .aqua-color {
   color: var(--aqua) !important;
 }
+
+.uppercase {
+  text-transform: uppercase;
+}

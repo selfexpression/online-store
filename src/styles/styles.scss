@@ -1,12 +1,23 @@
 @import "./components/store.scss";
 @import "./components/nav.scss";
 
+@font-face {
+  font-family: 'Quicksand-Bold';
+  src: url('../assets/fonts/Quicksand-Bold.ttf');
+}
+
+@font-face {
+  font-family: 'Quicksand-Regular';
+  src: url('../assets/fonts/Quicksand-Regular.ttf');
+}
+
 #root {
   height: 100vh;
 }
 body {
   margin: 0;
   background-color: $white;
+  font-family: Quicksand-Regular, "Times New Roman", serif;
 }
 
 * {

@@ -48,7 +48,7 @@ export const Nav: React.FC = () => {
               className="p-2"
               onClick={handleCurrentCategory()}
             >
-              {'reset'}
+              {'Сбросить'}
             </li>
             {categories.map(({ name, id }) => (
               <li

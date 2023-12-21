@@ -9,6 +9,7 @@ export interface Product {
 
 export interface Category {
   name: string;
+  id: number;
 }
 
 export interface CategoriesState {
@@ -21,6 +22,8 @@ export interface ProductsState {
 
 export interface NavFilterState {
   isOpenFilterMenu: boolean;
+  currentCategoryID: number | null;
+  isFiltered: boolean;
 }
 
 export interface DatabaseState {

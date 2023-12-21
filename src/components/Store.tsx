@@ -3,22 +3,32 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { useDatabase } from '../hooks/index.ts';
 import { actions } from '../slices/index.ts';
-import { getDatabase } from '../utils/selectors.ts';
-import { dataLoading } from '../services/services.ts';
+import { getDatabaseStore, getNavFilterStore } from '../utils/selectors.ts';
+import { getDatabase } from '../services/services.ts';
 
 export const Store: React.FC = () => {
   const db = useDatabase();
   const dispatch = useDispatch();
-  const { products } = useSelector(getDatabase);
+  const { products } = useSelector(getDatabaseStore);
+  const { isFiltered, currentCategoryID } = useSelector(getNavFilterStore);
 
   useEffect(() => {
     const loadData = async () => {
-      const payload = await dataLoading(db);
+      const database = await getDatabase(db);
+      const filteredProducts = !isFiltered
+        ? database.products
+        : database.products.filter(({ categoryID }) => categoryID === currentCategoryID);
+
+      const payload = {
+        products: filteredProducts,
+        categories: database.categories,
+      };
+
       dispatch(actions.setDatabase(payload));
     };
 
     loadData();
-  }, []);
+  }, [currentCategoryID]);
 
   return (
     <header>

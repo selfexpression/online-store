@@ -2,10 +2,11 @@ import {
   query, collection, getDocs, Firestore,
 } from '@firebase/firestore';
 
-import { Product, Category, DatabaseState } from '../types/interfaces.ts';
+import { Product, Category } from '../types/interfaces.ts';
+import { Database } from '../types/aliases.ts';
 import { isValidProduct } from '../types/predicates.ts';
 
-export const dataLoading = async (db: Firestore): Promise<DatabaseState> => {
+export const getDatabase = async (db: Firestore): Promise<Database> => {
   try {
     // const queryCollection = query(collection(db, 'products'), where('categoryID', '==', 1));
     const queryCollection = query(collection(db, 'products'));

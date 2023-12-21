@@ -5,7 +5,7 @@
   width: 3em;
 
   border-radius: 1em;
-  background-color: #f7f7f7;
+  background-color: $white-grey;
 }
 
 @mixin toggle-line-pseudo {
@@ -18,7 +18,7 @@
 
 .collection-nav {
   height: 3em;
-  background-color: rgb(78, 80, 81);
+  background-color: $dark-grey;
 
   .nav-filter {
     height: 100%;
@@ -26,7 +26,7 @@
     .filter-menu {
       width: 7em;
       height: 100%;
-      border-right: 2px solid #f7f7f7;
+      border-right: 2px solid $white-grey;
 
       button {
         @include flex-center;
@@ -34,7 +34,7 @@
         height: 100%;
 
         cursor: pointer;
-        background-color: rgb(78, 80, 81);
+        background-color: $dark-grey;
         border: none;
 
         .toggle-line {
@@ -74,6 +74,32 @@
               transform .22s cubic-bezier(.215,.61,.355,1) .12s;
             }
           }
+        }
+      }
+
+      .filter-list {
+        display: none;
+        position: relative;
+      
+        color: $aqua;
+        list-style: none;
+        z-index: 1000;
+
+        li {
+          display: block;
+          background-color: $white;
+          border: 1px solid $white-grey;
+          border-top: none;
+
+          cursor: pointer;
+
+          &:hover {
+            background-color: $white-grey;
+          }
+        }
+
+        &.opened {
+          display: inline-block;
         }
       }
     }

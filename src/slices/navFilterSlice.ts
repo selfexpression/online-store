@@ -4,6 +4,8 @@ import { NavFilterState } from '../types/interfaces.ts';
 
 const initialState: NavFilterState = {
   isOpenFilterMenu: false,
+  currentCategoryID: null,
+  isFiltered: false,
 };
 
 const slice = createSlice({
@@ -13,6 +15,11 @@ const slice = createSlice({
     openFilterMenu: (state, action: PayloadAction<boolean>) => {
       const { payload } = action;
       state.isOpenFilterMenu = payload;
+    },
+    setCurrentCategoryID: (state, { payload }) => {
+      const { id, isFilteredValue } = payload;
+      state.currentCategoryID = id;
+      state.isFiltered = isFilteredValue;
     },
   },
 });

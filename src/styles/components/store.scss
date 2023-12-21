@@ -1,5 +1,6 @@
 .collection-products {
   scroll-snap-type: y mandatory;
+  z-index: -1;
 
     .collection-wrapper {
       display: flex;
@@ -10,7 +11,7 @@
         flex-basis: 33.3333%;
         scroll-snap-align: start;
       
-        border: 1px solid #f7f7f7;
+        border: 1px solid $white-grey;
 
         .item-image {
           height: 20em;
@@ -18,7 +19,7 @@
         
           object-fit: contain;
           object-position: center;
-          border-bottom: 1px solid #f7f7f7;
+          border-bottom: 1px solid $white-grey;
          }
       }
     }

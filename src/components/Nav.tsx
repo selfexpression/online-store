@@ -3,17 +3,31 @@ import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames';
 
 import { actions } from '../slices/navFilterSlice.ts';
-import { getNavFilter } from '../utils/selectors.ts';
+import { getNavFilterStore, getDatabaseStore } from '../utils/selectors.ts';
 
 export const Nav: React.FC = () => {
   const dispatch = useDispatch();
-  const { isOpenFilterMenu } = useSelector(getNavFilter);
+  const { categories } = useSelector(getDatabaseStore);
+  const { isOpenFilterMenu } = useSelector(getNavFilterStore);
 
   const handleOpen = () => {
     dispatch(actions.openFilterMenu(!isOpenFilterMenu));
   };
 
+  const handleCurrentCategory = (id: number) => () => {
+    const payload = {
+      id,
+      isFilteredValue: true,
+    };
+
+    dispatch(actions.setCurrentCategoryID(payload));
+  };
+
   const buttonLineClasses = classNames('toggle-line', {
+    opened: isOpenFilterMenu,
+  });
+
+  const filterListClasses = classNames('filter-list m-0 p-0 no-wrap', {
     opened: isOpenFilterMenu,
   });
 
@@ -29,12 +43,16 @@ export const Nav: React.FC = () => {
           >
             <span className={buttonLineClasses} />
           </button>
-          <ul className="filter-list">
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
+          <ul className={filterListClasses}>
+            {categories.map(({ name, id }) => (
+              <li
+                key={id}
+                className="p-2"
+                onClick={handleCurrentCategory(id)}
+              >
+                {name}
+              </li>
+            ))}
           </ul>
         </div>
       </div>

@@ -1,5 +1,5 @@
-import { DatabaseStateType, NavFilterStateType } from '../types/aliases.ts';
+import { NavFilterStore, DatabaseStore } from '../types/aliases.ts';
 
-export const getDatabase = (state: DatabaseStateType) => state.database;
+export const getDatabase = (state: DatabaseStore) => state.database;
 
-export const getNavFilterState = (state: NavFilterStateType) => state.navFilter;
+export const getNavFilter = (state: NavFilterStore) => state.navFilter;

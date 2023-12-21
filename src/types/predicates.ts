@@ -1,4 +1,4 @@
-import { Product } from './aliases.ts';
+import { Product } from './interfaces.ts';
 
 export const isValidProduct = (product: Product): product is Product => {
   const {

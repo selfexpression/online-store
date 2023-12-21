@@ -5,7 +5,7 @@ import {
 } from 'firebase/firestore';
 
 import { useDatabase } from '../hooks/index.ts';
-import { Database, Product } from '../types/aliases.ts';
+import { Product, Category } from '../types/interfaces.ts';
 import { isValidProduct } from '../types/predicates.ts';
 import { actions } from '../slices/index.ts';
 import { getDatabase } from '../utils/selectors.ts';
@@ -20,8 +20,10 @@ export const Store: React.FC = () => {
       try {
         // const queryCollection = query(collection(db, 'products'), where('categoryID', '==', 1));
         const queryCollection = query(collection(db, 'products'));
-        const querySnapshot = await getDocs(queryCollection);
-        const database: Database = querySnapshot.docs.map((doc) => {
+        const queryCategories = query(collection(db, 'categories'));
+        const querySnapshotByCategories = await getDocs(queryCategories);
+        const querySnapshotByProducts = await getDocs(queryCollection);
+        const database: Product[] = querySnapshotByProducts.docs.map((doc) => {
           const docData = doc.data() as Product;
 
           if (!isValidProduct(docData)) {
@@ -30,8 +32,17 @@ export const Store: React.FC = () => {
 
           return docData;
         });
+        const categories: Category[] = querySnapshotByCategories.docs.map((doc) => {
+          const docData = doc.data() as Category;
+          return docData;
+        });
 
-        dispatch(actions.setDatabase(database));
+        const payload = {
+          database,
+          categories,
+        };
+
+        dispatch(actions.setDatabase(payload));
       } catch (error) {
         console.error('Error loading data:', error);
       }

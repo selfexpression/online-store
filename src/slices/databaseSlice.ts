@@ -1,12 +1,14 @@
-import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
-import { Database } from '../types/aliases.ts';
+import { DatabaseState } from '../types/interfaces.ts';
 
-export interface InitialState {
-  products: Database;
-}
+// export interface InitialState {
+//   categories: Category[];
+//   products: Database;
+// }
 
-const initialState: InitialState = {
+const initialState: DatabaseState = {
+  categories: [],
   products: [],
 };
 
@@ -14,9 +16,10 @@ const slice = createSlice({
   name: 'database',
   initialState,
   reducers: {
-    setDatabase: (state, action: PayloadAction<Database>) => {
-      const { payload } = action;
-      state.products = payload;
+    setDatabase: (state, action) => {
+      const { database, categories } = action.payload;
+      state.products = database;
+      state.categories = categories;
     },
   },
 });

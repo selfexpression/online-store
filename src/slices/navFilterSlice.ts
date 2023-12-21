@@ -1,10 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-export interface InitialState {
-  isOpenFilterMenu: boolean;
-}
+import { NavFilterState } from '../types/interfaces.ts';
 
-const initialState: InitialState = {
+const initialState: NavFilterState = {
   isOpenFilterMenu: false,
 };
 

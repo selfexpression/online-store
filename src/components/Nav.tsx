@@ -19,10 +19,10 @@ export const Nav: React.FC = () => {
           <button
             type="button"
             aria-label="filter-menu-toggle"
-            aria-expanded="false"
+            aria-expanded={isOpenFilterMenu}
             onClick={handleOpen}
           >
-            <span className="toggle-line"></span>
+            <span className={`toggle-line ${isOpenFilterMenu ? 'opened' : ''}`} />
           </button>
         </div>
       </div>

@@ -9,7 +9,10 @@
 }
 
 @mixin toggle-line-pseudo {
-  transition: top .1s ease-in .25s, opacity .1s ease-in;
+  transition: top .1s ease-in .25s,
+  opacity .1s ease-in,
+  bottom .1s ease-in .25s;
+
   content: "";
 }
 
@@ -39,18 +42,38 @@
           transition-property: transform;
           transition-duration: .22s;
           transition-timing-function: cubic-bezier(.55,.055,.675,.19);
-        }
 
-        .toggle-line::before {
-          @include toggle-line-position;
-          @include toggle-line-pseudo;
-          top: -0.8em;
-        }
+          &::before {
+            @include toggle-line-position;
+            @include toggle-line-pseudo;
+            top: -0.8em;
+          }
+  
+          &::after {
+            @include toggle-line-position;
+            @include toggle-line-pseudo;
+            bottom: -0.8em;
+          }
 
-        .toggle-line::after {
-          @include toggle-line-position;
-          @include toggle-line-pseudo;
-          bottom: -0.8em;
+          &.opened {
+            transform: rotate(225deg);
+            transition-delay: .12s;
+            transition-timing-function: cubic-bezier(.215,.61,.355,1);
+
+            &::before {
+              top: 0;
+              opacity: 0;
+              transition: top .1s ease-out,
+              opacity .1s ease-out .12s;
+            }
+
+            &::after {
+              bottom: 0;
+              transform: rotate(-90deg);
+              transition: bottom .1s ease-out,
+              transform .22s cubic-bezier(.215,.61,.355,1) .12s;
+            }
+          }
         }
       }
     }

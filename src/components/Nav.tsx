@@ -10,14 +10,14 @@ export const Nav: React.FC = () => {
   const { categories } = useSelector(getDatabaseStore);
   const { isOpenFilterMenu } = useSelector(getNavFilterStore);
 
-  const handleOpen = () => {
+  const handleOpen = (): void => {
     dispatch(actions.openFilterMenu(!isOpenFilterMenu));
   };
 
-  const handleCurrentCategory = (id: number) => () => {
+  const handleCurrentCategory = (id: number | null = null, value: boolean = false) => (): void => {
     const payload = {
       id,
-      isFilteredValue: true,
+      isFilteredValue: value,
     };
 
     dispatch(actions.setCurrentCategoryID(payload));
@@ -44,11 +44,17 @@ export const Nav: React.FC = () => {
             <span className={buttonLineClasses} />
           </button>
           <ul className={filterListClasses}>
+            <li
+              className="p-2"
+              onClick={handleCurrentCategory()}
+            >
+              {'reset'}
+            </li>
             {categories.map(({ name, id }) => (
               <li
                 key={id}
                 className="p-2"
-                onClick={handleCurrentCategory(id)}
+                onClick={handleCurrentCategory(id, true)}
               >
                 {name}
               </li>

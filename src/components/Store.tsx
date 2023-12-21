@@ -46,7 +46,7 @@ export const Store: React.FC = () => {
               />
               <div className="text-center">
                 <h3>{`${brand} ${name}`}</h3>
-                <span>{`${price}₽`}</span>
+                <span>{price ? `${price}₽` : ''}</span>
               </div>
             </div>
           ))}

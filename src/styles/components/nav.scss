@@ -1,0 +1,58 @@
+@mixin toggle-line-position {
+  position: absolute;
+  display: block;
+  height: 0.22em;
+  width: 3em;
+
+  border-radius: 1em;
+  background-color: #f7f7f7;
+}
+
+@mixin toggle-line-pseudo {
+  transition: top .1s ease-in .25s, opacity .1s ease-in;
+  content: "";
+}
+
+.collection-nav {
+  height: 3em;
+  background-color: rgb(78, 80, 81);
+
+  .nav-filter {
+    height: 100%;
+
+    .filter-menu {
+      width: 7em;
+      height: 100%;
+      border-right: 2px solid #f7f7f7;
+
+      button {
+        @include flex-center;
+        width: 100%;
+        height: 100%;
+
+        cursor: pointer;
+        background-color: rgb(78, 80, 81);
+        border: none;
+
+        .toggle-line {
+          @include toggle-line-position;
+          transition-property: transform;
+          transition-duration: .22s;
+          transition-timing-function: cubic-bezier(.55,.055,.675,.19);
+        }
+
+        .toggle-line::before {
+          @include toggle-line-position;
+          @include toggle-line-pseudo;
+          top: -0.8em;
+        }
+
+        .toggle-line::after {
+          @include toggle-line-position;
+          @include toggle-line-pseudo;
+          bottom: -0.8em;
+        }
+      }
+    }
+  }
+}

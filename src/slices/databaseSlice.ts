@@ -3,11 +3,11 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { Database } from '../types/aliases.ts';
 
 export interface InitialState {
-  goods: Database;
+  products: Database;
 }
 
 const initialState: InitialState = {
-  goods: [],
+  products: [],
 };
 
 const slice = createSlice({
@@ -16,7 +16,7 @@ const slice = createSlice({
   reducers: {
     setDatabase: (state, action: PayloadAction<Database>) => {
       const { payload } = action;
-      state.goods = payload;
+      state.products = payload;
     },
   },
 });

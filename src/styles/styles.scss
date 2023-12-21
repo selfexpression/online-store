@@ -1,7 +1,14 @@
+@import "./components/store.scss";
+@import "./components/nav.scss";
+
 #root {
   height: 100vh;
 }
 body {
   margin: 0;
   background-color: #fff;
+}
+
+* {
+  box-sizing: border-box;
 }

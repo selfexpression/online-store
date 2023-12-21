@@ -126,6 +126,12 @@ $flex-align-self-values: map.merge($auto-value, $flex-align-items-values);
   }
 }
 
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .absolute {
   position: absolute !important;
 }

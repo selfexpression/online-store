@@ -13,8 +13,7 @@ import { getDatabase } from '../utils/selectors.ts';
 export const Store: React.FC = () => {
   const db = useDatabase();
   const dispatch = useDispatch();
-  const { goods } = useSelector(getDatabase);
-  console.log(goods);
+  const { products } = useSelector(getDatabase);
 
   useEffect(() => {
     const dataLoading = async (): Promise<void> => {
@@ -45,7 +44,7 @@ export const Store: React.FC = () => {
     <header>
       <main className="collection-products">
         <div className="collection-wrapper">
-          {goods.map(({
+          {products.map(({
             name, id, price, brand,
           }) => (
             <div key={id} className="collection-item">

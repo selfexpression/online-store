@@ -7,7 +7,7 @@ import { getNavFilterState } from '../utils/selectors.ts';
 export const Nav: React.FC = () => {
   const dispatch = useDispatch();
   const { isOpenFilterMenu } = useSelector(getNavFilterState);
-console.log(isOpenFilterMenu)
+
   const handleOpen = () => {
     dispatch(actions.openFilterMenu(!isOpenFilterMenu));
   };

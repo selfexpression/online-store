@@ -2,11 +2,6 @@ import { createSlice } from '@reduxjs/toolkit';
 
 import { DatabaseState } from '../types/interfaces.ts';
 
-// export interface InitialState {
-//   categories: Category[];
-//   products: Database;
-// }
-
 const initialState: DatabaseState = {
   categories: [],
   products: [],
@@ -17,8 +12,8 @@ const slice = createSlice({
   initialState,
   reducers: {
     setDatabase: (state, action) => {
-      const { database, categories } = action.payload;
-      state.products = database;
+      const { products, categories } = action.payload;
+      state.products = products;
       state.categories = categories;
     },
   },

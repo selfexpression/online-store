@@ -29,14 +29,14 @@ export const Nav: React.FC = () => {
           >
             <span className={buttonLineClasses} />
           </button>
+          <ul className="filter-list">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+          </ul>
         </div>
-        <ul className="filter-list">
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-        </ul>
       </div>
     </nav>
   );

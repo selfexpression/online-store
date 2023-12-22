@@ -46,3 +46,7 @@ export interface SortState {
   currentValue: string | number;
   sortValues: SortValues;
 }
+
+export interface MenuOpenHandlers {
+  [key: string]: () => void;
+}

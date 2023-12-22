@@ -9,14 +9,24 @@ export const en = {
     },
     filterList: {
       reset: 'Reset',
-      outOfStock: 'Out of Stock',
+      categories: {
+        lotionsAndPerfume: 'Lotions and Perfume',
+        hairStylings: 'Hair Stylings',
+        beardCare: 'Beard Care',
+        hairCare: 'Hair Care',
+        facialTreatment: 'Facial Treatment',
+      },
     },
-    sortList: {
-
+    sortValues: {
+      toLowPrice: 'Lowest to Highest Price',
+      toHighPrice: 'Highest to Lowest Price',
     },
     store: {
-      notAvailable: 'Not Available',
       outOfStock: 'Out of Stock',
+    },
+    errors: {
+      isValidProduct: 'Invalid data received from the database',
+      loadingData: 'Error loading data:',
     },
   },
 };

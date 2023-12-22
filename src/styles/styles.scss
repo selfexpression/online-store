@@ -11,6 +11,16 @@
   src: url('../assets/fonts/Quicksand-Regular.ttf');
 }
 
+@keyframes scale {
+  0% {
+    transform: scale(0.5);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
 #root {
   height: 100vh;
 }
@@ -22,4 +32,8 @@ body {
 
 * {
   box-sizing: border-box;
+}
+
+.scale-up {
+  animation: scale .5s ease-in-out 0s forwards;
 }

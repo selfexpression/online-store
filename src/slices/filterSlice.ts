@@ -1,22 +1,22 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
-import { NavFilterState } from '../types/interfaces.ts';
+import { FilterState } from '../types/interfaces.ts';
 
-const initialState: NavFilterState = {
+const initialState: FilterState = {
   isOpenFilterMenu: false,
   currentCategoryID: null,
   isFiltered: false,
 };
 
 const slice = createSlice({
-  name: 'navFilter',
+  name: 'filter',
   initialState,
   reducers: {
-    openFilterMenu: (state, action: PayloadAction<boolean>) => {
-      const { payload } = action;
+    openFilterMenu: (state, { payload }: { payload: boolean }) => {
       state.isOpenFilterMenu = payload;
     },
-    setCurrentCategoryID: (state, { payload }) => {
+    setCurrentCategoryID: (state, { payload }:
+      { payload: { id: number | null, isFilteredValue: boolean } }) => {
       const { id, isFilteredValue } = payload;
       state.currentCategoryID = id;
       state.isFiltered = isFilteredValue;

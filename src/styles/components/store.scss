@@ -21,6 +21,34 @@
           object-position: center;
           border-bottom: 1px solid $white-grey;
          }
+
+         .item-price {
+          font-weight: bold;
+        }
       }
     }
+}
+
+.out-of-stock {
+  opacity: 0.2;
+}
+
+@media screen and (max-width: 1024px) {
+  .collection-products {
+    .collection-wrapper {
+      .collection-item {
+        flex-basis: 50%;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 460px) {
+  .collection-products {
+    .collection-wrapper {
+      .collection-item {
+        flex-basis: 100%;
+      }
+    }
+  }
 }

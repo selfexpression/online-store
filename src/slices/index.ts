@@ -1,16 +1,19 @@
 import { configureStore } from '@reduxjs/toolkit';
 
 import { reducer as databaseSlice, actions as databaseActions } from './databaseSlice.ts';
-import { reducer as navFilterSlice, actions as navFilterActions } from './navFilterSlice.ts';
+import { reducer as filterSlice, actions as filterActions } from './filterSlice.ts';
+import { reducer as sortSlice, actions as sortActions } from './sortSlice.ts';
 
 export const actions = {
   ...databaseActions,
-  ...navFilterActions,
+  ...filterActions,
+  ...sortActions,
 };
 
 export const store = configureStore({
   reducer: {
     database: databaseSlice,
-    navFilter: navFilterSlice,
+    filter: filterSlice,
+    sort: sortSlice,
   },
 });

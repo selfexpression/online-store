@@ -2,64 +2,116 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames';
 
-import { actions } from '../slices/navFilterSlice.ts';
-import { getNavFilterStore, getDatabaseStore } from '../utils/selectors.ts';
+import { actions as filterActions } from '../slices/filterSlice.ts';
+import { actions as sortActions } from '../slices/sortSlice.ts';
+import { getFilterStore, getDatabaseStore, getSortStore } from '../utils/selectors.ts';
+import { SortValues } from '../types/interfaces.ts';
 
-export const Nav: React.FC = () => {
+const FilterList: React.FC = () => {
   const dispatch = useDispatch();
+  const { isOpenFilterMenu } = useSelector(getFilterStore);
   const { categories } = useSelector(getDatabaseStore);
-  const { isOpenFilterMenu } = useSelector(getNavFilterStore);
 
-  const handleOpen = (): void => {
-    dispatch(actions.openFilterMenu(!isOpenFilterMenu));
-  };
-
-  const handleCurrentCategory = (id: number | null = null, value: boolean = false) => (): void => {
+  const handleCurrentCategory = (
+    id: number | null = null,
+    value: boolean = false,
+  ) => (): void => {
     const payload = {
       id,
       isFilteredValue: value,
     };
 
-    dispatch(actions.setCurrentCategoryID(payload));
+    dispatch(filterActions.setCurrentCategoryID(payload));
   };
 
-  const buttonLineClasses = classNames('toggle-line', {
-    opened: isOpenFilterMenu,
-  });
+  return (
+    <ul className={classNames('filter-list m-0 p-0 no-wrap', {
+      opened: isOpenFilterMenu,
+    })}>
+      <li
+        className="p-2"
+        onClick={handleCurrentCategory()}
+      >
+        {'Сбросить'}
+      </li>
+      {categories.map(({ name, id }) => (
+        <li
+          key={id}
+          className="p-2"
+          onClick={handleCurrentCategory(id, true)}
+        >
+          {name}
+        </li>
+      ))}
+    </ul>
+  );
+};
 
-  const filterListClasses = classNames('filter-list m-0 p-0 no-wrap', {
-    opened: isOpenFilterMenu,
-  });
+const SortList: React.FC = () => {
+  const dispatch = useDispatch();
+  const { isOpenSortMenu, sortValues } = useSelector(getSortStore);
+
+  const handleCurrentValue = (value: string) => (): void => {
+    dispatch(sortActions.setCurrentValue(value));
+  };
+
+  return (
+    <ul className={classNames('sort-list m-0 p-0 no-wrap', {
+      opened: isOpenSortMenu,
+    })}>
+      {Object.entries(sortValues).map(([key, value]) => (
+        <li
+          key={key}
+          className="p-2"
+          onClick={handleCurrentValue(key)}
+        >
+          {value}
+        </li>
+      ))}
+    </ul>
+  );
+};
+
+export const Nav: React.FC = () => {
+  const dispatch = useDispatch();
+  const { isOpenFilterMenu } = useSelector(getFilterStore);
+  const { isOpenSortMenu, currentValue, sortValues } = useSelector(getSortStore);
+
+  const handleOpenFilterMenu = (): void => {
+    dispatch(filterActions.openFilterMenu(!isOpenFilterMenu));
+  };
+
+  const handleOpenSortMenu = (): void => {
+    dispatch(sortActions.openSortMenu(!isOpenSortMenu));
+  };
 
   return (
     <nav className="collection-nav">
-      <div className="nav-filter">
+      <div className="nav-filter d-flex justify-content-between">
         <div className="filter-menu">
           <button
             type="button"
             aria-label="filter-menu-toggle"
             aria-expanded={isOpenFilterMenu}
-            onClick={handleOpen}
+            onClick={handleOpenFilterMenu}
           >
-            <span className={buttonLineClasses} />
+            <span className={classNames('toggle-line', {
+              opened: isOpenFilterMenu,
+            })}
+            />
           </button>
-          <ul className={filterListClasses}>
-            <li
-              className="p-2"
-              onClick={handleCurrentCategory()}
-            >
-              {'Сбросить'}
-            </li>
-            {categories.map(({ name, id }) => (
-              <li
-                key={id}
-                className="p-2"
-                onClick={handleCurrentCategory(id, true)}
-              >
-                {name}
-              </li>
-            ))}
-          </ul>
+          <FilterList />
+        </div>
+        <div className="sort-menu">
+          <button
+            type="button"
+            aria-label="sort-menu-toggle"
+            aria-expanded="false"
+            onClick={handleOpenSortMenu}
+          >
+            {sortValues[currentValue as keyof SortValues]}
+          </button>
+          <SortList />
         </div>
       </div>
     </nav>

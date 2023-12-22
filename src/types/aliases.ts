@@ -1,11 +1,11 @@
 import {
-  CategoriesState, ProductsState, DatabaseState, FilterState, SortState,
+  ProductsState, FilterState, SortState,
 } from './interfaces.ts';
 
-export type Database = CategoriesState & ProductsState
+export type Database = ProductsState;
 
 export type DatabaseStore = {
-  database: DatabaseState;
+  database: ProductsState;
 }
 
 export type FilterStore = {

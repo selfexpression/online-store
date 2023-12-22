@@ -55,11 +55,11 @@
   }
 }
 
-@mixin toggle-menu($target, $width-value, $toggle-prop, $toggle-value, $border-value) {
+@mixin toggle-menu($target, $width-value, $toggle-prop, $toggle-value) {
   .#{$target}-menu {
     width: $width-value;
     height: 100%;
-    #{border-}#{$border-value}: 2px solid $white-grey;
+    border-right: 1px solid $white-grey ;
 
     button {
       @include flex-center;
@@ -116,13 +116,13 @@
   .nav-filter {
     height: 100%;
 
-    @include toggle-menu(filter, 10em, width, 10em, right) {
+    @include toggle-menu(filter, 10em, width, 10em) {
       .toggle-line {
         @include toggle-line;
       }
     }
 
-    @include toggle-menu(sort, 15em, height, 5em, left);
+    @include toggle-menu(sort, 15em, height, 5em);
   }
 }
 

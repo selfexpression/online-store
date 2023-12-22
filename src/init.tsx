@@ -3,12 +3,27 @@ import ReactDOM from 'react-dom/client';
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 import { Provider } from 'react-redux';
+import i18next from 'i18next';
+import { initReactI18next, I18nextProvider } from 'react-i18next';
 
 import { App } from './components/App.tsx';
 import { DataApiContext } from './contexts/index.ts';
 import { store } from './slices/index.ts';
+import { resources } from './locales/index.ts';
 
 const runApp = async (): Promise<void> => {
+  const i18n = i18next.createInstance();
+
+  await i18n
+    .use(initReactI18next)
+    .init({
+      resources,
+      fallbackLng: 'ru',
+      interpolation: {
+        escapeValue: false,
+      },
+    });
+
   const firebaseConfig = {
     apiKey: process.env.REACT_APP_API_KEY,
     authDomain: process.env.REACT_APP_AUTH_DOMAIN,
@@ -30,7 +45,9 @@ const runApp = async (): Promise<void> => {
     <React.StrictMode>
       <Provider store={store}>
         <DataApiContext.Provider value={db}>
-          <App />
+          <I18nextProvider i18n={i18n}>
+            <App />
+          </I18nextProvider>
         </DataApiContext.Provider>
       </Provider>
     </React.StrictMode>,

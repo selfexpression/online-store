@@ -2,17 +2,11 @@ import { createSlice } from '@reduxjs/toolkit';
 
 import { SortState } from '../types/interfaces.ts';
 
-const sortValues = {
-  toLowPrice: 'По убыванию цены',
-  toHighPrice: 'По возрастанию цены',
-};
-
 const defaultValue = 'toHighPrice';
 
 const initialState: SortState = {
   isOpenSortMenu: false,
   currentValue: defaultValue,
-  sortValues,
 };
 
 const slice = createSlice({

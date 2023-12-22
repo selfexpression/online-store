@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames';
+import { useTranslation } from 'react-i18next';
 
 import { useDatabase } from '../hooks/index.ts';
 import { actions } from '../slices/index.ts';
@@ -11,6 +12,7 @@ import { sortedMap } from '../utils/helpers.ts';
 
 export const Store: React.FC = () => {
   const db = useDatabase();
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const { products } = useSelector(getDatabaseStore);
   const { isFiltered, currentCategoryID } = useSelector(getFilterStore);
@@ -18,7 +20,7 @@ export const Store: React.FC = () => {
 
   useEffect(() => {
     const loadData = async (): Promise<void> => {
-      const database = await getDatabase(db);
+      const database = await getDatabase(db, t);
       const filteredProducts = !isFiltered
         ? database.products
         : database.products
@@ -29,7 +31,6 @@ export const Store: React.FC = () => {
 
       const payload = {
         products: result,
-        categories: database.categories,
       };
 
       dispatch(actions.setDatabase(payload));
@@ -55,7 +56,7 @@ export const Store: React.FC = () => {
               <div className="uppercase text-center p-2">
                 <h3 className="p-0 mb-3">{`${brand} ${name}`}</h3>
                 <span className="item-price">
-                  {price ? `${price}₽` : 'Нет в наличии'}
+                  {price ? `${price}₽` : t('store.outOfStock')}
                 </span>
               </div>
             </div>

@@ -1,16 +1,18 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames';
+import { useTranslation } from 'react-i18next';
 
 import { actions as filterActions } from '../slices/filterSlice.ts';
 import { actions as sortActions } from '../slices/sortSlice.ts';
-import { getFilterStore, getDatabaseStore, getSortStore } from '../utils/selectors.ts';
+import { getFilterStore, getSortStore } from '../utils/selectors.ts';
 import { SortValues, MenuOpenHandlers } from '../types/interfaces.ts';
 
 const FilterList: React.FC<MenuOpenHandlers> = ({ handleOpenFilterMenu }) => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   const { isOpenFilterMenu } = useSelector(getFilterStore);
-  const { categories } = useSelector(getDatabaseStore);
+  const categories = t('filterList.categories', { returnObjects: true });
 
   const handleCurrentCategory = (
     id: number | null = null,
@@ -33,15 +35,15 @@ const FilterList: React.FC<MenuOpenHandlers> = ({ handleOpenFilterMenu }) => {
         className="p-2"
         onClick={handleCurrentCategory()}
       >
-        {'Сбросить'}
+        {t('filterList.reset')}
       </li>
-      {categories.map(({ name, id }) => (
+      {Object.entries(categories).map(([key, value], index) => (
         <li
-          key={id}
+          key={key}
           className="p-2"
-          onClick={handleCurrentCategory(id, isOpenFilterMenu)}
+          onClick={handleCurrentCategory(index + 1, isOpenFilterMenu)}
         >
-          {name}
+          {value}
         </li>
       ))}
     </ul>
@@ -50,7 +52,9 @@ const FilterList: React.FC<MenuOpenHandlers> = ({ handleOpenFilterMenu }) => {
 
 const SortList: React.FC<MenuOpenHandlers> = ({ handleOpenSortMenu }) => {
   const dispatch = useDispatch();
-  const { isOpenSortMenu, sortValues } = useSelector(getSortStore);
+  const { isOpenSortMenu } = useSelector(getSortStore);
+  const { t } = useTranslation();
+  const sortValues = t('sortValues', { returnObjects: true });
 
   const handleCurrentValue = (value: string) => (): void => {
     dispatch(sortActions.setCurrentValue(value));
@@ -76,6 +80,7 @@ const SortList: React.FC<MenuOpenHandlers> = ({ handleOpenSortMenu }) => {
 
 const FilterMenu: React.FC = () => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   const { isOpenFilterMenu } = useSelector(getFilterStore);
 
   const handleOpenFilterMenu = (): void => {
@@ -86,7 +91,7 @@ const FilterMenu: React.FC = () => {
     <div className="filter-menu">
       <button
         type="button"
-        aria-label="filter-menu-toggle"
+        aria-label={t('nav.filterMenuToggle')}
         aria-expanded={isOpenFilterMenu}
         onClick={handleOpenFilterMenu}
       >
@@ -102,7 +107,9 @@ const FilterMenu: React.FC = () => {
 
 const SortMenu: React.FC = () => {
   const dispatch = useDispatch();
-  const { isOpenSortMenu, currentValue, sortValues } = useSelector(getSortStore);
+  const { t } = useTranslation();
+  const sortValues: SortValues = t('sortValues', { returnObjects: true });
+  const { isOpenSortMenu, currentValue } = useSelector(getSortStore);
 
   const handleOpenSortMenu = (): void => {
     dispatch(sortActions.openSortMenu(!isOpenSortMenu));
@@ -112,8 +119,8 @@ const SortMenu: React.FC = () => {
     <div className="sort-menu">
       <button
         type="button"
-        aria-label="sort-menu-toggle"
-        aria-expanded="false"
+        aria-label={t('nav.sortMenuToggle')}
+        aria-expanded={isOpenSortMenu}
         onClick={handleOpenSortMenu}
         className="font-large"
       >
@@ -126,7 +133,7 @@ const SortMenu: React.FC = () => {
 
 export const Nav: React.FC = () => (
   <nav className="collection-nav">
-    <div className="nav-filter d-flex justify-content-between">
+    <div className="nav-filter d-flex">
       <FilterMenu />
       <SortMenu />
     </div>

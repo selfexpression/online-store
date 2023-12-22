@@ -115,6 +115,7 @@ const SortMenu: React.FC = () => {
         aria-label="sort-menu-toggle"
         aria-expanded="false"
         onClick={handleOpenSortMenu}
+        className="font-large"
       >
         {sortValues[currentValue as keyof SortValues]}
       </button>

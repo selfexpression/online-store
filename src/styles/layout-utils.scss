@@ -189,5 +189,9 @@ $flex-align-self-values: map.merge($auto-value, $flex-align-items-values);
 }
 
 .uppercase {
-  text-transform: uppercase;
+  text-transform: uppercase !important;
+}
+
+.font-large {
+  font-size: large !important;
 }

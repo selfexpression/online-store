@@ -82,9 +82,10 @@
       
         color: $aqua;
         list-style: none;
-        z-index: 1000;
-        transform: translateX(-100%);
-        transition: .5s ease-in-out 0s;
+        z-index: 999;
+        width: 0;
+        overflow: hidden;
+        transition: width .5s ease-in-out 0s;
 
         li {
           background-color: $white;
@@ -100,7 +101,7 @@
         }
 
         &.opened {
-          transform: translateX(0);
+          width: 10em;
 
           li {
             opacity: 1;
@@ -116,6 +117,7 @@
     border-left: 2px solid $white-grey;
 
     button {
+      @include flex-center;
       width: 100%;
       height: 100%;
       font-size: large;
@@ -131,9 +133,10 @@
       
       color: $aqua;
       list-style: none;
-      z-index: 1000;
-      transform: translateX(100%);
-      transition: .5s ease-in-out 0s;
+      height: 0;
+      z-index: 999;
+      overflow: hidden;
+      transition: height .5s ease-in-out 0s;
 
       li {
         background-color: $white;
@@ -149,7 +152,7 @@
       }
 
       &.opened {
-        transform: translateX(0);
+        height: 5em;
 
         li {
           opacity: 1;

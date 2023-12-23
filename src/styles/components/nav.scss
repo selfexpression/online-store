@@ -82,7 +82,7 @@
       z-index: 999;
       #{$toggle-prop}: 0;
       overflow: hidden;
-      transition: #{$toggle-prop} .5s ease-in-out;
+      transition: #{$toggle-prop} .3s ease-in-out 0s;
 
       li {
         background-color: $white;

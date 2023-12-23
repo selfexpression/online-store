@@ -46,12 +46,12 @@ export const Store: React.FC = () => {
           {products.map(({
             name, id, price, brand, inStock,
           }) => (
-            <div key={id} className="collection-item">
+            <div key={id} className="collection-item scale-up">
               <img
                 src={`product-images/${id}.jpg`}
                 alt={name}
                 loading="lazy"
-                className={classNames('item-image scale-up', { 'out-of-stock': !inStock })}
+                className={classNames('item-image', { 'out-of-stock': !inStock })}
               />
               <div className="uppercase text-center p-2">
                 <h3 className="p-0 mb-3">{`${brand} ${name}`}</h3>

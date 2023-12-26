@@ -43,6 +43,7 @@ export interface SortState {
 
 export interface ProductCardState {
   currentProduct: Product | null;
+  productsCount: number;
 }
 
 export interface MenuOpenHandlers {

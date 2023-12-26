@@ -1,5 +1,5 @@
 import {
-  ProductsState, FilterState, SortState, CategoryState, ProductCardState
+  ProductsState, FilterState, SortState, CategoryState, ProductCardState,
 } from './interfaces.ts';
 
 export type Database = ProductsState & CategoryState;

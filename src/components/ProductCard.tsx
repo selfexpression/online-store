@@ -9,12 +9,15 @@ import { getDatabase } from '../services/firebase.ts';
 import { useDatabase } from '../hooks/index.ts';
 import { actions } from '../slices/index.ts';
 
+import { MinusIcon } from './Icons/MinusIcon.tsx';
+import { PlusIcon } from './Icons/PlusIcon.tsx';
+
 const MainInfo: React.FC = () => {
   const { t } = useTranslation();
   const { currentProduct } = useSelector(getProductCardState);
 
   return (
-    <div className="product-card-main-info p-3 mt-3">
+    <div className="product-card-main-info p-3 m-3">
       <h1 className="product-brand m-0">
         {currentProduct?.brand}
       </h1>
@@ -51,7 +54,7 @@ const AddInfo: React.FC = () => {
       {Object.keys(categoriesInfo).map((category) => (
         <div
           key={category}
-          className="p-3"
+          className="ml-3 mr-3 p-3"
         >
           <span
             className="category-type"
@@ -67,6 +70,55 @@ const AddInfo: React.FC = () => {
           </span>
         </div>
       ))}
+    </div>
+  );
+};
+
+const CounterAdjust: React.FC = () => {
+  const dispatch = useDispatch();
+  const { productsCount } = useSelector(getProductCardState);
+
+  const handleDecrement = () => {
+    dispatch(actions.decrementCount());
+  };
+
+  const handleIncrement = () => {
+    dispatch(actions.incrementCount());
+  };
+
+  return (
+    <div className="counter-items m-3">
+      <button
+        type="button"
+        aria-label="decrement"
+        onClick={handleDecrement}
+      >
+        <MinusIcon />
+      </button>
+      <span className="p-4">{productsCount}</span>
+      <button
+        type="button"
+        aria-label="increment"
+        onClick={handleIncrement}
+      >
+        <PlusIcon />
+      </button>
+    </div>
+  );
+};
+
+const ProductAddToCard: React.FC = () => {
+  const { t } = useTranslation();
+
+  return (
+    <div className="product-counter mb-5 mt-5">
+      <CounterAdjust />
+      <button type="button"
+        aria-label="add to cart"
+        className="mr-3 uppercase"
+      >
+        {t('productCard.addToCart')}
+      </button>
     </div>
   );
 };
@@ -96,6 +148,7 @@ export const ProductCard: React.FC = () => {
           className="product-card-image scale-up p-4"
         />
         <MainInfo />
+        <ProductAddToCard />
         <AddInfo />
       </div>
     </div>

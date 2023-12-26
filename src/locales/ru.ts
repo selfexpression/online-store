@@ -29,6 +29,9 @@ export const ru = {
       isValidProduct: 'Из базы данных получены неверные данные',
       loadingData: 'Ошибка загрузки данных: ',
     },
+    productCard: {
+      addToCart: 'Добавить в корзину',
+    },
     categoriesInfo: {
       country: 'Страна бренда',
       type: 'Тип товара',

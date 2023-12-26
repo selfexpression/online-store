@@ -134,7 +134,7 @@ export const ToggleMenu: React.FC = () => {
 
   return (
     <div className="toggle-menu-container">
-      <div className="current-filter p-4">
+      <div className="current-filter ml-4">
         <span>{currentFilterValue}</span>
       </div>
       <div className="toggle-menu-wrapper w-100">

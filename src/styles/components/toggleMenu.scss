@@ -111,6 +111,7 @@
 
 .toggle-menu-container {
   .current-filter {
+    height: 5em;
     display: flex;
     align-items: center;
 
@@ -141,10 +142,17 @@
 }
 
 @media screen and (max-width: 560px) {
+  .toggle-menu-container {
+    .current-filter {
+      justify-content: center;
+      margin: 0 !important;
+    }
+  }
+
   .toggle-menu-wrapper {
     .toggle-menu {
       .sort-menu {
-        width: 100%;
+        flex-grow: 1;
       }
     }
   }

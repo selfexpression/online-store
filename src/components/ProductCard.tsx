@@ -93,7 +93,7 @@ export const ProductCard: React.FC = () => {
         <img
           src={`/product-images/${productId}.jpg`}
           alt={`collection item ${productId}`}
-          className="product-card-image scale-up"
+          className="product-card-image scale-up p-4"
         />
         <MainInfo />
         <AddInfo />

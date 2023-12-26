@@ -43,7 +43,7 @@
     }
   }
 
-  .product-info {
+  .add-info {
     grid-column: 7 / -1;
     grid-row: 6 / -1;
 
@@ -54,12 +54,19 @@
 
     .category-type {
       font-weight: bold;
-      font-size: 1.5em;
+      font-size: 1.3em;
       cursor: pointer;
     }
 
     .category-value {
-      font-size: 1.4em;
+      font-size: 1.2em;
     }
+  }
+}
+
+@media screen and (max-width: 560px) {
+  .product-card-wrapper {
+    display: flex;
+    flex-direction: column;
   }
 }

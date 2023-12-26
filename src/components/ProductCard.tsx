@@ -47,7 +47,7 @@ const AddInfo: React.FC = () => {
   };
 
   return (
-    <div className="product-info">
+    <div className="add-info">
       {Object.keys(categoriesInfo).map((category) => (
         <div
           key={category}
@@ -93,7 +93,7 @@ export const ProductCard: React.FC = () => {
         <img
           src={`/product-images/${productId}.jpg`}
           alt={`collection item ${productId}`}
-          className="product-card-image"
+          className="product-card-image scale-up"
         />
         <MainInfo />
         <AddInfo />

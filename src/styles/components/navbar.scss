@@ -59,7 +59,7 @@
   .#{$target}-menu {
     width: $width-value;
     height: 100%;
-    border-right: 1px solid $white-grey ;
+    border-right: $white-grey-border;
 
     button {
       @include flex-center;
@@ -87,7 +87,7 @@
 
       li {
         background-color: $white;
-        border: 1px solid $white-grey;
+        border: $white-grey-border;
         border-top: none;
         opacity: 0;
 

@@ -12,7 +12,7 @@
         flex-basis: 33.3333%;
         scroll-snap-align: start;
       
-        border: 1px solid $white-grey;
+        border: $white-grey-border;
 
         .item-image {
           height: 20em;
@@ -20,14 +20,14 @@
         
           object-fit: contain;
           object-position: center;
-          border-bottom: 1px solid $white-grey;
+          border-bottom: $white-grey-border;
+
+          &.out-of-stock {
+            opacity: 0.2 !important;
+          }
          }
       }
     }
-}
-
-.out-of-stock {
-  opacity: 0.2 !important;
 }
 
 @media screen and (max-width: 1024px) {

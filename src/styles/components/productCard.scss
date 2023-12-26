@@ -1,3 +1,8 @@
+@mixin font-style-size($style-value, $font-value) {
+  font-weight: $style-value;
+  font-size: $font-value;
+}
+
 .product-card-wrapper {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
@@ -18,7 +23,7 @@
     grid-row: 1 / 4;
 
     text-transform: uppercase;
-    border-bottom: 1px solid $white-grey;
+    border-bottom: $white-grey-border;
 
     .product-brand,
     .product-name {
@@ -26,20 +31,13 @@
     }
 
     .product-price {
-      font-weight: bold;
-      font-size: 1.7em;
+      @include font-style-size(bold, 1.7em);
     }
 
-    .product-stock {
-      font-weight: bold;
-      font-size: 2em;
-      color: rgb(34, 225, 13);
-    }
-
+    .product-stock,
     .product-out-stock {
-      font-weight: bold;
-      font-size: 2em;
-      color: rgb(225, 41, 13);
+      @include font-style-size(bold, 2em);
+      color: $aqua;
     }
   }
 
@@ -53,7 +51,7 @@
       display: inline-flex;
       height: 3em;
       align-items: center;
-      border: 1px solid $white-grey;
+      border: $white-grey-border;
 
       button[aria-label="decrement"],
       button[aria-label="increment"] {
@@ -84,13 +82,12 @@
     grid-row: 7 / -1;
 
     div {
-      border-top: 1px solid $white-grey;
-      border-bottom: 1px solid $white-grey;
+      border-top: $white-grey-border;
+      border-bottom: $white-grey-border;
     }
 
     .category-type {
-      font-weight: bold;
-      font-size: 1.3em;
+      @include font-style-size(bold, 1.3em);
       cursor: pointer;
     }
 
@@ -110,7 +107,7 @@
       grid-row: 1 / 4;
   
       text-transform: uppercase;
-      border-bottom: 1px solid $white-grey;
+      border-bottom: $white-grey-border;
     }
   }
 }

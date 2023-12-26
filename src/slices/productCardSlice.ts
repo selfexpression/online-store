@@ -2,9 +2,11 @@ import { createSlice } from '@reduxjs/toolkit';
 
 import { ProductCardState, Product } from '../types/interfaces.ts';
 
+const defaultValue = 1;
+
 const initialState: ProductCardState = {
   currentProduct: null,
-  productsCount: 1,
+  productsCount: defaultValue,
 };
 
 const slice = createSlice({
@@ -21,6 +23,9 @@ const slice = createSlice({
       if (state.productsCount > 1) {
         state.productsCount -= 1;
       }
+    },
+    resetCount: (state) => {
+      state.productsCount = defaultValue;
     },
   },
 });

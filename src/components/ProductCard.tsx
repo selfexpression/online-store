@@ -76,7 +76,13 @@ const AddInfo: React.FC = () => {
 
 const CounterAdjust: React.FC = () => {
   const dispatch = useDispatch();
-  const { productsCount } = useSelector(getProductCardState);
+  const [disabled, setDisabled] = useState(false);
+  const { productsCount, currentProduct } = useSelector(getProductCardState);
+
+  useEffect(() => {
+    setDisabled(!currentProduct?.inStock);
+    dispatch(actions.resetCount());
+  }, [currentProduct?.inStock]);
 
   const handleDecrement = () => {
     dispatch(actions.decrementCount());
@@ -92,6 +98,7 @@ const CounterAdjust: React.FC = () => {
         type="button"
         aria-label="decrement"
         onClick={handleDecrement}
+        disabled={disabled}
       >
         <MinusIcon />
       </button>
@@ -100,6 +107,7 @@ const CounterAdjust: React.FC = () => {
         type="button"
         aria-label="increment"
         onClick={handleIncrement}
+        disabled={disabled}
       >
         <PlusIcon />
       </button>
@@ -108,7 +116,13 @@ const CounterAdjust: React.FC = () => {
 };
 
 const ProductAddToCard: React.FC = () => {
+  const [disabled, setDisabled] = useState(false);
+  const { currentProduct } = useSelector(getProductCardState);
   const { t } = useTranslation();
+
+  useEffect(() => {
+    setDisabled(currentProduct?.inStock === true);
+  }, []);
 
   return (
     <div className="product-counter mb-5 mt-5">
@@ -116,6 +130,7 @@ const ProductAddToCard: React.FC = () => {
       <button type="button"
         aria-label="add to cart"
         className="mr-3 uppercase"
+        disabled={disabled}
       >
         {t('productCard.addToCart')}
       </button>

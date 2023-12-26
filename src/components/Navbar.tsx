@@ -14,14 +14,8 @@ const FilterList: React.FC<MenuOpenHandlers> = ({ handleOpenFilterMenu }) => {
   const { isOpenFilterMenu } = useSelector(getFilterState);
   const { categories } = useSelector(getDatabaseState);
 
-  const handleCurrentCategory = (
-    id: number | null,
-    value: boolean,
-  ) => (): void => {
-    const payload = {
-      id,
-      isFilteredValue: value,
-    };
+  const handleCurrentCategory = (id: number | null, value: boolean): void => {
+    const payload = { id, isFilteredValue: value };
 
     dispatch(filterActions.setCurrentCategoryID(payload));
     handleOpenFilterMenu();
@@ -33,7 +27,7 @@ const FilterList: React.FC<MenuOpenHandlers> = ({ handleOpenFilterMenu }) => {
     })}>
       <li
         className="p-2"
-        onClick={handleCurrentCategory(null, !isOpenFilterMenu)}
+        onClick={() => handleCurrentCategory(null, !isOpenFilterMenu)}
       >
         {t('filterList.reset')}
       </li>
@@ -41,7 +35,7 @@ const FilterList: React.FC<MenuOpenHandlers> = ({ handleOpenFilterMenu }) => {
         <li
           key={id}
           className="p-2"
-          onClick={handleCurrentCategory(id, isOpenFilterMenu)}
+          onClick={() => handleCurrentCategory(id, isOpenFilterMenu)}
         >
           {t(`filterList.categories.${id}`)}
         </li>
@@ -56,7 +50,7 @@ const SortList: React.FC<MenuOpenHandlers> = ({ handleOpenSortMenu }) => {
   const { t } = useTranslation();
   const sortValues = t('sortValues', { returnObjects: true });
 
-  const handleCurrentValue = (value: string) => (): void => {
+  const handleCurrentValue = (value: string): void => {
     dispatch(sortActions.setCurrentValue(value));
     handleOpenSortMenu();
   };
@@ -69,7 +63,7 @@ const SortList: React.FC<MenuOpenHandlers> = ({ handleOpenSortMenu }) => {
         <li
           key={key}
           className="p-2"
-          onClick={handleCurrentValue(key)}
+          onClick={() => handleCurrentValue(key)}
         >
           {value}
         </li>

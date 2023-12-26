@@ -1,8 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { Product, ProductsState } from '../types/interfaces.ts';
+import { Database } from '../types/aliases.ts';
 
-const initialState: ProductsState = {
+const initialState: Database = {
+  categories: [],
   products: [],
 };
 
@@ -10,9 +11,9 @@ const slice = createSlice({
   name: 'database',
   initialState,
   reducers: {
-    setDatabase: (state, { payload }:
-      { payload: { products: Product[] } }) => {
-      const { products } = payload;
+    setDatabase: (state, { payload }: { payload: Database }) => {
+      const { products, categories } = payload;
+      state.categories = categories;
       state.products = products;
     },
   },

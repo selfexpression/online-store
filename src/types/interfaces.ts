@@ -9,6 +9,15 @@ export interface Product {
   id: number;
 }
 
+export interface Category {
+  name: string;
+  id: number;
+}
+
+export interface CategoryState {
+  categories: Category[];
+}
+
 export interface ProductsState {
   products: Product[];
 }
@@ -30,6 +39,10 @@ export interface SortValues {
 export interface SortState {
   isOpenSortMenu: boolean;
   currentValue: string | number;
+}
+
+export interface ProductCardState {
+  currentProduct: Product | null;
 }
 
 export interface MenuOpenHandlers {

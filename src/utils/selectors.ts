@@ -1,7 +1,11 @@
-import { FilterStore, DatabaseStore, SortStore } from '../types/aliases.ts';
+import {
+  FilterStore, DatabaseStore, SortStore, ProductCardStore,
+} from '../types/aliases.ts';
 
-export const getDatabaseStore = (state: DatabaseStore) => state.database;
+export const getDatabaseState = (state: DatabaseStore) => state.database;
 
-export const getFilterStore = (state: FilterStore) => state.filter;
+export const getFilterState = (state: FilterStore) => state.filter;
 
-export const getSortStore = (state: SortStore) => state.sort;
+export const getSortState = (state: SortStore) => state.sort;
+
+export const getProductCardState = (state: ProductCardStore) => state.productCard;

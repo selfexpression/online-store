@@ -70,6 +70,7 @@
       color: $white-grey;
       background-color: $dark-grey;
       border: none;
+      font-family: DidactGothic-Regular, "Times New Roman", serif;
 
       @content;
     }
@@ -111,12 +112,13 @@
 .collection-nav {
   height: 3em;
   background-color: $dark-grey;
-  border: 1px solid $white-grey;
+  border-top: 0.5px solid $white-grey;
+  font-family: DidactGothic-Regular, "Times New Roman", serif;
 
   .nav-filter {
     height: 100%;
 
-    @include toggle-menu(filter, 10em, width, 10em) {
+    @include toggle-menu(filter, 11em, width, 11em) {
       .toggle-line {
         @include toggle-line;
       }

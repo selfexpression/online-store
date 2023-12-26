@@ -195,3 +195,12 @@ $flex-align-self-values: map.merge($auto-value, $flex-align-items-values);
 .font-large {
   font-size: large !important;
 }
+
+.no-decoration {
+  text-decoration: none;
+  color: inherit;
+}
+
+.bold {
+  font-weight: bold;
+}

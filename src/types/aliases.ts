@@ -1,11 +1,11 @@
 import {
-  ProductsState, FilterState, SortState,
+  ProductsState, FilterState, SortState, CategoryState, ProductCardState
 } from './interfaces.ts';
 
-export type Database = ProductsState;
+export type Database = ProductsState & CategoryState;
 
 export type DatabaseStore = {
-  database: ProductsState;
+  database: Database;
 }
 
 export type FilterStore = {
@@ -14,4 +14,8 @@ export type FilterStore = {
 
 export type SortStore = {
   sort: SortState;
+}
+
+export type ProductCardStore = {
+  productCard: ProductCardState;
 }

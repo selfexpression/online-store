@@ -2,10 +2,11 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 
 import { useDatabase } from '../hooks/index.ts';
 import { actions } from '../slices/index.ts';
-import { getDatabaseStore, getFilterStore, getSortStore } from '../utils/selectors.ts';
+import { getDatabaseState, getFilterState, getSortState } from '../utils/selectors.ts';
 import { getDatabase } from '../services/services.ts';
 import { Product, SortedMap } from '../types/interfaces.ts';
 import { sortedMap } from '../utils/helpers.ts';
@@ -14,9 +15,9 @@ export const Store: React.FC = () => {
   const db = useDatabase();
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { products } = useSelector(getDatabaseStore);
-  const { isFiltered, currentCategoryID } = useSelector(getFilterStore);
-  const { currentValue } = useSelector(getSortStore);
+  const { products } = useSelector(getDatabaseState);
+  const { isFiltered, currentCategoryID } = useSelector(getFilterState);
+  const { currentValue } = useSelector(getSortState);
 
   useEffect(() => {
     const loadData = async (): Promise<void> => {
@@ -30,6 +31,7 @@ export const Store: React.FC = () => {
         .sort((a, b) => (b.inStock ? 1 : 0) - (a.inStock ? 1 : 0));
 
       const payload = {
+        categories: database.categories,
         products: result,
       };
 
@@ -47,18 +49,20 @@ export const Store: React.FC = () => {
             name, id, price, brand, inStock,
           }) => (
             <div key={id} className="collection-item scale-up">
-              <img
-                src={`product-images/${id}.jpg`}
-                alt={name}
-                loading="lazy"
-                className={classNames('item-image', { 'out-of-stock': !inStock })}
-              />
-              <div className="uppercase text-center p-2">
-                <h3 className="p-0 mb-3">{`${brand} ${name}`}</h3>
-                <span className="item-price">
-                  {price ? `${price}₽` : t('store.outOfStock')}
-                </span>
-              </div>
+              <Link className="no-decoration" to={`/product/${id}`}>
+                <img
+                  src={`/product-images/${id}.jpg`}
+                  alt={name}
+                  loading="lazy"
+                  className={classNames('item-image', { 'out-of-stock': !inStock })}
+                />
+                <div className="uppercase text-center p-2">
+                  <h3 className="p-0 mb-2">{`${brand} ${name}`}</h3>
+                  <span className="bold m-0">
+                    {price ? `${price}₽` : t('store.outOfStock')}
+                  </span>
+                </div>
+              </Link>
             </div>
           ))}
         </div>

@@ -1,11 +1,18 @@
 import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import { Store } from './Store.tsx';
-import { Nav } from './Nav.tsx';
+import { Navbar } from './Navbar.tsx';
+import { ProductCard } from './ProductCard.tsx';
 
 export const App: React.FC = () => (
-  <div className="d-flex flex-column h-100 w-100">
-    <Nav />
-    <Store />
-  </div>
+  <Router>
+    <div className="d-flex flex-column">
+      <Navbar />
+      <Routes>
+        <Route path='/' element={<Store />} />
+        <Route path='/product/:productId' element={<ProductCard />} />
+      </Routes>
+    </div>
+  </Router>
 );

@@ -3,13 +3,15 @@ import {
 } from '@firebase/firestore';
 import { TFunction } from 'i18next';
 
-import { Product } from '../types/interfaces.ts';
+import { Product, Category } from '../types/interfaces.ts';
 import { Database } from '../types/aliases.ts';
 import { isValidProduct } from '../types/predicates.ts';
 
 export const getDatabase = async (db: Firestore, t: TFunction): Promise<Database> => {
   try {
     const queryCollection = query(collection(db, 'products'));
+    const queryCategories = query(collection(db, 'categories'));
+    const querySnapshotByCategories = await getDocs(queryCategories);
     const querySnapshotByProducts = await getDocs(queryCollection);
     const products: Product[] = querySnapshotByProducts.docs.map((doc) => {
       const docData = doc.data() as Product;
@@ -20,8 +22,13 @@ export const getDatabase = async (db: Firestore, t: TFunction): Promise<Database
 
       return docData;
     });
+    const categories: Category[] = querySnapshotByCategories.docs.map((doc) => {
+      const docData = doc.data() as Category;
+      return docData;
+    });
 
     const payload = {
+      categories,
       products,
     };
 

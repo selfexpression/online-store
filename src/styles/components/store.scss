@@ -1,6 +1,7 @@
 .collection-products {
   scroll-snap-type: y mandatory;
   z-index: -1;
+  font-family: Quicksand-Regular, "Times New Roman", serif;
 
     .collection-wrapper {
       display: flex;
@@ -21,10 +22,6 @@
           object-position: center;
           border-bottom: 1px solid $white-grey;
          }
-
-         .item-price {
-          font-weight: bold;
-        }
       }
     }
 }

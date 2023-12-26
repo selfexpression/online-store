@@ -5,18 +5,18 @@ import { useTranslation } from 'react-i18next';
 
 import { actions as filterActions } from '../slices/filterSlice.ts';
 import { actions as sortActions } from '../slices/sortSlice.ts';
-import { getFilterStore, getSortStore } from '../utils/selectors.ts';
-import { SortValues, MenuOpenHandlers } from '../types/interfaces.ts';
+import { getFilterState, getSortState, getDatabaseState } from '../utils/selectors.ts';
+import type { SortValues, MenuOpenHandlers } from '../types/interfaces.ts';
 
 const FilterList: React.FC<MenuOpenHandlers> = ({ handleOpenFilterMenu }) => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
-  const { isOpenFilterMenu } = useSelector(getFilterStore);
-  const categories = t('filterList.categories', { returnObjects: true });
+  const { isOpenFilterMenu } = useSelector(getFilterState);
+  const { categories } = useSelector(getDatabaseState);
 
   const handleCurrentCategory = (
-    id: number | null = null,
-    value: boolean = false,
+    id: number | null,
+    value: boolean,
   ) => (): void => {
     const payload = {
       id,
@@ -33,17 +33,17 @@ const FilterList: React.FC<MenuOpenHandlers> = ({ handleOpenFilterMenu }) => {
     })}>
       <li
         className="p-2"
-        onClick={handleCurrentCategory()}
+        onClick={handleCurrentCategory(null, !isOpenFilterMenu)}
       >
         {t('filterList.reset')}
       </li>
-      {Object.entries(categories).map(([key, value], index) => (
+      {categories.map(({ id }) => (
         <li
-          key={key}
+          key={id}
           className="p-2"
-          onClick={handleCurrentCategory(index + 1, isOpenFilterMenu)}
+          onClick={handleCurrentCategory(id, isOpenFilterMenu)}
         >
-          {value}
+          {t(`filterList.categories.${id}`)}
         </li>
       ))}
     </ul>
@@ -52,7 +52,7 @@ const FilterList: React.FC<MenuOpenHandlers> = ({ handleOpenFilterMenu }) => {
 
 const SortList: React.FC<MenuOpenHandlers> = ({ handleOpenSortMenu }) => {
   const dispatch = useDispatch();
-  const { isOpenSortMenu } = useSelector(getSortStore);
+  const { isOpenSortMenu } = useSelector(getSortState);
   const { t } = useTranslation();
   const sortValues = t('sortValues', { returnObjects: true });
 
@@ -81,7 +81,7 @@ const SortList: React.FC<MenuOpenHandlers> = ({ handleOpenSortMenu }) => {
 const FilterMenu: React.FC = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
-  const { isOpenFilterMenu } = useSelector(getFilterStore);
+  const { isOpenFilterMenu } = useSelector(getFilterState);
 
   const handleOpenFilterMenu = (): void => {
     dispatch(filterActions.openFilterMenu(!isOpenFilterMenu));
@@ -109,7 +109,7 @@ const SortMenu: React.FC = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const sortValues: SortValues = t('sortValues', { returnObjects: true });
-  const { isOpenSortMenu, currentValue } = useSelector(getSortStore);
+  const { isOpenSortMenu, currentValue } = useSelector(getSortState);
 
   const handleOpenSortMenu = (): void => {
     dispatch(sortActions.openSortMenu(!isOpenSortMenu));
@@ -131,8 +131,8 @@ const SortMenu: React.FC = () => {
   );
 };
 
-export const Nav: React.FC = () => (
-  <nav className="collection-nav">
+export const Navbar: React.FC = () => (
+  <nav className="collection-nav w-100">
     <div className="nav-filter d-flex">
       <FilterMenu />
       <SortMenu />

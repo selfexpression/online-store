@@ -1,0 +1,51 @@
+.product-card-wrapper {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: repeat(12, calc(100vh / 12));
+  font-family: DidactGothic-Regular, "Times New Roman", serif;
+
+  .product-card-image {
+    grid-column: 1 / 6;
+    grid-row: 2 / 7;
+    max-width: 100%;
+    height: auto;
+    object-position: center;
+    object-fit: cover;
+  }
+
+  .product-card-main-info {
+    grid-column: 7 / -1;
+    grid-row: 1 / 4;
+
+    .product-price {
+      font-weight: bold;
+      font-size: 1.3em;
+    }
+
+    .product-stock {
+      font-weight: bold;
+      font-size: 2em;
+      color: rgb(34, 225, 13);
+    }
+
+    .product-out-stock {
+      font-weight: bold;
+      font-size: 2em;
+      color: rgb(225, 41, 13);
+    }
+  }
+
+  .product-info {
+    grid-column: 7 / -1;
+    grid-row: 5 / -1;
+
+    .category-type {
+      font-weight: bold;
+      font-size: 2em;
+    }
+
+    .category-value {
+      font-size: 1.5em;
+    }
+  }
+}

@@ -1,5 +1,6 @@
 @import "./components/store.scss";
-@import "./components/nav.scss";
+@import "./components/navbar.scss";
+@import "./components/productCard.scss";
 
 @font-face {
   font-family: 'Quicksand-Bold';
@@ -9,6 +10,11 @@
 @font-face {
   font-family: 'Quicksand-Regular';
   src: url('../assets/fonts/Quicksand-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'DidactGothic-Regular';
+  src: url('../assets/fonts/DidactGothic-Regular.ttf');
 }
 
 @keyframes scale {
@@ -29,7 +35,6 @@
 body {
   margin: 0;
   background-color: $white;
-  font-family: Quicksand-Regular, "Times New Roman", serif;
 }
 
 * {

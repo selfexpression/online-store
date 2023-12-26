@@ -132,6 +132,11 @@ $flex-align-self-values: map.merge($auto-value, $flex-align-items-values);
   align-items: center;
 }
 
+@mixin font-style-size($style-value, $font-value) {
+  font-weight: $style-value;
+  font-size: $font-value;
+}
+
 .absolute {
   position: absolute !important;
 }

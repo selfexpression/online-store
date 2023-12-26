@@ -1,5 +1,5 @@
 @import "./components/store.scss";
-@import "./components/navbar.scss";
+@import "./components/toggleMenu.scss";
 @import "./components/productCard.scss";
 
 @font-face {
@@ -15,6 +15,11 @@
 @font-face {
   font-family: 'DidactGothic-Regular';
   src: url('../assets/fonts/DidactGothic-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'TenorSans-Regular';
+  src: url('../assets/fonts/TenorSans-Regular.ttf');
 }
 
 @keyframes scale {

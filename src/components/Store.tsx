@@ -11,6 +11,8 @@ import { getDatabase } from '../services/firebase.ts';
 import { Product, SortedMap } from '../types/interfaces.ts';
 import { sortedMap } from '../utils/helpers.ts';
 
+import { ToggleMenu } from './ToggleMenu.tsx';
+
 export const Store: React.FC = () => {
   const db = useDatabase();
   const { t } = useTranslation();
@@ -43,6 +45,7 @@ export const Store: React.FC = () => {
 
   return (
     <header>
+      <ToggleMenu />
       <main className="collection-products">
         <div className="collection-wrapper">
           {products.map(({

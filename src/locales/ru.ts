@@ -3,7 +3,7 @@ export const ru = {
     lang: {
       currentLang: 'ru',
     },
-    nav: {
+    toggleMenu: {
       filterMenuToggle: 'Переключить меню фильтра',
       sortMenuToggle: 'Переключить меню сортировки',
     },

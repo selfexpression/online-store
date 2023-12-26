@@ -85,7 +85,7 @@ const FilterMenu: React.FC = () => {
     <div className="filter-menu">
       <button
         type="button"
-        aria-label={t('nav.filterMenuToggle')}
+        aria-label={t('toggleMenu.filterMenuToggle')}
         aria-expanded={isOpenFilterMenu}
         onClick={handleOpenFilterMenu}
       >
@@ -113,7 +113,7 @@ const SortMenu: React.FC = () => {
     <div className="sort-menu">
       <button
         type="button"
-        aria-label={t('nav.sortMenuToggle')}
+        aria-label={t('toggleMenu.sortMenuToggle')}
         aria-expanded={isOpenSortMenu}
         onClick={handleOpenSortMenu}
         className="font-large"
@@ -125,11 +125,24 @@ const SortMenu: React.FC = () => {
   );
 };
 
-export const Navbar: React.FC = () => (
-  <nav className="collection-nav w-100">
-    <div className="nav-filter d-flex">
-      <FilterMenu />
-      <SortMenu />
+export const ToggleMenu: React.FC = () => {
+  const { t } = useTranslation();
+  const { currentCategoryID } = useSelector(getFilterState);
+  const currentFilterValue = currentCategoryID !== null
+    ? t(`filterList.categories.${currentCategoryID}`)
+    : '';
+
+  return (
+    <div className="toggle-menu-container">
+      <div className="current-filter p-4">
+        <span>{currentFilterValue}</span>
+      </div>
+      <div className="toggle-menu-wrapper w-100">
+        <div className="toggle-menu d-flex">
+          <FilterMenu />
+          <SortMenu />
+        </div>
+      </div>
     </div>
-  </nav>
-);
+  );
+};

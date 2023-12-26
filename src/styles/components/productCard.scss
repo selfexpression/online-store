@@ -5,7 +5,7 @@
   font-family: DidactGothic-Regular, "Times New Roman", serif;
 
   .product-card-image {
-    grid-column: 1 / 6;
+    grid-column: 2 / 6;
     grid-row: 2 / 7;
     max-width: 100%;
     height: auto;
@@ -17,9 +17,17 @@
     grid-column: 7 / -1;
     grid-row: 1 / 4;
 
+    text-transform: uppercase;
+    border-bottom: 1px solid $white-grey;
+
+    .product-brand,
+    .product-name {
+      font-size: 2.5em;
+    }
+
     .product-price {
       font-weight: bold;
-      font-size: 1.3em;
+      font-size: 1.7em;
     }
 
     .product-stock {
@@ -37,15 +45,21 @@
 
   .product-info {
     grid-column: 7 / -1;
-    grid-row: 5 / -1;
+    grid-row: 6 / -1;
+
+    div {
+      border-top: 1px solid $white-grey;
+      border-bottom: 1px solid $white-grey;
+    }
 
     .category-type {
       font-weight: bold;
-      font-size: 2em;
+      font-size: 1.5em;
+      cursor: pointer;
     }
 
     .category-value {
-      font-size: 1.5em;
+      font-size: 1.4em;
     }
   }
 }

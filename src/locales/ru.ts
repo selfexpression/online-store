@@ -394,6 +394,20 @@ export const ru = {
         composition: 'Kaolin, Aqua, Polysorbate-20, Parfum, Phenoxyethanol, Plukenetia Volubilis Seed Oil, Methylparaben, Ethylparaben, Tocopherol, Hexyl Cinnamal',
         volume: '300 мл',
       },
+      52: {
+        country: 'Турция',
+        type: 'Глиняная маска для лица',
+        description: 'Глиняная маска для лица Nishman FACE CLAY MASK глубоко очищает поры и улучшает текстуру кожи. Эффективно удаляет излишки кожного жира, обеспечивает антибактериальное и успокаивающее действие. Подходит для всех типов кожи, особенно рекомендуется для жирной и проблемной кожи. После применения кожа становится гладкой, свежей и обретает естественный блеск.',
+        composition: 'Aqua, Kaolin, Glycerin, Bentonite, Charcoal Powder, Zinc Oxide, Aloe Barbadensis Leaf Extract, Chamomilla Recutita Flower Extract, Tocopherol, Allantoin, Menthol, Eucalyptus Globulus Leaf Oil',
+        volume: '150 мл',
+      },
+      53: {
+        country: 'Турция',
+        type: 'Скраб для лица и тела с абрикосом',
+        description: 'Скраб для лица и тела Nishman FACE & SKIN SCRUB APRICOT эффективно очищает и обновляет кожу, удаляет омертвевшие клетки и способствует регенерации. Абрикосовые косточки в составе нежно отшелушивают, не повреждая кожу. После использования кожа становится гладкой, мягкой и получает здоровый вид. Подходит для всех типов кожи.',
+        composition: 'Aqua, Prunus Armeniaca Seed Powder, Glycerin, Caprylic/Capric Triglyceride, Cetearyl Alcohol, Stearic Acid, Ceteareth-20, Allantoin, Tocopheryl Acetate, Citrus Limon Peel Oil, Phenoxyethanol, Ethylhexylglycerin, Parfum',
+        volume: '200 мл',
+      },
     },
   },
 };

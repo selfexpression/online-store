@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import { useDatabase } from '../hooks/index.ts';
 import { actions } from '../slices/index.ts';
 import { getDatabaseState, getFilterState, getSortState } from '../utils/selectors.ts';
-import { getDatabase } from '../services/services.ts';
+import { getDatabase } from '../services/firebase.ts';
 import { Product, SortedMap } from '../types/interfaces.ts';
 import { sortedMap } from '../utils/helpers.ts';
 

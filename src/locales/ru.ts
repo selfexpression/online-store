@@ -168,7 +168,7 @@ export const ru = {
         volume: '250 мл',
       },
       19: {
-        country: 'Не указано',
+        country: 'США',
         type: 'Матовая укладочная паста',
         description: 'LS&B Ruck Matte Putty представляет собой современную и универсальную укладочную пасту с матовым эффектом, обеспечивающую сильный контроль стайлинга и гибкость. Отлично подходит для создания небрежных, текстурированных причесок с объемом и матовым финишем. Продукт обладает средней фиксацией и легко смывается водой.',
         composition: 'Water (Aqua) (Eau), Lanolin, Cera alba, PVP/VA Copolymer, Ozokerite, Ceteareth 20, Cetyl alcohol, Cetearyl alcohol (and) Behentrimonium methosulphate, Kaolin, Propylene glycol, Isopropyl myristate, Parfum, Citral, Citronellol, Hexyl cinnamal, Limonene, Linalool, Hydroxyisohexyl 3-Cyclohexene Carboxaldehyde, Hydroxycitronellal, Phenoxyethanol, Isopropyl paraben, Butyl paraben, Isobutyl paraben',
@@ -301,7 +301,7 @@ export const ru = {
         volume: '20 г',
       },
       38: {
-        country: 'Не указано',
+        country: 'США',
         type: 'Помада на восковой и масляной основе',
         description: 'Reuzel Pink Heavy Hold Grease Pomade - это восковая и масляная помада высочайшего качества, предназначенная для создания гладкой прически со средним блеском и безупречной сильной фиксацией на весь день. Идеально подходит для стилизации классических мужских стрижек, таких как помпадуры, куифы и контуры, а также для последних модных текстур. Подходит для нормальных и густых типов волос, предоставляя сильную фиксацию.',
         composition: 'Petrolatum, Cera Alba (Beeswax), Cera Microcristallina (Microcrystalline Wax), Hydrogenated Rosin, Bis Diglyceryl Polyacyladipate 2, Fragrance (Parfum), Silica, BHT, Benzyl Benzoate, Lilial, Hexyl Cinnamal, Linalool, Citronellol, Amyl Cinnamal, Eugenol',
@@ -357,7 +357,7 @@ export const ru = {
         volume: '70 мл',
       },
       46: {
-        country: 'Не указано',
+        country: 'Турция',
         type: 'Маска для волос',
         description: 'Nishman Hair Mask предоставляет глубокий уход и восстановление для ваших волос, а также смягчает их. Эта маска используется для поврежденных, сухих и переработанных волос, делая их освеженными и блестящими. Помогает поддерживать баланс влаги в волосах, придавая им шелковистый вид и мягкое ощущение. Помогает предотвратить расщепление кончиков волос и облегчает расчесывание.',
         composition: 'Aqua, Cetearyl Alcohol, Behentrimonium Chloride, Ceteareth-25, Butyrospermum Parkii Butter, Parfum, Polyquaternium-37, Propylene Glycol Dicaprylate/Dicaprate, Plukenetia Volubilis Seed Oil, Panthenol, Argania Spinosa kernel Oil, Tocopherop, Citric Acid, Trideceth-6, Magnesium Nitrate, Methylchloroisothiazolinone, Methylisothiazolinone, Magnesium Chloride',

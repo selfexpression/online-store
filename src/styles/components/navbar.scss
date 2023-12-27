@@ -1,0 +1,36 @@
+.navbar-container {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: 1fr;
+  align-items: center;
+  height: 4em;
+  background-color: $dark-grey;
+
+  .navbar-brand {
+    grid-column: 1 / 2;
+
+    .logo {
+      width: 8em;
+      height: auto;
+    }
+  }
+
+  .to-cart-button {
+    grid-column: -2;
+    justify-self: flex-end;
+
+    .cart-icon {
+      width: 2em;
+      height: auto;
+    }
+  }
+
+  .to-home-button {
+    grid-column: -1;
+
+    .home-icon {
+      width: 2em;
+      height: auto;
+    }
+  }
+}

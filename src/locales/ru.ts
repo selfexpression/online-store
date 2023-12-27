@@ -4,6 +4,7 @@ export const ru = {
       currentLang: 'ru',
     },
     toggleMenu: {
+      defaultFilter: 'Все товары',
       filterMenuToggle: 'Переключить меню фильтра',
       sortMenuToggle: 'Переключить меню сортировки',
     },

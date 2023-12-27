@@ -46,6 +46,10 @@ export interface ProductCardState {
   productsCount: number;
 }
 
+export interface NavbarState {
+  isOpenNavbar: boolean;
+}
+
 export interface MenuOpenHandlers {
   [key: string]: () => void;
 }

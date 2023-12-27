@@ -111,12 +111,14 @@
 
 .toggle-menu-container {
   .current-filter {
-    height: 5em;
     display: flex;
     align-items: center;
+    height: 6em;
+
+    text-transform: uppercase;
 
     span {
-      @include font-style-size(normal, 2em);
+      @include font-style-size(normal, 1.6em);
       color: $aqua;
       font-family: TenorSans-Regular, "Times New Roman", serif;
     }
@@ -146,6 +148,10 @@
     .current-filter {
       justify-content: center;
       margin: 0 !important;
+
+      span {
+        @include font-style-size(normal, 1.2em);
+      }
     }
   }
 

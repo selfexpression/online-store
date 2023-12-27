@@ -59,7 +59,7 @@ export const Store: React.FC = () => {
                   loading="lazy"
                   className={classNames('item-image', { 'out-of-stock': !inStock })}
                 />
-                <div className="uppercase text-center p-2">
+                <div className="uppercase text-center p-3">
                   <h3 className="p-0 mb-2">{`${brand} ${name}`}</h3>
                   <span className="bold m-0">
                     {price ? `${price}₽` : t('store.outOfStock')}

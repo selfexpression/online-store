@@ -130,7 +130,7 @@ export const ToggleMenu: React.FC = () => {
   const { currentCategoryID } = useSelector(getFilterState);
   const currentFilterValue = currentCategoryID !== null
     ? t(`filterList.categories.${currentCategoryID}`)
-    : '';
+    : t('toggleMenu.defaultFilter');
 
   return (
     <div className="toggle-menu-container">

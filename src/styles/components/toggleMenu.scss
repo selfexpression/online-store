@@ -138,7 +138,12 @@
         }
       }
   
-      @include toggle-menu(sort, 15em, height, 5em);
+      @include toggle-menu(sort, 11em, height, 5em) {
+        .sort-icon {
+          width: 2em;
+          height: auto;
+        }
+      }
     }
   }
 }
@@ -157,6 +162,10 @@
 
   .toggle-menu-wrapper {
     .toggle-menu {
+      .filter-menu {
+        flex-grow: 1;
+      }
+    
       .sort-menu {
         flex-grow: 1;
       }

@@ -6,7 +6,9 @@ import { useTranslation } from 'react-i18next';
 import { actions as filterActions } from '../slices/filterMenuSlice.ts';
 import { actions as sortActions } from '../slices/sortMenuSlice.ts';
 import { getFilterState, getSortState, getDatabaseState } from '../utils/selectors.ts';
-import type { SortValues, MenuOpenHandlers } from '../types/interfaces.ts';
+import type { MenuOpenHandlers } from '../types/interfaces.ts';
+
+import { SortIcon } from './Icons/SortIcon.tsx';
 
 const FilterList: React.FC<MenuOpenHandlers> = ({ handleOpenFilterMenu }) => {
   const dispatch = useDispatch();
@@ -102,8 +104,7 @@ const FilterMenu: React.FC = () => {
 const SortMenu: React.FC = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
-  const sortValues: SortValues = t('sortValues', { returnObjects: true });
-  const { isOpenSortMenu, currentValue } = useSelector(getSortState);
+  const { isOpenSortMenu } = useSelector(getSortState);
 
   const handleOpenSortMenu = (): void => {
     dispatch(sortActions.openSortMenu(!isOpenSortMenu));
@@ -118,7 +119,7 @@ const SortMenu: React.FC = () => {
         onClick={handleOpenSortMenu}
         className="font-large"
       >
-        {sortValues[currentValue as keyof SortValues]}
+        <SortIcon />
       </button>
       <SortList handleOpenSortMenu={handleOpenSortMenu} />
     </div>

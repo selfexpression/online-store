@@ -1,9 +1,12 @@
 .navbar-container {
+  position: fixed;
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   grid-template-rows: 1fr;
   align-items: center;
   height: 4em;
+
+  z-index: 1;
   background-color: $dark-grey;
 
   .navbar-brand {

@@ -110,6 +110,8 @@
 }
 
 .toggle-menu-container {
+  margin-top: 4em;
+
   .current-filter {
     display: flex;
     align-items: center;
@@ -132,7 +134,7 @@
     .toggle-menu {
       height: 100%;
   
-      @include toggle-menu(filter, 11em, width, 11em) {
+      @include toggle-menu(filter, 11em, width, 100%) {
         .toggle-line {
           @include toggle-line;
         }
@@ -140,7 +142,7 @@
   
       @include toggle-menu(sort, 11em, height, 5em) {
         .sort-icon {
-          width: 2em;
+          width: 1.6em;
           height: auto;
         }
       }

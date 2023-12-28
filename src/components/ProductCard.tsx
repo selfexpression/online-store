@@ -155,7 +155,7 @@ export const ProductCard: React.FC = () => {
     <div className="vh-100">
       <div className="product-card-wrapper">
         <img
-          src={`/product-images/${productId}.jpg`}
+          src={currentProductItem?.imageURL}
           alt={`collection item ${productId}`}
           className="product-card-image scale-up p-4"
         />

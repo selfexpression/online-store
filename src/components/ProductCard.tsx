@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom';
 import classNames from 'classnames';
 
 import { getProductCardState, getDatabaseState } from '../utils/selectors.ts';
-import { useDatabase } from '../hooks/index.ts';
+import { useDatabase, useStorage } from '../hooks/index.ts';
 import { actions } from '../slices/index.ts';
 import { loadData } from '../services/loaders.ts';
 
@@ -140,13 +140,14 @@ const ProductAddToCard: React.FC = () => {
 
 export const ProductCard: React.FC = () => {
   const db = useDatabase();
+  const storage = useStorage();
   const { productId } = useParams();
   const dispatch = useDispatch();
   const database = useSelector(getDatabaseState);
   const [currentProductItem] = database.products.filter(({ id }) => `${id}` === productId);
 
   useEffect(() => {
-    loadData(db, database);
+    loadData(db, database, storage);
     dispatch(actions.setCurrentProduct(currentProductItem));
   }, [currentProductItem]);
 

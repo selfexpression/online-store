@@ -2,12 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
+import { getStorage } from 'firebase/storage';
 import { Provider } from 'react-redux';
 import i18next from 'i18next';
 import { initReactI18next, I18nextProvider } from 'react-i18next';
 
 import { App } from './components/App.tsx';
-import { DataApiContext } from './contexts/index.ts';
+import { DataApiContext, StorageApiContext } from './contexts/index.ts';
 import { store } from './slices/index.ts';
 import { resources } from './locales/index.ts';
 
@@ -36,6 +37,7 @@ const runApp = async (): Promise<void> => {
 
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
+  const storage = getStorage(app);
 
   const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement,
@@ -45,9 +47,11 @@ const runApp = async (): Promise<void> => {
     <React.StrictMode>
       <Provider store={store}>
         <DataApiContext.Provider value={db}>
-          <I18nextProvider i18n={i18n}>
-            <App />
-          </I18nextProvider>
+          <StorageApiContext.Provider value={storage}>
+            <I18nextProvider i18n={i18n}>
+              <App />
+            </I18nextProvider>
+          </StorageApiContext.Provider>
         </DataApiContext.Provider>
       </Provider>
     </React.StrictMode>,

@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
-import { useDatabase } from '../hooks/index.ts';
+import { useDatabase, useStorage } from '../hooks/index.ts';
 import { getDatabaseState, getFilterState } from '../utils/selectors.ts';
 import { loadData } from '../services/loaders.ts';
 
@@ -12,13 +12,14 @@ import { ToggleMenu } from './ToggleMenu.tsx';
 
 export const Store: React.FC = () => {
   const db = useDatabase();
+  const storage = useStorage();
   const { t } = useTranslation();
   const database = useSelector(getDatabaseState);
   const { isFiltered } = useSelector(getFilterState);
   const products = !isFiltered ? database.products : database.filteredProducts;
 
   useEffect(() => {
-    loadData(db, database);
+    loadData(db, database, storage);
   }, []);
 
   return (
@@ -27,12 +28,12 @@ export const Store: React.FC = () => {
       <main className="collection-products">
         <div className="collection-wrapper">
           {products.map(({
-            name, id, price, brand, inStock,
+            name, id, price, brand, inStock, imageURL,
           }) => (
             <div key={id} className="collection-item scale-up">
               <Link className="no-decoration" to={`/product/${id}`}>
                 <img
-                  src={`/product-images/${id}.jpg`}
+                  src={imageURL}
                   alt={name}
                   loading="lazy"
                   className={classNames('item-image', { 'out-of-stock': !inStock })}

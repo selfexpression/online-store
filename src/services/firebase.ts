@@ -1,24 +1,37 @@
 import {
   query, collection, getDocs, Firestore,
 } from '@firebase/firestore';
+import {
+  ref, getDownloadURL, FirebaseStorage,
+} from 'firebase/storage';
 
 import { Product, Category, FirebaseData } from '../types/interfaces.ts';
 import { isValidProduct } from '../types/predicates.ts';
 
-const getProducts = async (db: Firestore): Promise<Product[]> => {
+const getProducts = async (db: Firestore, storage: FirebaseStorage): Promise<Product[]> => {
   const queryCollection = query(collection(db, 'products'));
   const querySnapshotByProducts = await getDocs(queryCollection);
 
-  const products: Product[] = querySnapshotByProducts.docs.map((doc) => {
-    const docData = doc.data() as Product;
+  const productPromises: Promise<Product>[] = querySnapshotByProducts.docs.map(async (doc) => {
+    const product = doc.data() as Product;
 
-    if (!isValidProduct(docData)) {
+    if (!isValidProduct(product)) {
       console.error('Invalid data received from the database');
     }
 
-    return docData;
+    const imageRef = ref(storage, `product-images/${product.id}.jpg`);
+
+    try {
+      const imageURL = await getDownloadURL(imageRef);
+      return { ...product, imageURL };
+    } catch (error) {
+      console.error(`Error fetching image for product ${product.id}:`, error);
+    }
+
+    return product;
   });
 
+  const products = Promise.all(productPromises);
   return products;
 };
 
@@ -27,17 +40,20 @@ const getCategories = async (db: Firestore): Promise<Category[]> => {
   const querySnapshotByCategories = await getDocs(queryCategories);
 
   const categories: Category[] = querySnapshotByCategories.docs.map((doc) => {
-    const docData = doc.data() as Category;
-    return docData;
+    const category = doc.data() as Category;
+    return category;
   });
 
   return categories;
 };
 
-export const getFirebaseData = async (db: Firestore): Promise<FirebaseData> => {
+export const getFirebaseData = async (
+  db: Firestore,
+  storage: FirebaseStorage,
+): Promise<FirebaseData> => {
   try {
     const categories = await getCategories(db);
-    const products = await getProducts(db);
+    const products = await getProducts(db, storage);
 
     const payload = {
       categories,

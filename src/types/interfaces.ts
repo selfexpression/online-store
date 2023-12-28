@@ -7,24 +7,13 @@ export interface Product {
   price: number | null;
   inStock: boolean;
   id: number;
+  imageURL: string;
 }
 
 export interface Category {
   name: string;
   id: number;
 }
-
-// export interface CategoryState {
-//   categories: Category[];
-// }
-
-// export interface ProductsState {
-//   products: Product[];
-// }
-
-// export interface FilteredProducts {
-//   filteredProducts: Product[];
-// }
 
 export interface FirebaseData {
   categories: Category[];

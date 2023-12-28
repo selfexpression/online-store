@@ -1,13 +1,10 @@
 import {
-  ProductsState,
   FilterState,
   SortState,
-  CategoryState,
   ProductCardState,
   NavbarState,
+  Database,
 } from './interfaces.ts';
-
-export type Database = ProductsState & CategoryState;
 
 export type DatabaseStore = {
   database: Database;

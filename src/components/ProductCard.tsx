@@ -4,10 +4,10 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import classNames from 'classnames';
 
-import { getProductCardState } from '../utils/selectors.ts';
-import { getDatabase } from '../services/firebase.ts';
+import { getProductCardState, getDatabaseState } from '../utils/selectors.ts';
 import { useDatabase } from '../hooks/index.ts';
 import { actions } from '../slices/index.ts';
+import { loadData } from '../services/loaders.ts';
 
 import { MinusIcon } from './Icons/MinusIcon.tsx';
 import { PlusIcon } from './Icons/PlusIcon.tsx';
@@ -140,19 +140,15 @@ const ProductAddToCard: React.FC = () => {
 
 export const ProductCard: React.FC = () => {
   const db = useDatabase();
-  const { t } = useTranslation();
-  const dispatch = useDispatch();
   const { productId } = useParams();
+  const dispatch = useDispatch();
+  const database = useSelector(getDatabaseState);
+  const [currentProductItem] = database.products.filter(({ id }) => `${id}` === productId);
 
   useEffect(() => {
-    const loadProduct = async () => {
-      const { products } = await getDatabase(db, t);
-      const [currentProductItem] = products.filter(({ id }) => `${id}` === productId);
-      dispatch(actions.setCurrentProduct(currentProductItem));
-    };
-
-    loadProduct();
-  }, [productId]);
+    loadData(db, database);
+    dispatch(actions.setCurrentProduct(currentProductItem));
+  }, [currentProductItem]);
 
   return (
     <div className="vh-100">

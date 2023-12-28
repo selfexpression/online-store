@@ -14,12 +14,25 @@ export interface Category {
   id: number;
 }
 
-export interface CategoryState {
+// export interface CategoryState {
+//   categories: Category[];
+// }
+
+// export interface ProductsState {
+//   products: Product[];
+// }
+
+// export interface FilteredProducts {
+//   filteredProducts: Product[];
+// }
+
+export interface FirebaseData {
   categories: Category[];
+  products: Product[];
 }
 
-export interface ProductsState {
-  products: Product[];
+export interface Database extends FirebaseData {
+  filteredProducts: Product[];
 }
 
 export interface FilterState {

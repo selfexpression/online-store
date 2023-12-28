@@ -1,34 +1,32 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-// import { useDispatch, useSelector } from 'react-redux';
-// import classNames from 'classnames';
-
-// import { getNavbarState } from '../utils/selectors.ts';
-// import { actions } from '../slices/index.ts';
 
 import { Logo } from './Icons/Logo.tsx';
 import { HomeIcon } from './Icons/HomeIcon.tsx';
 import { CartIcon } from './Icons/CartIcon.tsx';
 
-export const Navbar: React.FC = () => {
-  useEffect(() => {
+const navItems = [
+  {
+    path: '/', className: 'navbar-brand', Icon: Logo, id: 1,
+  },
+  {
+    path: '/cart', className: 'to-cart-button', Icon: CartIcon, id: 2,
+  },
+  {
+    path: '/', className: 'to-home-button', Icon: HomeIcon, id: 3,
+  },
+];
 
-  }, []);
-
-  return (
-    <nav className="navbar-container">
-      <div className="navbar-brand">
-        <Logo />
-      </div>
-      <div className="cart-link" />
-      <div className="to-cart-button">
-        <CartIcon />
-      </div>
-      <div className="to-home-button">
-        <Link className="no-decoration" to='/'>
-          <HomeIcon />
+export const Navbar: React.FC = () => (
+  <nav className="navbar-container">
+    {navItems.map(({
+      path, className, Icon, id,
+    }) => (
+      <div key={id} className={className}>
+        <Link className="no-decoration" to={path}>
+          <Icon />
         </Link>
       </div>
-    </nav>
-  );
-};
+    ))}
+  </nav>
+);

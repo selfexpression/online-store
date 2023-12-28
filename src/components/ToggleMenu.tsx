@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 
-import { actions as filterActions } from '../slices/filterSlice.ts';
-import { actions as sortActions } from '../slices/sortSlice.ts';
+import { actions as filterActions } from '../slices/filterMenuSlice.ts';
+import { actions as sortActions } from '../slices/sortMenuSlice.ts';
 import { getFilterState, getSortState, getDatabaseState } from '../utils/selectors.ts';
 import type { SortValues, MenuOpenHandlers } from '../types/interfaces.ts';
 

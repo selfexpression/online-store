@@ -1,47 +1,25 @@
 import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
 import { useDatabase } from '../hooks/index.ts';
-import { actions } from '../slices/index.ts';
-import { getDatabaseState, getFilterState, getSortState } from '../utils/selectors.ts';
-import { getDatabase } from '../services/firebase.ts';
-import { Product, SortedMap } from '../types/interfaces.ts';
-import { sortedMap } from '../utils/helpers.ts';
+import { getDatabaseState, getFilterState } from '../utils/selectors.ts';
+import { loadData } from '../services/loaders.ts';
 
 import { ToggleMenu } from './ToggleMenu.tsx';
 
 export const Store: React.FC = () => {
   const db = useDatabase();
   const { t } = useTranslation();
-  const dispatch = useDispatch();
-  const { products } = useSelector(getDatabaseState);
-  const { isFiltered, currentCategoryID } = useSelector(getFilterState);
-  const { currentValue } = useSelector(getSortState);
+  const database = useSelector(getDatabaseState);
+  const { isFiltered } = useSelector(getFilterState);
+  const products = !isFiltered ? database.products : database.filteredProducts;
 
   useEffect(() => {
-    const loadData = async (): Promise<void> => {
-      const database = await getDatabase(db, t);
-      const filteredProducts = !isFiltered
-        ? database.products
-        : database.products
-          .filter(({ categoryID }) => categoryID === currentCategoryID);
-      const sortingFunction = sortedMap[currentValue as keyof SortedMap];
-      const result: Product[] = sortingFunction(filteredProducts)
-        .sort((a, b) => (b.inStock ? 1 : 0) - (a.inStock ? 1 : 0));
-
-      const payload = {
-        categories: database.categories,
-        products: result,
-      };
-
-      dispatch(actions.setDatabase(payload));
-    };
-
-    loadData();
-  }, [currentCategoryID, currentValue]);
+    loadData(db, database);
+  }, []);
 
   return (
     <header>

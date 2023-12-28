@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { Database, FirebaseData, SortedMap } from '../types/interfaces.ts';
+import type { Database, FirebaseData, SortedMap } from '../types/interfaces.ts';
 import { sortedMap, sortedByStock } from '../utils/helpers.ts';
 
 import { actions as filterActions } from './filterMenuSlice.ts';

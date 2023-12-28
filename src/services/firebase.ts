@@ -5,7 +5,7 @@ import {
   ref, getDownloadURL, FirebaseStorage,
 } from 'firebase/storage';
 
-import { Product, Category, FirebaseData } from '../types/interfaces.ts';
+import type { Product, Category, FirebaseData } from '../types/interfaces.ts';
 import { isValidProduct } from '../types/predicates.ts';
 
 const getProducts = async (db: Firestore, storage: FirebaseStorage): Promise<Product[]> => {

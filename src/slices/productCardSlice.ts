@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { ProductCardState, Product } from '../types/interfaces.ts';
+import type { ProductCardState, Product } from '../types/interfaces.ts';
 
 const defaultValue = 1;
 

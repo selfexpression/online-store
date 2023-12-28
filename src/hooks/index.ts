@@ -1,6 +1,6 @@
 import { useContext } from 'react';
-import { Firestore } from '@firebase/firestore';
-import { FirebaseStorage } from 'firebase/storage';
+import type { Firestore } from '@firebase/firestore';
+import type { FirebaseStorage } from 'firebase/storage';
 
 import { DataApiContext, StorageApiContext } from '../contexts/index.ts';
 

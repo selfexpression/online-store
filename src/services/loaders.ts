@@ -1,8 +1,8 @@
-import { Firestore } from '@firebase/firestore';
-import { FirebaseStorage } from 'firebase/storage';
+import type { Firestore } from '@firebase/firestore';
+import type { FirebaseStorage } from 'firebase/storage';
 
 import { store, actions } from '../slices/index.ts';
-import { Database } from '../types/interfaces.ts';
+import type { Database } from '../types/interfaces.ts';
 
 import { getFirebaseData } from './firebase.ts';
 

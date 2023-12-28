@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { SortState } from '../types/interfaces.ts';
+import type { SortState } from '../types/interfaces.ts';
 
 const defaultValue = 'toHighPrice';
 

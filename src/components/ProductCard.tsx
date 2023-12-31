@@ -5,9 +5,11 @@ import { useParams } from 'react-router-dom';
 import classNames from 'classnames';
 
 import { getProductCardState, getDatabaseState } from '../utils/selectors.ts';
-import { useDatabase, useStorage } from '../hooks/index.ts';
+import { useDatabase, useAuth } from '../hooks/index.ts';
 import { actions } from '../slices/index.ts';
-import { loadData } from '../services/loaders.ts';
+import { loadData } from '../utils/loaders.ts';
+import { addProductToCart } from '../thunks/cartThunks.ts';
+import type { AppDispatch } from '../types/aliases.ts';
 
 import { MinusIcon } from './Icons/MinusIcon.tsx';
 import { PlusIcon } from './Icons/PlusIcon.tsx';
@@ -33,7 +35,7 @@ const MainInfo: React.FC = () => {
         {currentProduct?.inStock ? t('store.inStock') : t('store.outOfStock')}
       </span>
       <span className="product-price mt-3 d-block">
-        {currentProduct?.inStock ? `${currentProduct?.price}₽` : ''}
+        {currentProduct?.inStock ? `${currentProduct.price}₽` : ''}
       </span>
     </div>
   );
@@ -117,12 +119,35 @@ const CounterAdjust: React.FC = () => {
 
 const ProductAddToCard: React.FC = () => {
   const [disabled, setDisabled] = useState(false);
-  const { currentProduct } = useSelector(getProductCardState);
+  const currentUserUID = useAuth();
+  const db = useDatabase();
+  const { productsCount, currentProduct } = useSelector(getProductCardState);
+  const dispatch = useDispatch<AppDispatch>();
   const { t } = useTranslation();
 
   useEffect(() => {
-    setDisabled(currentProduct?.inStock === true);
-  }, []);
+    setDisabled(!currentProduct?.inStock);
+  }, [currentProduct]);
+
+  const handleAddToCart = () => {
+    if (!currentProduct) {
+      return;
+    }
+
+    const cartItem = {
+      id: currentProduct.id,
+      quantity: productsCount,
+      price: currentProduct.price,
+    };
+
+    const payload = {
+      db,
+      userUID: currentUserUID,
+      cartItem,
+    };
+
+    dispatch(addProductToCart(payload));
+  };
 
   return (
     <div className="product-counter mb-5 mt-5">
@@ -131,6 +156,7 @@ const ProductAddToCard: React.FC = () => {
         aria-label="add to cart"
         className="mr-3 uppercase"
         disabled={disabled}
+        onClick={handleAddToCart}
       >
         {t('productCard.addToCart')}
       </button>
@@ -140,22 +166,21 @@ const ProductAddToCard: React.FC = () => {
 
 export const ProductCard: React.FC = () => {
   const db = useDatabase();
-  const storage = useStorage();
   const { productId } = useParams();
   const dispatch = useDispatch();
   const database = useSelector(getDatabaseState);
-  const [currentProductItem] = database.products.filter(({ id }) => `${id}` === productId);
+  const [currentProduct] = database.products.filter(({ id }) => `${id}` === productId);
 
   useEffect(() => {
-    loadData(db, database, storage);
-    dispatch(actions.setCurrentProduct(currentProductItem));
-  }, [currentProductItem]);
+    loadData(db, database);
+    dispatch(actions.setCurrentProduct(currentProduct));
+  }, [currentProduct]);
 
   return (
     <div className="vh-100">
       <div className="product-card-wrapper">
         <img
-          src={currentProductItem?.imageURL}
+          src={currentProduct?.imageURL}
           alt={`collection item ${productId}`}
           className="product-card-image scale-up p-4"
         />

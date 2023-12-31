@@ -33,6 +33,7 @@
   "include": [
     "src",
     ".eslintrc.js",
-    "services.ts"
+    "database.ts",
+    "loaders.ts",
   ]
 }

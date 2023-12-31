@@ -4,22 +4,21 @@ import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
-import { useDatabase, useStorage } from '../hooks/index.ts';
+import { useDatabase } from '../hooks/index.ts';
 import { getDatabaseState, getFilterState } from '../utils/selectors.ts';
-import { loadData } from '../services/loaders.ts';
+import { loadData } from '../utils/loaders.ts';
 
 import { ToggleMenu } from './ToggleMenu.tsx';
 
 export const Store: React.FC = () => {
   const db = useDatabase();
-  const storage = useStorage();
   const { t } = useTranslation();
   const database = useSelector(getDatabaseState);
   const { isFiltered } = useSelector(getFilterState);
   const products = !isFiltered ? database.products : database.filteredProducts;
 
   useEffect(() => {
-    loadData(db, database, storage);
+    loadData(db, database);
   }, []);
 
   return (

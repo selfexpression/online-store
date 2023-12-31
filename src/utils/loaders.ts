@@ -1,22 +1,17 @@
 import type { Firestore } from '@firebase/firestore';
-import type { FirebaseStorage } from 'firebase/storage';
 
 import { store, actions } from '../slices/index.ts';
 import type { Database } from '../types/interfaces.ts';
+import { getFirebaseData } from '../services/databaseService.ts';
 
-import { getFirebaseData } from './firebase.ts';
-
-export const loadData = async (
-  db: Firestore,
-  databaseState: Database,
-  storage: FirebaseStorage,
-): Promise<void> => {
+export const loadData = async (db: Firestore, databaseState: Database): Promise<void> => {
   const { categories, products } = databaseState;
+
   if (!!categories.length || !!products.length) {
     return;
   }
 
-  const database = await getFirebaseData(db, storage);
+  const database = await getFirebaseData(db);
 
   const payload = {
     categories: database.categories,

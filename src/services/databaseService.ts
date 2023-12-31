@@ -2,15 +2,16 @@ import {
   query, collection, getDocs, Firestore,
 } from '@firebase/firestore';
 import {
-  ref, getDownloadURL, FirebaseStorage,
+  ref, getDownloadURL, getStorage,
 } from 'firebase/storage';
 
 import type { Product, Category, FirebaseData } from '../types/interfaces.ts';
 import { isValidProduct } from '../types/predicates.ts';
 
-const getProducts = async (db: Firestore, storage: FirebaseStorage): Promise<Product[]> => {
+const getProducts = async (db: Firestore): Promise<Product[]> => {
   const queryCollection = query(collection(db, 'products'));
   const querySnapshotByProducts = await getDocs(queryCollection);
+  const storage = getStorage();
 
   const productPromises: Promise<Product>[] = querySnapshotByProducts.docs.map(async (doc) => {
     const product = doc.data() as Product;
@@ -25,7 +26,7 @@ const getProducts = async (db: Firestore, storage: FirebaseStorage): Promise<Pro
       const imageURL = await getDownloadURL(imageRef);
       return { ...product, imageURL };
     } catch (error) {
-      console.error(`Error fetching image for product ${product.id}:`, error);
+      console.error(`Error loading image for product ${product.id}:`, error);
     }
 
     return product;
@@ -47,13 +48,10 @@ const getCategories = async (db: Firestore): Promise<Category[]> => {
   return categories;
 };
 
-export const getFirebaseData = async (
-  db: Firestore,
-  storage: FirebaseStorage,
-): Promise<FirebaseData> => {
+export const getFirebaseData = async (db: Firestore): Promise<FirebaseData> => {
   try {
     const categories = await getCategories(db);
-    const products = await getProducts(db, storage);
+    const products = await getProducts(db);
 
     const payload = {
       categories,

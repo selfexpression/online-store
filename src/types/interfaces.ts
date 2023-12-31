@@ -1,4 +1,6 @@
 /* eslint-disable no-unused-vars */
+import type { ReactNode } from 'react';
+import type { Firestore } from '@firebase/firestore';
 
 export interface Product {
   name: string;
@@ -54,4 +56,25 @@ export interface NavbarState {
 
 export interface MenuOpenHandlers {
   [key: string]: () => void;
+}
+
+export interface AuthContextProviderProps {
+  children: ReactNode;
+}
+
+export interface CartItem {
+  id: number;
+  quantity: number;
+  price: number | null;
+}
+
+export interface CartState {
+  items: CartItem[];
+  totalAmount: number;
+}
+
+export interface CartAsyncThunkPayload {
+  db: Firestore;
+  userUID: string;
+  cartItem: CartItem;
 }

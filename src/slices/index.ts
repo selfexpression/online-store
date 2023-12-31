@@ -5,6 +5,7 @@ import { reducer as filterSlice, actions as filterActions } from './filterMenuSl
 import { reducer as sortSlice, actions as sortActions } from './sortMenuSlice.ts';
 import { reducer as productCardSlice, actions as productCardActions } from './productCardSlice.ts';
 import { reducer as navbarSlice, actions as navbarActions } from './navbarSlice.ts';
+import { reducer as cartSlice, actions as cartActions } from './cartSlice.ts';
 
 export const actions = {
   ...databaseActions,
@@ -12,6 +13,7 @@ export const actions = {
   ...sortActions,
   ...productCardActions,
   ...navbarActions,
+  ...cartActions,
 };
 
 export const store = configureStore({
@@ -21,5 +23,6 @@ export const store = configureStore({
     sort: sortSlice,
     productCard: productCardSlice,
     navbar: navbarSlice,
+    cart: cartSlice,
   },
 });

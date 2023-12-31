@@ -1,6 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import type { ProductCardState, Product } from '../types/interfaces.ts';
+import type { Product } from '../types/interfaces.ts';
+
+interface ProductCardState {
+  currentProduct: Product | null;
+  productsCount: number;
+}
 
 const defaultValue = 1;
 

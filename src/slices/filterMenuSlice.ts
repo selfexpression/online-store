@@ -1,6 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import type { FilterState } from '../types/interfaces.ts';
+interface FilterState {
+  isOpenFilterMenu: boolean;
+  currentCategoryID: number | null;
+  isFiltered: boolean;
+}
 
 const initialState: FilterState = {
   isOpenFilterMenu: false,

@@ -45,10 +45,10 @@ const AddInfo: React.FC = () => {
   const { t } = useTranslation();
   const { productId } = useParams();
   const categoriesInfo = t('categoriesInfo', { returnObjects: true });
-  const [activeCategory, setActiveCategory] = useState<string | null>(null);
+  const [activeCategory, setActiveCategory] = useState('');
 
   const handleActive = (category: string): void => {
-    setActiveCategory(category !== activeCategory ? category : null);
+    setActiveCategory(category !== activeCategory ? category : '');
   };
 
   return (

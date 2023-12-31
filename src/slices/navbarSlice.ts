@@ -1,6 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import type { NavbarState } from '../types/interfaces.ts';
+interface NavbarState {
+  isOpenNavbar: boolean;
+}
 
 const initialState: NavbarState = {
   isOpenNavbar: false,

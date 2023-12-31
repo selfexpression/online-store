@@ -1,12 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import type { Database, FirebaseData, SortedMap } from '../types/interfaces.ts';
-import { sortedMap, sortedByStock } from '../utils/helpers.ts';
+import type { DatabaseState, ProductCategoryData } from '../types/interfaces.ts';
+import { sortedMap, sortedByStock, SortedMap } from '../utils/helpers.ts';
 
 import { actions as filterActions } from './filterMenuSlice.ts';
 import { actions as sortActions } from './sortMenuSlice.ts';
 
-const initialState: Database = {
+const initialState: DatabaseState = {
   categories: [],
   products: [],
   filteredProducts: [],
@@ -16,7 +16,7 @@ const slice = createSlice({
   name: 'database',
   initialState,
   reducers: {
-    setDatabase: (state, { payload }: { payload: FirebaseData }) => {
+    setDatabase: (state, { payload }: { payload: ProductCategoryData }) => {
       const { products, categories } = payload;
       state.categories = categories;
       state.products = sortedByStock(products);

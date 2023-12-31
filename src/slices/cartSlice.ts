@@ -1,7 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-// import { addProductToCart } from '../thunks/cartThunks.ts';
-import { CartState } from '../types/interfaces.ts';
+import type { CartItem } from '../types/interfaces';
+
+interface CartState {
+  items: CartItem[];
+  totalAmount: number;
+}
 
 const initialState: CartState = {
   items: [],
@@ -28,11 +32,6 @@ const slice = createSlice({
       state.items = [...state.items, ...payload];
     },
   },
-  // extraReducers: (builder) => {
-  //   builder
-  //     .addCase(addProductToCart.rejected, (state) => {
-  //     });
-  // },
 });
 
 export const { actions, reducer } = slice;

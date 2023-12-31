@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { getAuth, signInAnonymously } from 'firebase/auth';
-import { useDispatch } from 'react-redux';
+import type { ReactNode } from 'react';
 
 import { AuthContext } from '../contexts/index.ts';
-import type { AuthContextProviderProps } from '../types/interfaces.ts';
-import { syncCartWithDatabase } from '../thunks/cartThunks.ts';
-import { useAuth, useDatabase } from '../hooks/index.ts';
-import type { AppDispatch } from '../types/aliases.ts';
 
 import { Store } from './Store.tsx';
 import { ProductCard } from './ProductCard.tsx';
 import { Navbar } from './Navbar.tsx';
 import { Cart } from './Cart.tsx';
+import { CartLoader } from './CartLoader.tsx';
+
+interface AuthContextProviderProps {
+  children: ReactNode;
+}
 
 const AuthContextProvider: React.FC<AuthContextProviderProps> = ({ children }) => {
   const [currentUserUID, setCurrentUserUID] = useState('');
@@ -33,18 +34,6 @@ const AuthContextProvider: React.FC<AuthContextProviderProps> = ({ children }) =
       {children}
     </AuthContext.Provider>
   );
-};
-
-const CartLoader: React.FC = () => {
-  const dispatch = useDispatch<AppDispatch>();
-  const userUID = useAuth();
-  const db = useDatabase();
-
-  useEffect(() => {
-    dispatch(syncCartWithDatabase({ userUID, db }));
-  }, [userUID]);
-
-  return null;
 };
 
 export const App: React.FC = () => (

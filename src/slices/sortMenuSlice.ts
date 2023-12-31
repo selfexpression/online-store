@@ -1,12 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import type { SortState } from '../types/interfaces.ts';
-
-const defaultValue = 'toHighPrice';
+interface SortState {
+  isOpenSortMenu: boolean;
+  currentValue: string;
+}
 
 const initialState: SortState = {
   isOpenSortMenu: false,
-  currentValue: defaultValue,
+  currentValue: '',
 };
 
 const slice = createSlice({

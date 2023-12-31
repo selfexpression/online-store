@@ -3,8 +3,14 @@ import { Firestore } from '@firebase/firestore';
 
 import { addToDatabaseCart, getCurrentUserCart } from '../services/cartService.ts';
 import { actions } from '../slices/cartSlice.ts';
-import type { CartAsyncThunkPayload, CartItem } from '../types/interfaces.ts';
+import type { CartItem } from '../types/interfaces.ts';
 import type { RootState } from '../types/aliases.ts';
+
+interface CartAsyncThunkPayload {
+  db: Firestore;
+  userUID: string;
+  cartItem: CartItem;
+}
 
 export const addProductToCart = createAsyncThunk(
   'cart/addToCart',

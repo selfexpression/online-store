@@ -44,7 +44,7 @@ const MainInfo: React.FC = () => {
 const AddInfo: React.FC = () => {
   const { t } = useTranslation();
   const { productId } = useParams();
-  const categoriesInfo = t('categoriesInfo', { returnObjects: true });
+  const categoriesInfo = t('productCard.categoriesInfo', { returnObjects: true });
   const [activeCategory, setActiveCategory] = useState('');
 
   const handleActive = (category: string): void => {
@@ -62,7 +62,7 @@ const AddInfo: React.FC = () => {
             className="category-type"
             onClick={() => handleActive(category)}
           >{
-              `${t(`categoriesInfo.${category}`)}: `}
+              `${t(`productCard.categoriesInfo.${category}`)}: `}
           </span>
           <span className={classNames('category-value', {
             'd-block': activeCategory === category,
@@ -136,8 +136,11 @@ const ProductAddToCard: React.FC = () => {
 
     const cartItem = {
       id: currentProduct.id,
+      brand: currentProduct.brand,
+      name: currentProduct.name,
       quantity: productsCount,
       price: currentProduct.price,
+      imageURL: currentProduct.imageURL,
     };
 
     const payload = {
@@ -147,6 +150,7 @@ const ProductAddToCard: React.FC = () => {
     };
 
     dispatch(addProductToCart(payload));
+    dispatch(actions.resetCount());
   };
 
   return (

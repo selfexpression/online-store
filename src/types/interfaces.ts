@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 export interface Product {
   name: string;
-  brand: string | null;
+  brand: string;
   categoryID: number;
   price: number | null;
   inStock: boolean;
@@ -29,6 +29,9 @@ export interface MenuOpenHandlers {
 
 export interface CartItem {
   id: number;
+  brand: string;
+  name: string;
   quantity: number;
   price: number | null;
+  imageURL: string;
 }

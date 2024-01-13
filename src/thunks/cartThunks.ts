@@ -38,6 +38,11 @@ export const syncCartWithDatabase = createAsyncThunk(
 
     try {
       const cartItems: CartItem[] = await getCurrentUserCart(userUID, db);
+
+      if (!cartItems) {
+        return;
+      }
+
       dispatch(actions.setCartItems(cartItems));
     } catch (error) {
       console.error('Error loading the cart in Firestore:', error);

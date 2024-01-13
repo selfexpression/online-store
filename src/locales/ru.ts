@@ -7,38 +7,51 @@ export const ru = {
       defaultFilter: 'Все товары',
       filterMenuToggle: 'Переключить меню фильтра',
       sortMenuToggle: 'Переключить меню сортировки',
-    },
-    filterList: {
-      reset: 'Сбросить',
-      categories: {
-        1: 'Лосьоны и парфюм',
-        2: 'Укладочные средства',
-        3: 'Уход за бородой',
-        4: 'Уход за волосами',
-        5: 'Уход за лицом',
+      filterList: {
+        reset: 'Сбросить',
+        categories: {
+          1: 'Лосьоны и парфюм',
+          2: 'Укладочные средства',
+          3: 'Уход за бородой',
+          4: 'Уход за волосами',
+          5: 'Уход за лицом',
+        },
       },
-    },
-    sortValues: {
-      toLowPrice: 'По убыванию цены',
-      toHighPrice: 'По возрастанию цены',
+      sortValues: {
+        toLowPrice: 'По убыванию цены',
+        toHighPrice: 'По возрастанию цены',
+      },
     },
     store: {
       inStock: 'В наличии',
       outOfStock: 'Нет в наличии',
     },
-    errors: {
-      isValidProduct: 'Из базы данных получены неверные данные',
-      loadingData: 'Ошибка загрузки данных: ',
-    },
     productCard: {
       addToCart: 'Добавить в корзину',
+      categoriesInfo: {
+        country: 'Страна бренда',
+        type: 'Тип товара',
+        description: 'Описание товара',
+        composition: 'Состав',
+        volume: 'Объём',
+      },
     },
-    categoriesInfo: {
-      country: 'Страна бренда',
-      type: 'Тип товара',
-      description: 'Описание товара',
-      composition: 'Состав',
-      volume: 'Объём',
+    cart: {
+      cartOuter: {
+        title: 'Корзина покупок',
+        productCol: 'Товар',
+        priceCol: 'Цена',
+        quantityCol: 'Количество',
+      },
+      cartInfo: {
+        title: 'Общая сумма:',
+      },
+      formFields: {
+        name: 'Имя',
+        surname: 'Фамилия',
+        phoneNumber: 'Номер телефона',
+      },
+      submitButton: 'Оформить заказ',
     },
     products: {
       1: {

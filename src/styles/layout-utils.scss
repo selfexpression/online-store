@@ -153,6 +153,10 @@ $flex-align-self-values: map.merge($auto-value, $flex-align-items-values);
   text-align: start !important;
 }
 
+.text-end {
+  text-align: end !important;
+}
+
 .flex-column {
   flex-direction: column !important;
 }

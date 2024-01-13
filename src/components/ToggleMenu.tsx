@@ -31,7 +31,7 @@ const FilterList: React.FC<MenuOpenHandlers> = ({ handleOpenFilterMenu }) => {
         className="p-2"
         onClick={() => handleCurrentCategory(null, !isOpenFilterMenu)}
       >
-        {t('filterList.reset')}
+        {t('toggleMenu.filterList.reset')}
       </li>
       {categories.map(({ id }) => (
         <li
@@ -39,7 +39,7 @@ const FilterList: React.FC<MenuOpenHandlers> = ({ handleOpenFilterMenu }) => {
           className="p-2"
           onClick={() => handleCurrentCategory(id, isOpenFilterMenu)}
         >
-          {t(`filterList.categories.${id}`)}
+          {t(`toggleMenu.filterList.categories.${id}`)}
         </li>
       ))}
     </ul>
@@ -50,7 +50,7 @@ const SortList: React.FC<MenuOpenHandlers> = ({ handleOpenSortMenu }) => {
   const dispatch = useDispatch();
   const { isOpenSortMenu } = useSelector(getSortState);
   const { t } = useTranslation();
-  const sortValues = t('sortValues', { returnObjects: true });
+  const sortValues = t('toggleMenu.sortValues', { returnObjects: true });
 
   const handleCurrentValue = (value: string): void => {
     dispatch(sortActions.setCurrentValue(value));
@@ -130,7 +130,7 @@ export const ToggleMenu: React.FC = () => {
   const { t } = useTranslation();
   const { currentCategoryID } = useSelector(getFilterState);
   const currentFilterValue = currentCategoryID !== null
-    ? t(`filterList.categories.${currentCategoryID}`)
+    ? t(`toggleMenu.filterList.categories.${currentCategoryID}`)
     : t('toggleMenu.defaultFilter');
 
   return (

@@ -2,6 +2,7 @@
 @import "./components/toggleMenu.scss";
 @import "./components/productCard.scss";
 @import "./components/navbar.scss";
+@import "./components/cart.scss";
 
 @font-face {
   font-family: 'Quicksand-Bold';
@@ -35,9 +36,6 @@
   }
 }
 
-#root {
-  height: 100vh;
-}
 body {
   margin: 0;
   background-color: $white;

@@ -29,7 +29,7 @@ const QuantityAdjust: React.FC<{ currentId: number }> = ({ currentId }: { curren
   };
 
   return (
-    <div className="counter-items m-3">
+    <div className="counter-items m-2">
       <button
         type="button"
         aria-label="decrement"
@@ -73,7 +73,7 @@ const CartOuter: React.FC = () => {
               <td className="cart-product-img p-3">
                 <img src={imageURL} alt={name} className="mr-5"/>
               </td>
-              <td className="text-start">{`${brand} ${name}`}</td>
+              <td className="text-start aqua-color">{`${brand} ${name}`}</td>
               <td className="text-center mr-5">{price}</td>
               <td className="text-center">
                 <QuantityAdjust currentId={id} />

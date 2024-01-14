@@ -34,21 +34,25 @@ const slice = createSlice({
     updateQuantity: (state, { payload }) => {
       const { items } = state;
       const { id, type } = payload;
-      const currentItemInState = items.find((item) => item.id === id);
+      const currentItem = items.find((item) => item.id === id);
 
-      if (!currentItemInState) {
+      if (!currentItem) {
         return;
       }
 
       switch (type) {
         case 'increment':
-          currentItemInState.quantity += 1;
+          currentItem.quantity += 1;
           break;
-        case 'decrement':
-          if (currentItemInState.quantity > 1) {
-            currentItemInState.quantity -= 1;
+        case 'decrement': {
+          if (currentItem.quantity <= 1) {
+            const filteredItems = items.filter((item) => item.id !== id);
+            state.items = filteredItems;
           }
+
+          currentItem.quantity -= 1;
           break;
+        }
         default:
           break;
       }

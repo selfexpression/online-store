@@ -31,6 +31,28 @@ const slice = createSlice({
     setCartItems: (state, { payload }) => {
       state.items = [...state.items, ...payload];
     },
+    updateQuantity: (state, { payload }) => {
+      const { items } = state;
+      const { id, type } = payload;
+      const currentItemInState = items.find((item) => item.id === id);
+
+      if (!currentItemInState) {
+        return;
+      }
+
+      switch (type) {
+        case 'increment':
+          currentItemInState.quantity += 1;
+          break;
+        case 'decrement':
+          if (currentItemInState.quantity > 1) {
+            currentItemInState.quantity -= 1;
+          }
+          break;
+        default:
+          break;
+      }
+    },
   },
 });
 

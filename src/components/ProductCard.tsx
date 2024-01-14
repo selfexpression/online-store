@@ -45,11 +45,6 @@ const AddInfo: React.FC = () => {
   const { t } = useTranslation();
   const { productId } = useParams();
   const categoriesInfo = t('productCard.categoriesInfo', { returnObjects: true });
-  const [activeCategory, setActiveCategory] = useState('');
-
-  const handleActive = (category: string): void => {
-    setActiveCategory(category !== activeCategory ? category : '');
-  };
 
   return (
     <div className="add-info">
@@ -60,14 +55,10 @@ const AddInfo: React.FC = () => {
         >
           <span
             className="category-type"
-            onClick={() => handleActive(category)}
           >{
               `${t(`productCard.categoriesInfo.${category}`)}: `}
           </span>
-          <span className={classNames('category-value', {
-            'd-block': activeCategory === category,
-            'd-none': activeCategory !== category,
-          })}>
+          <span className="category-value">
             {t(`products.${productId}.${category}`)}
           </span>
         </div>
@@ -86,12 +77,8 @@ const CounterAdjust: React.FC = () => {
     dispatch(actions.resetCount());
   }, [currentProduct?.inStock]);
 
-  const handleDecrement = () => {
-    dispatch(actions.decrementCount());
-  };
-
-  const handleIncrement = () => {
-    dispatch(actions.incrementCount());
+  const handleCounterСontrol = (type: string) => {
+    dispatch(actions.updateCounter(type));
   };
 
   return (
@@ -99,7 +86,7 @@ const CounterAdjust: React.FC = () => {
       <button
         type="button"
         aria-label="decrement"
-        onClick={handleDecrement}
+        onClick={() => handleCounterСontrol('decrement')}
         disabled={disabled}
       >
         <MinusIcon />
@@ -108,7 +95,7 @@ const CounterAdjust: React.FC = () => {
       <button
         type="button"
         aria-label="increment"
-        onClick={handleIncrement}
+        onClick={() => handleCounterСontrol('increment')}
         disabled={disabled}
       >
         <PlusIcon />

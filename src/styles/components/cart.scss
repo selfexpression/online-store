@@ -10,6 +10,8 @@
     font-family: TenorSans-Regular, "Times New Roman", serif;
   
     .cart-outer {
+      margin-right: 4em;
+  
       table {
         border-collapse: collapse;
       }
@@ -28,7 +30,7 @@
     }
 
     .order-form {
-      align-self: flex-end;
+      align-self: flex-start;
     }
   }
 }
@@ -53,6 +55,20 @@
   }
 }
 
+.counter-items {
+  display: inline-flex;
+  height: 3em;
+  align-items: center;
+  border: $white-grey-border;
+
+  button[aria-label="decrement"],
+  button[aria-label="increment"] {
+    background-color: $white;
+    border: none;
+    cursor: pointer;
+  }
+}
+
 @media screen and (max-width: 860px) {
   .cart-container {
     justify-content: center;
@@ -60,10 +76,14 @@
     .cart-wrapper {
       flex-direction: column;
 
+      .cart-outer {
+        margin: 0;
+      }
+
       .order-form {
         display: flex;
         flex-direction: column;
-        align-self: center !important;
+        align-self: center;
       }
     }
   }

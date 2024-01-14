@@ -21,12 +21,18 @@ const slice = createSlice({
     setCurrentProduct: (state, { payload }: { payload: Product }) => {
       state.currentProduct = payload;
     },
-    incrementCount: (state) => {
-      state.productsCount += 1;
-    },
-    decrementCount: (state) => {
-      if (state.productsCount > 1) {
-        state.productsCount -= 1;
+    updateCounter: (state, { payload }) => {
+      switch (payload) {
+        case 'increment':
+          state.productsCount += 1;
+          break;
+        case 'decrement':
+          if (state.productsCount > 1) {
+            state.productsCount -= 1;
+          }
+          break;
+        default:
+          break;
       }
     },
     resetCount: (state) => {

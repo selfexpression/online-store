@@ -20,6 +20,15 @@ export const addToDatabaseCart = async (
   }, { merge: true });
 };
 
+export const updateDatabaseCart = async (
+  userUID: string,
+  updatedCartItems: CartItem[],
+  db: Firestore,
+) => {
+  const cartRef = doc(db, 'carts', userUID);
+  await updateDoc(cartRef, { items: updatedCartItems });
+};
+
 export const getCurrentUserCart = async (userUID: string, db: Firestore) => {
   const cartRef = doc(db, 'carts', userUID);
   const cartSnap = await getDoc(cartRef);

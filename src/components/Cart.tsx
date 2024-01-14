@@ -1,10 +1,47 @@
-import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useMemo } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
-import { getCartState, getDatabaseState } from '../utils/selectors.ts';
-import { loadData } from '../utils/loaders.ts';
-import { useDatabase } from '../hooks/index.ts';
+import { getCartState } from '../utils/selectors.ts';
+import { actions } from '../slices/index.ts';
+
+import { MinusIcon } from './Icons/MinusIcon.tsx';
+import { PlusIcon } from './Icons/PlusIcon.tsx';
+
+const QuantityAdjust: React.FC<{ currentId: number }> = ({ currentId }: { currentId: number }) => {
+  const dispatch = useDispatch();
+  const { items } = useSelector(getCartState);
+  const currentItem = items.find(({ id }) => id === currentId);
+
+  const handleUpdate = (type: string) => {
+    const payload = {
+      id: currentItem?.id,
+      type,
+    };
+
+    dispatch(actions.updateQuantity(payload));
+  };
+
+  return (
+    <div className="counter-items m-3">
+      <button
+        type="button"
+        aria-label="decrement"
+        onClick={() => handleUpdate('decrement')}
+      >
+        <MinusIcon />
+      </button>
+      <span className="p-4">{currentItem?.quantity}</span>
+      <button
+        type="button"
+        aria-label="increment"
+        onClick={() => handleUpdate('increment')}
+      >
+        <PlusIcon />
+      </button>
+    </div>
+  );
+};
 
 const CartOuter: React.FC = () => {
   const { t } = useTranslation();
@@ -23,8 +60,8 @@ const CartOuter: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          {items.map(({
-            brand, name, price, id, quantity, imageURL,
+          {useMemo(() => items.map(({
+            brand, name, price, id, imageURL,
           }) => (
             <tr key={id} className="cart-item">
               <td className="cart-product-img p-3">
@@ -32,9 +69,11 @@ const CartOuter: React.FC = () => {
               </td>
               <td className="text-start">{`${brand} ${name}`}</td>
               <td className="text-center mr-5">{price}</td>
-              <td className="text-center">{quantity}</td>
+              <td className="text-center">
+                <QuantityAdjust currentId={id} />
+              </td>
             </tr>
-          ))}
+          )), [items])}
         </tbody>
       </table>
     </div>
@@ -54,7 +93,7 @@ const OrderForm: React.FC = () => {
     <div className="order-form">
       <h2 className="p-3">{t('cart.cartInfo.title')}</h2>
       <form>
-        {Object.entries(formFields).map(([fieldName, fieldValue]) => (
+        {useMemo(() => Object.entries(formFields).map(([fieldName, fieldValue]) => (
           <div key={fieldName} className="m-3">
             <input
               type="text"
@@ -65,7 +104,7 @@ const OrderForm: React.FC = () => {
             />
             <label htmlFor={fieldName}></label>
           </div>
-        ))}
+        )), [formFields])}
         <button
           type="submit"
           aria-label="submit-btn"
@@ -78,20 +117,11 @@ const OrderForm: React.FC = () => {
   );
 };
 
-export const Cart: React.FC = () => {
-  const db = useDatabase();
-  const database = useSelector(getDatabaseState);
-
-  useEffect(() => {
-    loadData(db, database);
-  }, []);
-
-  return (
-    <div className="cart-container">
-      <div className="cart-wrapper">
-        <CartOuter />
-        <OrderForm />
-      </div>
+export const Cart: React.FC = () => (
+  <div className="cart-container">
+    <div className="cart-wrapper">
+      <CartOuter />
+      <OrderForm />
     </div>
-  );
-};
+  </div>
+);

@@ -38,7 +38,7 @@ export const ru = {
     },
     cart: {
       cartOuter: {
-        title: 'Корзина покупок',
+        title: 'Корзина',
         productCol: 'Товар',
         priceCol: 'Цена',
         quantityCol: 'Количество',

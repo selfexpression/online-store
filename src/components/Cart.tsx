@@ -3,23 +3,29 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
 import { getCartState } from '../utils/selectors.ts';
-import { actions } from '../slices/index.ts';
+import { useDatabase, useAuth } from '../hooks/index.ts';
+import { updateCart } from '../thunks/cartThunks.ts';
+import type { AppDispatch } from '../types/aliases.ts';
 
 import { MinusIcon } from './Icons/MinusIcon.tsx';
 import { PlusIcon } from './Icons/PlusIcon.tsx';
 
 const QuantityAdjust: React.FC<{ currentId: number }> = ({ currentId }: { currentId: number }) => {
-  const dispatch = useDispatch();
+  const currentUserUID = useAuth();
+  const db = useDatabase();
+  const dispatch = useDispatch<AppDispatch>();
   const { items } = useSelector(getCartState);
   const currentItem = items.find(({ id }) => id === currentId);
 
   const handleUpdate = (type: string) => {
     const payload = {
-      id: currentItem?.id,
+      userUID: currentUserUID,
+      db,
+      id: currentItem?.id as number,
       type,
     };
 
-    dispatch(actions.updateQuantity(payload));
+    dispatch(updateCart(payload));
   };
 
   return (

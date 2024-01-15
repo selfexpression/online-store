@@ -44,9 +44,10 @@ export const ru = {
         productCol: 'Товар',
         priceCol: 'Цена',
         quantityCol: 'Количество',
+        total: 'Общая сумма:',
       },
       orderForm: {
-        title: 'Общая сумма:',
+        title: 'Форма заказа',
       },
       formFields: {
         name: 'Имя',

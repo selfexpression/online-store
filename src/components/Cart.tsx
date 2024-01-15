@@ -54,6 +54,7 @@ const QuantityAdjust: React.FC<{ currentId: number }> = ({ currentId }: { curren
 const CartOuter: React.FC = () => {
   const { t } = useTranslation();
   const { items } = useSelector(getCartState);
+  const totalAmount = items.reduce((acc, item) => acc + (item.price as number) * item.quantity, 0);
 
   return (
     <div className="cart-outer">
@@ -72,7 +73,7 @@ const CartOuter: React.FC = () => {
             brand, name, price, id, imageURL,
           }) => (
             <tr key={id} className="cart-item">
-              <td className="cart-product-img p-3">
+              <td className="cart-product-img p-2">
                 <img src={imageURL} alt={name} className="mr-5"/>
                 <div className="small-table">
                   <div className="aqua-color p-2">
@@ -90,7 +91,10 @@ const CartOuter: React.FC = () => {
           )), [items])}
         </tbody>
       </table>
-      <Link className="d-block mt-5" to={'/'}>{t('cart.continueShopping')}</Link>
+      <div className="d-flex align-items-center justify-content-between">
+        <Link className="p-2 align-self-start" to={'/'}>{t('cart.continueShopping')}</Link>
+        <div className="p-2 align-self-end">{`${t('cart.cartOuter.total')} ${totalAmount}₽`}</div>
+      </div>
     </div>
   );
 };

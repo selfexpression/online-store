@@ -37,13 +37,15 @@ export const ru = {
       },
     },
     cart: {
+      emptyCart: 'В корзине пока пусто',
+      continueShopping: 'Продолжить покупки',
       cartOuter: {
         title: 'Корзина',
         productCol: 'Товар',
         priceCol: 'Цена',
         quantityCol: 'Количество',
       },
-      cartInfo: {
+      orderForm: {
         title: 'Общая сумма:',
       },
       formFields: {

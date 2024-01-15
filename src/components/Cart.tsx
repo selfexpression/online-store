@@ -90,6 +90,7 @@ const CartOuter: React.FC = () => {
           )), [items])}
         </tbody>
       </table>
+      <Link className="d-block mt-5" to={'/'}>{t('cart.continueShopping')}</Link>
     </div>
   );
 };
@@ -105,7 +106,7 @@ const OrderForm: React.FC = () => {
 
   return (
     <div className="order-form">
-      <h2 className="p-3">{t('cart.cartInfo.title')}</h2>
+      <h2 className="p-3">{t('cart.orderForm.title')}</h2>
       <form>
         {useMemo(() => Object.entries(formFields).map(([fieldName, fieldValue]) => (
           <div key={fieldName} className="m-3">
@@ -132,6 +133,7 @@ const OrderForm: React.FC = () => {
 };
 
 export const Cart: React.FC = () => {
+  const { t } = useTranslation();
   const { items } = useSelector(getCartState);
 
   return (
@@ -139,10 +141,8 @@ export const Cart: React.FC = () => {
       ? <div className="cart-container align-items-center vh-100">
         <div className="empty-cart-items">
           <img src={cartImage} alt="cart" className="empty-cart-image" />
-          <span>
-            {'В корзине пока пусто. '}
-            <Link to={'/'}>{'Продолжить покупки.'}</Link>
-          </span>
+          <span>{`${t('cart.emptyCart')} `}</span>
+          <Link to={'/'}>{t('cart.continueShopping')}</Link>
         </div>
       </div>
       : <div className="cart-container">

@@ -18,7 +18,7 @@ const navItems = [
 ];
 
 export const Navbar: React.FC = () => (
-  <nav className="navbar-container">
+  <nav className="navbar-container w-100">
     {navItems.map(({
       path, className, Icon, id,
     }) => (

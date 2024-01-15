@@ -1,11 +1,13 @@
 import React, { useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 
 import { getCartState } from '../utils/selectors.ts';
 import { useDatabase, useAuth } from '../hooks/index.ts';
 import { updateCart } from '../thunks/cartThunks.ts';
 import type { AppDispatch } from '../types/aliases.ts';
+import cartImage from '../assets/images/cart-image.png';
 
 import { MinusIcon } from './Icons/MinusIcon.tsx';
 import { PlusIcon } from './Icons/PlusIcon.tsx';
@@ -59,10 +61,10 @@ const CartOuter: React.FC = () => {
       <table className="mt-4">
         <thead>
           <tr>
-            <th className="p-3"/>
-            <th className="text-start p-3">{t('cart.cartOuter.productCol')}</th>
-            <th className="p-3 mr-5">{t('cart.cartOuter.priceCol')}</th>
-            <th className="p-3">{t('cart.cartOuter.quantityCol')}</th>
+            <th />
+            <th className="item-name text-start p-3">{t('cart.cartOuter.productCol')}</th>
+            <th className="item-price p-3 mr-5">{t('cart.cartOuter.priceCol')}</th>
+            <th className="item-quantity p-3">{t('cart.cartOuter.quantityCol')}</th>
           </tr>
         </thead>
         <tbody>
@@ -72,9 +74,15 @@ const CartOuter: React.FC = () => {
             <tr key={id} className="cart-item">
               <td className="cart-product-img p-3">
                 <img src={imageURL} alt={name} className="mr-5"/>
+                <div className="small-table">
+                  <div className="aqua-color p-2">
+                    <span>{`${brand} ${name}`}</span>
+                  </div>
+                  <div className="p-2 aqua-color">{`${price}₽`}</div>
+                </div>
               </td>
-              <td className="text-start aqua-color">{`${brand} ${name}`}</td>
-              <td className="text-center mr-5">{price}</td>
+              <td className="item-name text-start aqua-color">{`${brand} ${name}`}</td>
+              <td className="item-price text-center mr-5">{`${price}₽`}</td>
               <td className="text-center">
                 <QuantityAdjust currentId={id} />
               </td>
@@ -123,11 +131,25 @@ const OrderForm: React.FC = () => {
   );
 };
 
-export const Cart: React.FC = () => (
-  <div className="cart-container">
-    <div className="cart-wrapper">
-      <CartOuter />
-      <OrderForm />
-    </div>
-  </div>
-);
+export const Cart: React.FC = () => {
+  const { items } = useSelector(getCartState);
+
+  return (
+    !items.length
+      ? <div className="cart-container align-items-center vh-100">
+        <div className="empty-cart-items">
+          <img src={cartImage} alt="cart" className="empty-cart-image" />
+          <span>
+            {'В корзине пока пусто. '}
+            <Link to={'/'}>{'Продолжить покупки.'}</Link>
+          </span>
+        </div>
+      </div>
+      : <div className="cart-container">
+        <div className="cart-wrapper">
+          <CartOuter />
+          <OrderForm />
+        </div>
+      </div>
+  );
+};

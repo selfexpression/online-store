@@ -1,7 +1,8 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 import { getCartState } from '../utils/selectors.ts';
 import { useDatabase, useAuth } from '../hooks/index.ts';
@@ -101,6 +102,21 @@ const CartOuter: React.FC = () => {
 
 const OrderForm: React.FC = () => {
   const { t } = useTranslation();
+  const [message, setMessage] = useState('');
+
+  const sendMessage = async () => {
+    try {
+      await axios.post('http://localhost:4000/send-message', { message });
+    } catch (error) {
+      console.error('Form submit request error:', error);
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setMessage('cheking');
+    sendMessage();
+  };
 
   const formFields = {
     name: t('cart.formFields.name'),
@@ -111,7 +127,7 @@ const OrderForm: React.FC = () => {
   return (
     <div className="order-form">
       <h2 className="p-3">{t('cart.orderForm.title')}</h2>
-      <form>
+      <form onSubmit={handleSubmit}>
         {useMemo(() => Object.entries(formFields).map(([fieldName, fieldValue]) => (
           <div key={fieldName} className="m-3">
             <input

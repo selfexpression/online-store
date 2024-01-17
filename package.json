@@ -33,7 +33,6 @@
   "scripts": {
     "start": "react-scripts start",
     "start-all": "concurrently \"npm start\" \"npm start --prefix push-bot\"",
-    "build-all": "concurrently \"npm run build\" \"npm run build --prefix push-bot\"",
     "start-server": "cd push-bot && npm start",
     "build": "react-scripts build",
     "test": "react-scripts test",

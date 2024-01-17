@@ -1,14 +1,17 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { useFormik } from 'formik';
 
 import { getCartState } from '../utils/selectors.ts';
 import { useDatabase, useAuth } from '../hooks/index.ts';
 import { updateCart } from '../thunks/cartThunks.ts';
 import type { AppDispatch } from '../types/aliases.ts';
 import cartImage from '../assets/images/cart-image.png';
+import { formatMessage, createOrderMessage } from '../utils/helpers.ts';
+import { actions } from '../slices/index.ts';
 
 import { MinusIcon } from './Icons/MinusIcon.tsx';
 import { PlusIcon } from './Icons/PlusIcon.tsx';
@@ -54,8 +57,7 @@ const QuantityAdjust: React.FC<{ currentId: number }> = ({ currentId }: { curren
 
 const CartOuter: React.FC = () => {
   const { t } = useTranslation();
-  const { items } = useSelector(getCartState);
-  const totalAmount = items.reduce((acc, item) => acc + (item.price as number) * item.quantity, 0);
+  const { items, totalAmount } = useSelector(getCartState);
 
   return (
     <div className="cart-outer">
@@ -102,44 +104,49 @@ const CartOuter: React.FC = () => {
 
 const OrderForm: React.FC = () => {
   const { t } = useTranslation();
-  const [message, setMessage] = useState('');
+  const inputRef = useRef<HTMLInputElement>(null);
+  const { items, totalAmount } = useSelector(getCartState);
 
-  const sendMessage = async () => {
-    try {
-      await axios.post('http://localhost:4000/send-message', { message });
-    } catch (error) {
-      console.error('Form submit request error:', error);
-    }
-  };
+  const formik = useFormik({
+    initialValues: {
+      firstname: '',
+      phoneNumber: '',
+    },
+    onSubmit: async (values, { setSubmitting }) => {
+      const orderMessage = createOrderMessage(values, items, totalAmount, t);
+      await axios.post('http://localhost:4000/send-message', { message: formatMessage(orderMessage) })
+        .catch((error) => {
+          console.error('Form submit request error:', error);
+          throw error;
+        });
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setMessage('cheking');
-    sendMessage();
-  };
+      setSubmitting(false);
+    },
+  });
 
-  const formFields = {
-    name: t('cart.formFields.name'),
-    surname: t('cart.formFields.surname'),
-    phoneNumber: t('cart.formFields.phoneNumber'),
-  };
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
 
   return (
     <div className="order-form">
       <h2 className="p-3">{t('cart.orderForm.title')}</h2>
-      <form onSubmit={handleSubmit}>
-        {useMemo(() => Object.entries(formFields).map(([fieldName, fieldValue]) => (
+      <form onSubmit={formik.handleSubmit}>
+        {Object.entries(formik.values).map(([fieldName]) => (
           <div key={fieldName} className="m-3">
             <input
               type="text"
               id={fieldName}
               name={fieldName}
-              placeholder={fieldValue}
+              placeholder={t(`cart.formFields.${fieldName}`)}
+              required={true}
+              onChange={formik.handleChange}
               className="form-field p-2 rounded-2"
+              ref={fieldName === 'firstname' ? inputRef : null}
             />
             <label htmlFor={fieldName}></label>
           </div>
-        )), [formFields])}
+        ))}
         <button
           type="submit"
           aria-label="submit-btn"
@@ -154,7 +161,13 @@ const OrderForm: React.FC = () => {
 
 export const Cart: React.FC = () => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   const { items } = useSelector(getCartState);
+  const totalAmount = items.reduce((acc, item) => acc + (item.price as number) * item.quantity, 0);
+
+  useEffect(() => {
+    dispatch(actions.setTotalAmount(totalAmount));
+  });
 
   return (
     !items.length

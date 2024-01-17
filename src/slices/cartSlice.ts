@@ -4,10 +4,12 @@ import type { CartItem } from '../types/interfaces';
 
 interface CartState {
   items: CartItem[];
+  totalAmount: number;
 }
 
 const initialState: CartState = {
   items: [],
+  totalAmount: 0,
 };
 
 const slice = createSlice({
@@ -28,6 +30,9 @@ const slice = createSlice({
     },
     setCartItems: (state, { payload }) => {
       state.items = [...state.items, ...payload];
+    },
+    setTotalAmount: (state, { payload }) => {
+      state.totalAmount = payload;
     },
     updateQuantity: (state, { payload }) => {
       const { items } = state;

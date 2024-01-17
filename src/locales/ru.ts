@@ -50,8 +50,7 @@ export const ru = {
         title: 'Форма заказа',
       },
       formFields: {
-        name: 'Имя',
-        surname: 'Фамилия',
+        firstname: 'Имя',
         phoneNumber: 'Номер телефона',
       },
       submitButton: 'Оформить заказ',

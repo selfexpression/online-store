@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
-import TelegramBot from 'node-telegram-bot-api';
+import TelegramBot, { SendMessageOptions } from 'node-telegram-bot-api';
 
 import { ConfigBot } from './runApp';
 
@@ -26,8 +26,11 @@ export const runBot = async (config: ConfigBot): Promise<void> => {
 
   app.post('/send-message', async (req: Request, res: Response) => {
     try {
-      const { message } = req.body;
-      await bot.sendMessage(chatId, message);
+      const options: SendMessageOptions = {
+        parse_mode: 'Markdown',
+      };
+      const { message }: { message: string } = req.body;
+      await bot.sendMessage(chatId, message, options);
       res.json({ success: true });
     } catch (error) {
       if (error instanceof Error) {

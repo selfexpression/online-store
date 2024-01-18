@@ -1,9 +1,13 @@
-import React, { useMemo, useEffect, useRef } from 'react';
+import React, { useMemo, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useFormik } from 'formik';
+import * as Yup from 'yup';
+import classNames from 'classnames';
+import type { TFunction } from 'i18next';
+import { PatternFormat } from 'react-number-format';
 
 import { getCartState } from '../utils/selectors.ts';
 import { useDatabase, useAuth } from '../hooks/index.ts';
@@ -102,22 +106,40 @@ const CartOuter: React.FC = () => {
   );
 };
 
+const schema = (t: TFunction) => Yup.object().shape({
+  firstname: Yup
+    .string()
+    .required(t('cart.inputErrors.required'))
+    .min(3, t('cart.inputErrors.firstname.min'))
+    .max(20, t('cart.inputErrors.firstname.max')),
+  phoneNumber: Yup
+    .string()
+    .required(t('cart.inputErrors.required'))
+    .length(21, 'Не корректный номер'),
+});
+
+type FormField = 'firstname' | 'phoneNumber';
+
 const OrderForm: React.FC = () => {
   const { t } = useTranslation();
-  const inputRef = useRef<HTMLInputElement>(null);
+  // const inputRef = useRef<HTMLInputElement>(null);
   const { items, totalAmount } = useSelector(getCartState);
-  const apiURL = process.env.NODE_ENV === 'production'
-    ? process.env.REACT_APP_API_URL_PRODUCTION
-    : process.env.REACT_APP_API_URL_DEVELOPMENT;
+  // const apiURL = process.env.NODE_ENV === 'production'
+  //   ? process.env.REACT_APP_API_URL_PRODUCTION
+  //   : process.env.REACT_APP_API_URL_DEVELOPMENT;
 
   const formik = useFormik({
     initialValues: {
       firstname: '',
       phoneNumber: '',
     },
+    validationSchema: schema(t),
     onSubmit: async (values, { setSubmitting }) => {
       const orderMessage = createOrderMessage(values, items, totalAmount);
-      await axios.post(`${apiURL}/send-message`, { message: formatMessage(orderMessage) })
+      await axios.post(
+        `${process.env.REACT_APP_API_URL_DEVELOPMENT}/send-message`,
+        { message: formatMessage(orderMessage) },
+      )
         .catch((error) => {
           console.error('Form submit request error:', error);
           throw error;
@@ -127,9 +149,11 @@ const OrderForm: React.FC = () => {
     },
   });
 
-  useEffect(() => {
-    inputRef.current?.focus();
-  }, []);
+  console.log(formik.errors);
+
+  // useEffect(() => {
+  //   inputRef.current?.focus();
+  // }, []);
 
   return (
     <div className="order-form">
@@ -137,16 +161,37 @@ const OrderForm: React.FC = () => {
       <form onSubmit={formik.handleSubmit}>
         {Object.entries(formik.values).map(([fieldName]) => (
           <div key={fieldName} className="m-3">
-            <input
-              type="text"
-              id={fieldName}
-              name={fieldName}
-              placeholder={t(`cart.formFields.${fieldName}`)}
-              required={true}
-              onChange={formik.handleChange}
-              className="form-field p-2 rounded-2"
-              ref={fieldName === 'firstname' ? inputRef : null}
-            />
+            {fieldName === 'phoneNumber' ? (
+              <PatternFormat
+                format="+7 (###) - ### - ####"
+                mask=" "
+                allowEmptyFormatting
+                type="tel"
+                name={fieldName}
+                value={formik.values[fieldName]}
+                onChange={formik.handleChange}
+                className={classNames('form-field p-2 rounded-2', {
+                  'is-valid': !formik.errors[fieldName],
+                  'is-invalid': formik.errors[fieldName],
+                })}
+              />
+            ) : (
+              <input
+                type="text"
+                id={fieldName}
+                name={fieldName}
+                placeholder={t(`cart.formFields.${fieldName}`)}
+                onChange={formik.handleChange}
+                value={formik.values[fieldName as FormField]}
+                className={classNames('form-field p-2 rounded-2', {
+                  'is-valid': !formik.errors[fieldName as FormField],
+                  'is-invalid': formik.errors[fieldName as FormField],
+                })}
+              />
+            )}
+            {formik.errors[fieldName as FormField] && (
+              <div className="invalid-tooltip m-2">{formik.errors[fieldName as FormField]}</div>
+            )}
             <label htmlFor={fieldName}></label>
           </div>
         ))}
@@ -154,6 +199,7 @@ const OrderForm: React.FC = () => {
           type="submit"
           aria-label="submit-btn"
           className="submit-btn m-3"
+          disabled={formik.isSubmitting}
         >
           {t('cart.submitButton')}
         </button>

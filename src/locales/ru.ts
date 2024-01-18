@@ -54,6 +54,13 @@ export const ru = {
         phoneNumber: 'Номер телефона',
       },
       submitButton: 'Оформить заказ',
+      inputErrors: {
+        required: 'Заполните поле',
+        firstname: {
+          min: 'Минимум 3 символа',
+          max: 'Максимум 20 символов',
+        },
+      },
     },
     products: {
       1: {

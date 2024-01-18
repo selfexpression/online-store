@@ -30,7 +30,7 @@ export const createOrderMessage = (
   total: number,
 ): string => {
   const userInfo = `Имя: ${formValues.firstname}
-                    Номер телефона: ${formValues.phoneNumber}`;
+                    Номер телефона: ${formValues.phoneNumber}\n`;
 
   const order = cartItems.map((item, index) => (
     `${index + 1}: ${item.brand} ${item.name}
@@ -39,6 +39,6 @@ export const createOrderMessage = (
 
   return `${userInfo}
           Товары:
-          ${order}
+          ${order}\n
           Сумма заказа: ${total}`;
 };

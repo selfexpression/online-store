@@ -140,7 +140,7 @@
         }
       }
   
-      @include toggle-menu(sort, 11em, height, 5em) {
+      @include toggle-menu(sort, 11em, height, 10em) {
         .sort-icon {
           width: 1.6em;
           height: auto;

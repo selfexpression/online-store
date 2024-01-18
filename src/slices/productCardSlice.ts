@@ -5,6 +5,7 @@ import type { Product } from '../types/interfaces.ts';
 interface ProductCardState {
   currentProduct: Product | null;
   productsCount: number;
+  productIsAdded: boolean;
 }
 
 const defaultValue = 1;
@@ -12,6 +13,7 @@ const defaultValue = 1;
 const initialState: ProductCardState = {
   currentProduct: null,
   productsCount: defaultValue,
+  productIsAdded: false,
 };
 
 const slice = createSlice({
@@ -20,6 +22,9 @@ const slice = createSlice({
   reducers: {
     setCurrentProduct: (state, { payload }: { payload: Product }) => {
       state.currentProduct = payload;
+    },
+    setProductAdded: (state, { payload }) => {
+      state.productIsAdded = payload;
     },
     updateCounter: (state, { payload }) => {
       switch (payload) {

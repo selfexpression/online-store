@@ -10,6 +10,7 @@ const initialState: DatabaseState = {
   categories: [],
   products: [],
   filteredProducts: [],
+  initialProducts: [],
   isLoaded: false,
 };
 
@@ -24,6 +25,7 @@ const slice = createSlice({
       const { products, categories } = payload;
       state.categories = categories;
       state.products = sortedByStock(products);
+      state.initialProducts = sortedByStock(products);
     },
   },
   extraReducers: (builder) => {
@@ -35,6 +37,12 @@ const slice = createSlice({
         state.filteredProducts = sortedByStock(filtered);
       })
       .addCase(sortActions.setCurrentValue, (state, { payload: currentValue }) => {
+        const { initialProducts } = state;
+        if (currentValue === '') {
+          state.products = initialProducts;
+          return;
+        }
+
         const sortingFunction = sortedMap[currentValue as keyof SortedMap];
         const sortedProducts = sortedByStock(sortingFunction(state.products));
         const sortedFilteredProducts = sortedByStock(sortingFunction(state.filteredProducts));

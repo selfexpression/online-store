@@ -28,6 +28,7 @@ export const ru = {
     },
     productCard: {
       addToCart: 'Добавить в корзину',
+      addedToCart: 'Добавлено',
       categoriesInfo: {
         country: 'Страна бренда',
         type: 'Тип товара',

@@ -108,7 +108,7 @@ const ProductAddToCard: React.FC = () => {
   const [disabled, setDisabled] = useState(false);
   const userUID = useAuth();
   const db = useFirestore();
-  const { productsCount, currentProduct } = useSelector(getProductCardState);
+  const { productsCount, currentProduct, productIsAdded } = useSelector(getProductCardState);
   const dispatch = useDispatch<AppDispatch>();
   const { t } = useTranslation();
 
@@ -137,7 +137,9 @@ const ProductAddToCard: React.FC = () => {
     };
 
     dispatch(addProductToCart(payload));
+    dispatch(actions.setProductAdded(true));
     dispatch(actions.resetCount());
+    setTimeout(() => dispatch(actions.setProductAdded(false)), 3000);
   };
 
   return (
@@ -149,7 +151,7 @@ const ProductAddToCard: React.FC = () => {
         disabled={disabled}
         onClick={handleAddToCart}
       >
-        {t('productCard.addToCart')}
+        {productIsAdded ? t('productCard.addedToCart') : t('productCard.addToCart')}
       </button>
     </div>
   );
@@ -160,10 +162,15 @@ export const ProductCard: React.FC = () => {
   const { productId } = useParams();
   const dispatch = useDispatch<AppDispatch>();
   const databaseState = useSelector(getDatabaseState);
-  const [currentProduct] = databaseState.products.filter(({ id }) => `${id}` === productId);
+  const currentProduct = databaseState.products.find(({ id }) => `${id}` === productId);
 
   useEffect(() => {
     dispatch(loadData({ db }));
+
+    if (!currentProduct) {
+      return;
+    }
+
     dispatch(actions.setCurrentProduct(currentProduct));
   }, [currentProduct]);
 

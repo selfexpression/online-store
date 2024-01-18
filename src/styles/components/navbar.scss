@@ -13,18 +13,34 @@
     grid-column: 1 / 2;
 
     .logo {
-      width: 8em;
+      width: 6em;
       height: auto;
     }
   }
 
   .to-cart-button {
+    position: relative;
     grid-column: -2;
     justify-self: flex-end;
 
     .cart-icon {
       width: 2em;
       height: auto;
+      margin-right: 2em;
+    }
+
+    .items-in-cart {
+      position: absolute;
+      top: -0.5em;
+      right: 0.5em;
+      height: 1.3em;
+      width: 1.3em;
+      text-align: center;
+      color: black;
+      border: $white-grey-border;
+      background-color: $white-grey;
+      border-radius: 1em;
+      opacity: 0.8;
     }
   }
 

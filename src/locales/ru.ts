@@ -57,7 +57,6 @@ export const ru = {
       submitButton: 'Оформить заказ',
       inputErrors: {
         required: 'Заполните поле',
-        min: 'Минимум 3 символа',
         matches: 'Номер телефона должен содержать 10 цифр',
       },
     },

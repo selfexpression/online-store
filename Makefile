@@ -8,7 +8,7 @@ clean:
 	rm -rf build
 
 build: clean
-	npm run build-all
+	npm run build
 
 lint:
 	npx eslint .

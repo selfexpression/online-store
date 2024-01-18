@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom';
 import classNames from 'classnames';
 
 import { getProductCardState, getDatabaseState } from '../utils/selectors.ts';
-import { useDatabase, useAuth } from '../hooks/index.ts';
+import { useFirestore, useAuth } from '../hooks/index.ts';
 import { actions } from '../slices/index.ts';
 import { loadData } from '../thunks/databaseThunks.ts';
 import { addProductToCart } from '../thunks/cartThunks.ts';
@@ -107,7 +107,7 @@ const CounterAdjust: React.FC = () => {
 const ProductAddToCard: React.FC = () => {
   const [disabled, setDisabled] = useState(false);
   const userUID = useAuth();
-  const db = useDatabase();
+  const db = useFirestore();
   const { productsCount, currentProduct } = useSelector(getProductCardState);
   const dispatch = useDispatch<AppDispatch>();
   const { t } = useTranslation();
@@ -156,7 +156,7 @@ const ProductAddToCard: React.FC = () => {
 };
 
 export const ProductCard: React.FC = () => {
-  const db = useDatabase();
+  const db = useFirestore();
   const { productId } = useParams();
   const dispatch = useDispatch<AppDispatch>();
   const databaseState = useSelector(getDatabaseState);
@@ -169,16 +169,20 @@ export const ProductCard: React.FC = () => {
 
   return (
     <div className="vh-100">
-      <div className="product-card-wrapper">
-        <img
-          src={currentProduct?.imageURL}
-          alt={`collection item ${productId}`}
-          className="product-card-image scale-up p-4"
-        />
-        <MainInfo />
-        <ProductAddToCard />
-        <AddInfo />
-      </div>
+      {!currentProduct ? (
+        <div className="spinner-loader" />
+      ) : (
+        <div className="product-card-wrapper">
+          <img
+            src={currentProduct?.imageURL}
+            alt={`collection item ${productId}`}
+            className="product-card-image scale-up p-4"
+          />
+          <MainInfo />
+          <ProductAddToCard />
+          <AddInfo />
+        </div>
+      )}
     </div>
   );
 };

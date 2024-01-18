@@ -10,7 +10,7 @@ import type { TFunction } from 'i18next';
 import { PatternFormat } from 'react-number-format';
 
 import { getCartState } from '../utils/selectors.ts';
-import { useDatabase, useAuth } from '../hooks/index.ts';
+import { useFirestore, useAuth } from '../hooks/index.ts';
 import { updateCart, emptyTrash } from '../thunks/cartThunks.ts';
 import type { AppDispatch } from '../types/aliases.ts';
 import cartImage from '../assets/images/cart-image.png';
@@ -22,7 +22,7 @@ import { PlusIcon } from './Icons/PlusIcon.tsx';
 
 const QuantityAdjust: React.FC<{ currentId: number }> = ({ currentId }: { currentId: number }) => {
   const userUID = useAuth();
-  const db = useDatabase();
+  const db = useFirestore();
   const dispatch = useDispatch<AppDispatch>();
   const { items } = useSelector(getCartState);
   const currentItem = items.find(({ id }) => id === currentId);
@@ -84,12 +84,14 @@ const CartOuter: React.FC = () => {
                 <img src={imageURL} alt={name} className="mr-5"/>
                 <div className="small-table">
                   <div className="aqua-color p-2">
-                    <span>{`${brand} ${name}`}</span>
+                    <Link className="no-decoration" to={`/product/${id}`} >{`${brand} ${name}`}</Link>
                   </div>
                   <div className="p-2 aqua-color">{`${price}₽`}</div>
                 </div>
               </td>
-              <td className="item-name text-start aqua-color">{`${brand} ${name}`}</td>
+              <td className="item-name text-start aqua-color">
+                <Link className="no-decoration" to={`/product/${id}`} >{`${brand} ${name}`}</Link>
+              </td>
               <td className="item-price text-center mr-5">{`${price}₽`}</td>
               <td className="text-center">
                 <QuantityAdjust currentId={id} />
@@ -99,7 +101,7 @@ const CartOuter: React.FC = () => {
         </tbody>
       </table>
       <div className="d-flex align-items-center justify-content-between">
-        <Link className="p-2 align-self-start" to={'/'}>{t('cart.continueShopping')}</Link>
+        <Link className="p-2 align-self-start no-decoration" to={'/'}>{t('cart.continueShopping')}</Link>
         <div className="p-2 align-self-end">{`${t('cart.cartOuter.total')} ${totalAmount}₽`}</div>
       </div>
     </div>
@@ -109,8 +111,7 @@ const CartOuter: React.FC = () => {
 const schema = (t: TFunction) => Yup.object().shape({
   firstname: Yup
     .string()
-    .required(t('cart.inputErrors.required'))
-    .min(3, t('cart.inputErrors.min')),
+    .required(t('cart.inputErrors.required')),
   phoneNumber: Yup
     .string()
     .required(t('cart.inputErrors.required'))
@@ -121,7 +122,7 @@ type FormField = 'firstname' | 'phoneNumber';
 
 const OrderForm: React.FC = () => {
   const userUID = useAuth();
-  const db = useDatabase();
+  const db = useFirestore();
   const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
   // const inputRef = useRef<HTMLInputElement>(null);
@@ -214,25 +215,29 @@ const OrderForm: React.FC = () => {
 };
 
 const EmptyCart: React.FC = () => {
-  const { isOrderPlaced } = useSelector(getCartState);
+  const { isOrderPlaced, isLoaded } = useSelector(getCartState);
   const { t } = useTranslation();
 
   return (
-    <div className="cart-container vh-100">
-      <div className="empty-cart-items">
-        {isOrderPlaced ? (
-          <>
-            <span className="p-1">{`${t('cart.thanksForBuying')} `}</span>
-            <span className="p-1">{`${t('cart.shoppingCompleted')} `}</span></>
-        ) : (
-          <>
-            <img src={cartImage} alt="cart" className="empty-cart-image" />
-            <span>{`${t('cart.emptyCart')} `}</span>
-          </>
-        )}
-        <Link to={'/'}>{t('cart.continueShopping')}</Link>
+    isLoaded ? (
+      <div className="cart-container vh-100">
+        <div className="empty-cart-items">
+          {isOrderPlaced ? (
+            <>
+              <span className="p-1">{`${t('cart.thanksForBuying')} `}</span>
+              <span className="p-1">{`${t('cart.shoppingCompleted')} `}</span></>
+          ) : (
+            <>
+              <img src={cartImage} alt="cart" className="empty-cart-image" />
+              <span>{`${t('cart.emptyCart')} `}</span>
+            </>
+          )}
+          <Link to={'/'}>{t('cart.continueShopping')}</Link>
+        </div>
       </div>
-    </div>
+    ) : (
+      <div className="spinner-loader" />
+    )
   );
 };
 

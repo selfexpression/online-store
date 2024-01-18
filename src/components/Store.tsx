@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
-import { useDatabase } from '../hooks/index.ts';
+import { useFirestore } from '../hooks/index.ts';
 import { getDatabaseState, getFilterState } from '../utils/selectors.ts';
 import { loadData } from '../thunks/databaseThunks.ts';
 import type { AppDispatch } from '../types/aliases.ts';
@@ -12,10 +12,10 @@ import type { AppDispatch } from '../types/aliases.ts';
 import { ToggleMenu } from './ToggleMenu.tsx';
 
 export const Store: React.FC = () => {
-  const db = useDatabase();
+  const db = useFirestore();
   const dispatch = useDispatch<AppDispatch>();
   const { t } = useTranslation();
-  const { products, filteredProducts } = useSelector(getDatabaseState);
+  const { products, filteredProducts, isLoaded } = useSelector(getDatabaseState);
   const { isFiltered } = useSelector(getFilterState);
   const currentProducts = !isFiltered ? products : filteredProducts;
 
@@ -50,6 +50,7 @@ export const Store: React.FC = () => {
           ))}
         </div>
       </main>
+      {!isLoaded ? <div className="spinner-loader" /> : '' }
     </header>
   );
 };

@@ -6,12 +6,14 @@ interface CartState {
   items: CartItem[];
   totalAmount: number;
   isOrderPlaced: boolean;
+  isLoaded: boolean;
 }
 
 const initialState: CartState = {
   items: [],
   totalAmount: 0,
   isOrderPlaced: false,
+  isLoaded: false,
 };
 
 const slice = createSlice({
@@ -32,6 +34,7 @@ const slice = createSlice({
     },
     setCartItems: (state, { payload }) => {
       state.items = [...state.items, ...payload];
+      state.isLoaded = true;
     },
     setEmptyCart: (state) => {
       state.items = [];

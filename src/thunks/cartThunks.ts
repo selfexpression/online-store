@@ -69,3 +69,20 @@ export const updateCart = createAsyncThunk(
     }
   },
 );
+
+export const emptyTrash = createAsyncThunk(
+  'cart/emptyTrash',
+  async ({ userUID, db }: { userUID: string, db: Firestore }, { dispatch, getState }) => {
+    dispatch(actions.setEmptyCart());
+
+    const state = getState() as RootState;
+    const updatedCartItems = state.cart.items;
+
+    try {
+      await updateCartItems(userUID, updatedCartItems, db);
+    } catch (error) {
+      console.error('Error updating the cart in Firestore:', error);
+      throw error;
+    }
+  },
+);

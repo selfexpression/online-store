@@ -11,7 +11,7 @@ import { PatternFormat } from 'react-number-format';
 
 import { getCartState } from '../utils/selectors.ts';
 import { useDatabase, useAuth } from '../hooks/index.ts';
-import { updateCart } from '../thunks/cartThunks.ts';
+import { updateCart, emptyTrash } from '../thunks/cartThunks.ts';
 import type { AppDispatch } from '../types/aliases.ts';
 import cartImage from '../assets/images/cart-image.png';
 import { formatMessage, createOrderMessage } from '../utils/helpers.ts';
@@ -21,7 +21,7 @@ import { MinusIcon } from './Icons/MinusIcon.tsx';
 import { PlusIcon } from './Icons/PlusIcon.tsx';
 
 const QuantityAdjust: React.FC<{ currentId: number }> = ({ currentId }: { currentId: number }) => {
-  const currentUserUID = useAuth();
+  const userUID = useAuth();
   const db = useDatabase();
   const dispatch = useDispatch<AppDispatch>();
   const { items } = useSelector(getCartState);
@@ -29,7 +29,7 @@ const QuantityAdjust: React.FC<{ currentId: number }> = ({ currentId }: { curren
 
   const handleUpdate = (type: string) => {
     const payload = {
-      userUID: currentUserUID,
+      userUID,
       db,
       id: currentItem?.id as number,
       type,
@@ -110,24 +110,25 @@ const schema = (t: TFunction) => Yup.object().shape({
   firstname: Yup
     .string()
     .required(t('cart.inputErrors.required'))
-    .min(3, t('cart.inputErrors.firstname.min'))
-    .max(20, t('cart.inputErrors.firstname.max')),
+    .min(3, t('cart.inputErrors.min')),
   phoneNumber: Yup
     .string()
     .required(t('cart.inputErrors.required'))
-    .length(21, 'Не корректный номер'),
+    .matches(/(.*\d.*){11}/, t('cart.inputErrors.matches')),
 });
 
 type FormField = 'firstname' | 'phoneNumber';
 
 const OrderForm: React.FC = () => {
+  const userUID = useAuth();
+  const db = useDatabase();
   const { t } = useTranslation();
+  const dispatch = useDispatch<AppDispatch>();
   // const inputRef = useRef<HTMLInputElement>(null);
   const { items, totalAmount } = useSelector(getCartState);
   // const apiURL = process.env.NODE_ENV === 'production'
   //   ? process.env.REACT_APP_API_URL_PRODUCTION
   //   : process.env.REACT_APP_API_URL_DEVELOPMENT;
-
   const formik = useFormik({
     initialValues: {
       firstname: '',
@@ -136,20 +137,24 @@ const OrderForm: React.FC = () => {
     validationSchema: schema(t),
     onSubmit: async (values, { setSubmitting }) => {
       const orderMessage = createOrderMessage(values, items, totalAmount);
-      await axios.post(
-        `${process.env.REACT_APP_API_URL_DEVELOPMENT}/send-message`,
-        { message: formatMessage(orderMessage) },
-      )
-        .catch((error) => {
-          console.error('Form submit request error:', error);
-          throw error;
-        });
+
+      try {
+        await axios.post(
+          `${process.env.REACT_APP_API_URL_DEVELOPMENT}/send-message`,
+          { message: formatMessage(orderMessage) },
+        );
+
+        dispatch(actions.toggleOrderStatus(true));
+        dispatch(emptyTrash({ userUID, db }));
+        setTimeout(() => dispatch(actions.toggleOrderStatus(false)), 10000);
+      } catch (error) {
+        console.error('Form submit request error:', error);
+        throw error;
+      }
 
       setSubmitting(false);
     },
   });
-
-  console.log(formik.errors);
 
   // useEffect(() => {
   //   inputRef.current?.focus();
@@ -208,8 +213,30 @@ const OrderForm: React.FC = () => {
   );
 };
 
-export const Cart: React.FC = () => {
+const EmptyCart: React.FC = () => {
+  const { isOrderPlaced } = useSelector(getCartState);
   const { t } = useTranslation();
+
+  return (
+    <div className="cart-container vh-100">
+      <div className="empty-cart-items">
+        {isOrderPlaced ? (
+          <>
+            <span className="p-1">{`${t('cart.thanksForBuying')} `}</span>
+            <span className="p-1">{`${t('cart.shoppingCompleted')} `}</span></>
+        ) : (
+          <>
+            <img src={cartImage} alt="cart" className="empty-cart-image" />
+            <span>{`${t('cart.emptyCart')} `}</span>
+          </>
+        )}
+        <Link to={'/'}>{t('cart.continueShopping')}</Link>
+      </div>
+    </div>
+  );
+};
+
+export const Cart: React.FC = () => {
   const dispatch = useDispatch();
   const { items } = useSelector(getCartState);
   const totalAmount = items.reduce((acc, item) => acc + (item.price as number) * item.quantity, 0);
@@ -220,18 +247,15 @@ export const Cart: React.FC = () => {
 
   return (
     !items.length
-      ? <div className="cart-container align-items-center vh-100">
-        <div className="empty-cart-items">
-          <img src={cartImage} alt="cart" className="empty-cart-image" />
-          <span>{`${t('cart.emptyCart')} `}</span>
-          <Link to={'/'}>{t('cart.continueShopping')}</Link>
+      ? (
+        <EmptyCart />
+      ) : (
+        <div className="cart-container">
+          <div className="cart-wrapper">
+            <CartOuter />
+            <OrderForm />
+          </div>
         </div>
-      </div>
-      : <div className="cart-container">
-        <div className="cart-wrapper">
-          <CartOuter />
-          <OrderForm />
-        </div>
-      </div>
+      )
   );
 };

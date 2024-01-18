@@ -106,7 +106,7 @@ const CounterAdjust: React.FC = () => {
 
 const ProductAddToCard: React.FC = () => {
   const [disabled, setDisabled] = useState(false);
-  const currentUserUID = useAuth();
+  const userUID = useAuth();
   const db = useDatabase();
   const { productsCount, currentProduct } = useSelector(getProductCardState);
   const dispatch = useDispatch<AppDispatch>();
@@ -132,7 +132,7 @@ const ProductAddToCard: React.FC = () => {
 
     const payload = {
       db,
-      userUID: currentUserUID,
+      userUID,
       cartItem,
     };
 

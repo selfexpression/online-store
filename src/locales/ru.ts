@@ -50,16 +50,15 @@ export const ru = {
         title: 'Форма заказа',
       },
       formFields: {
-        firstname: 'Имя',
-        phoneNumber: 'Номер телефона',
+        firstname: 'Введите имя',
       },
+      thanksForBuying: 'Спасибо за покупку!',
+      shoppingCompleted: 'В ближайшее время с вами свяжутся для уточнения деталей заказа.',
       submitButton: 'Оформить заказ',
       inputErrors: {
         required: 'Заполните поле',
-        firstname: {
-          min: 'Минимум 3 символа',
-          max: 'Максимум 20 символов',
-        },
+        min: 'Минимум 3 символа',
+        matches: 'Номер телефона должен содержать 10 цифр',
       },
     },
     products: {

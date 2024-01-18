@@ -1,6 +1,7 @@
 .cart-container {
   display: flex;
   justify-content: center;
+  align-items: center;
 
   .cart-wrapper {
     display: flex;
@@ -70,6 +71,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  text-align: center;
 
   font-size: 1.3em;
   font-family: TenorSans-Regular, "Times New Roman", serif;

@@ -5,11 +5,13 @@ import type { CartItem } from '../types/interfaces';
 interface CartState {
   items: CartItem[];
   totalAmount: number;
+  isOrderPlaced: boolean;
 }
 
 const initialState: CartState = {
   items: [],
   totalAmount: 0,
+  isOrderPlaced: false,
 };
 
 const slice = createSlice({
@@ -31,8 +33,14 @@ const slice = createSlice({
     setCartItems: (state, { payload }) => {
       state.items = [...state.items, ...payload];
     },
+    setEmptyCart: (state) => {
+      state.items = [];
+    },
     setTotalAmount: (state, { payload }) => {
       state.totalAmount = payload;
+    },
+    toggleOrderStatus: (state, { payload }) => {
+      state.isOrderPlaced = payload;
     },
     updateQuantity: (state, { payload }) => {
       const { items } = state;

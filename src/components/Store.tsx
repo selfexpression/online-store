@@ -1,24 +1,26 @@
 import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
 import { useDatabase } from '../hooks/index.ts';
 import { getDatabaseState, getFilterState } from '../utils/selectors.ts';
-import { loadData } from '../utils/loaders.ts';
+import { loadData } from '../thunks/databaseThunks.ts';
+import type { AppDispatch } from '../types/aliases.ts';
 
 import { ToggleMenu } from './ToggleMenu.tsx';
 
 export const Store: React.FC = () => {
   const db = useDatabase();
+  const dispatch = useDispatch<AppDispatch>();
   const { t } = useTranslation();
-  const database = useSelector(getDatabaseState);
+  const databaseState = useSelector(getDatabaseState);
   const { isFiltered } = useSelector(getFilterState);
-  const products = !isFiltered ? database.products : database.filteredProducts;
+  const products = !isFiltered ? databaseState.products : databaseState.filteredProducts;
 
   useEffect(() => {
-    loadData(db, database);
+    dispatch(loadData({ db, databaseState }));
   }, []);
 
   return (

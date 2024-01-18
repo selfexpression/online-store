@@ -1,6 +1,4 @@
 /* eslint-disable no-unused-vars */
-import type { TFunction } from 'i18next';
-
 import type { Product, CartItem } from '../types/interfaces.ts';
 
 export interface SortedMap {
@@ -30,13 +28,12 @@ export const createOrderMessage = (
   formValues: FormValues,
   cartItems: CartItem[],
   total: number,
-  t: TFunction,
 ): string => {
-  const userInfo = `${t('cart.formFields.firstname')}: ${formValues.firstname}
-  ${t('cart.formFields.phoneNumber')}: ${formValues.phoneNumber}`;
+  const userInfo = `Имя: ${formValues.firstname}
+                    Номер телефона: ${formValues.phoneNumber}`;
 
   const order = cartItems.map((item, index) => (
-    `${index}: ${item.brand} ${item.name}
+    `${index + 1}: ${item.brand} ${item.name}
     Количество: ${item.quantity}`
   )).join('\n');
 

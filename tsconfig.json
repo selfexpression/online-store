@@ -34,6 +34,6 @@
     "src",
     ".eslintrc.js",
     "database.ts",
-    "loaders.ts",
+    "./services/loaders.ts",
   ]
 }

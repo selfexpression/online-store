@@ -7,7 +7,7 @@ import classNames from 'classnames';
 import { getProductCardState, getDatabaseState } from '../utils/selectors.ts';
 import { useDatabase, useAuth } from '../hooks/index.ts';
 import { actions } from '../slices/index.ts';
-import { loadData } from '../utils/loaders.ts';
+import { loadData } from '../thunks/databaseThunks.ts';
 import { addProductToCart } from '../thunks/cartThunks.ts';
 import type { AppDispatch } from '../types/aliases.ts';
 
@@ -158,12 +158,12 @@ const ProductAddToCard: React.FC = () => {
 export const ProductCard: React.FC = () => {
   const db = useDatabase();
   const { productId } = useParams();
-  const dispatch = useDispatch();
-  const database = useSelector(getDatabaseState);
-  const [currentProduct] = database.products.filter(({ id }) => `${id}` === productId);
+  const dispatch = useDispatch<AppDispatch>();
+  const databaseState = useSelector(getDatabaseState);
+  const [currentProduct] = databaseState.products.filter(({ id }) => `${id}` === productId);
 
   useEffect(() => {
-    loadData(db, database);
+    dispatch(loadData({ db, databaseState }));
     dispatch(actions.setCurrentProduct(currentProduct));
   }, [currentProduct]);
 

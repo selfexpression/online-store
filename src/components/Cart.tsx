@@ -113,7 +113,7 @@ const OrderForm: React.FC = () => {
       phoneNumber: '',
     },
     onSubmit: async (values, { setSubmitting }) => {
-      const orderMessage = createOrderMessage(values, items, totalAmount, t);
+      const orderMessage = createOrderMessage(values, items, totalAmount);
       await axios.post('http://localhost:4000/send-message', { message: formatMessage(orderMessage) })
         .catch((error) => {
           console.error('Form submit request error:', error);

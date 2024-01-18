@@ -2,17 +2,14 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import type { Firestore } from '@firebase/firestore';
 
 import { actions } from '../slices/databaseSlice.ts';
-import type { DatabaseState } from '../types/interfaces.ts';
+import type { RootState } from '../types/aliases.ts';
 import { getProductCategoryData } from '../services/databaseService.ts';
 
 export const loadData = createAsyncThunk(
   'database/loadData',
-  async (
-    { db, databaseState }:
-    { db: Firestore, databaseState: DatabaseState },
-    { dispatch },
-  ) => {
-    const { categories, products } = databaseState;
+  async ({ db }: { db: Firestore }, { dispatch, getState }) => {
+    const state = getState() as RootState;
+    const { categories, products } = state.database;
 
     if (!!categories.length || !!products.length) {
       return;
@@ -27,6 +24,7 @@ export const loadData = createAsyncThunk(
       };
 
       dispatch(actions.setDatabase(payload));
+      dispatch(actions.setIsLoaded(true));
     } catch (error) {
       console.error('Error loading data from Firestore:', error);
       throw error;

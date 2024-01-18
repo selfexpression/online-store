@@ -163,7 +163,7 @@ export const ProductCard: React.FC = () => {
   const [currentProduct] = databaseState.products.filter(({ id }) => `${id}` === productId);
 
   useEffect(() => {
-    dispatch(loadData({ db, databaseState }));
+    dispatch(loadData({ db }));
     dispatch(actions.setCurrentProduct(currentProduct));
   }, [currentProduct]);
 

@@ -106,6 +106,9 @@ const OrderForm: React.FC = () => {
   const { t } = useTranslation();
   const inputRef = useRef<HTMLInputElement>(null);
   const { items, totalAmount } = useSelector(getCartState);
+  const apiURL = process.env.NODE_ENV === 'production'
+    ? process.env.REACT_APP_API_URL_PRODUCTION
+    : process.env.REACT_APP_API_URL_DEVELOPMENT;
 
   const formik = useFormik({
     initialValues: {
@@ -114,7 +117,7 @@ const OrderForm: React.FC = () => {
     },
     onSubmit: async (values, { setSubmitting }) => {
       const orderMessage = createOrderMessage(values, items, totalAmount);
-      await axios.post('http://localhost:4000/send-message', { message: formatMessage(orderMessage) })
+      await axios.post(`${apiURL}/send-message`, { message: formatMessage(orderMessage) })
         .catch((error) => {
           console.error('Form submit request error:', error);
           throw error;

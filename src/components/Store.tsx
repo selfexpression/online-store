@@ -15,12 +15,12 @@ export const Store: React.FC = () => {
   const db = useDatabase();
   const dispatch = useDispatch<AppDispatch>();
   const { t } = useTranslation();
-  const databaseState = useSelector(getDatabaseState);
+  const { products, filteredProducts } = useSelector(getDatabaseState);
   const { isFiltered } = useSelector(getFilterState);
-  const products = !isFiltered ? databaseState.products : databaseState.filteredProducts;
+  const currentProducts = !isFiltered ? products : filteredProducts;
 
   useEffect(() => {
-    dispatch(loadData({ db, databaseState }));
+    dispatch(loadData({ db }));
   }, []);
 
   return (
@@ -28,7 +28,7 @@ export const Store: React.FC = () => {
       <ToggleMenu />
       <main className="collection-products">
         <div className="collection-wrapper">
-          {products.map(({
+          {currentProducts.map(({
             name, id, price, brand, inStock, imageURL,
           }) => (
             <div key={id} className="collection-item scale-up">

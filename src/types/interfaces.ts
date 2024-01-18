@@ -21,6 +21,7 @@ export interface ProductCategoryData {
 
 export interface DatabaseState extends ProductCategoryData {
   filteredProducts: Product[];
+  isLoaded: boolean;
 }
 
 export interface MenuOpenHandlers {

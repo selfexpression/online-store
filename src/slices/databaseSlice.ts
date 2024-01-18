@@ -10,12 +10,16 @@ const initialState: DatabaseState = {
   categories: [],
   products: [],
   filteredProducts: [],
+  isLoaded: false,
 };
 
 const slice = createSlice({
   name: 'database',
   initialState,
   reducers: {
+    setIsLoaded: (state, { payload }: { payload: boolean }) => {
+      state.isLoaded = payload;
+    },
     setDatabase: (state, { payload }: { payload: ProductCategoryData }) => {
       const { products, categories } = payload;
       state.categories = categories;

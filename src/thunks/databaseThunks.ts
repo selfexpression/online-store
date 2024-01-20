@@ -2,7 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import type { Firestore } from '@firebase/firestore';
 
 import { actions } from '../slices/databaseSlice.ts';
-import type { RootState } from '../types/aliases.ts';
+import type { AppDispatch, RootState } from '../types/aliases.ts';
 import { getProductCategoryData } from '../services/databaseService.ts';
 
 export const loadData = createAsyncThunk(
@@ -31,3 +31,9 @@ export const loadData = createAsyncThunk(
     }
   },
 );
+
+export const filterProducts = () => (dispatch: AppDispatch, getState: () => RootState) => {
+  const { currentBrandNames, currentCategoryID } = getState().filter;
+  const payload = { currentBrandNames, currentCategoryID };
+  dispatch(actions.filterProducts(payload));
+};

@@ -1,17 +1,56 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
+import _ from 'lodash';
 
 import { actions as filterActions } from '../slices/filterMenuSlice.ts';
 import { actions as sortActions } from '../slices/sortMenuSlice.ts';
 import { getFilterState, getSortState, getDatabaseState } from '../utils/selectors.ts';
 import type { MenuOpenHandlers } from '../types/interfaces.ts';
+import { filterProducts } from '../thunks/databaseThunks.ts';
+import type { AppDispatch } from '../types/aliases.ts';
 
 import { SortIcon } from './Icons/SortIcon.tsx';
 
-const FilterList: React.FC<MenuOpenHandlers> = ({ handleOpenFilterMenu }) => {
-  const dispatch = useDispatch();
+const BrandList: React.FC = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  const { initialProducts } = useSelector(getDatabaseState);
+  const { isOpenFilterMenu } = useSelector(getFilterState);
+
+  const handleCurrentBrandName = (e: ChangeEvent<HTMLInputElement>) => {
+    const payload = {
+      name: e.target.name.toLowerCase(),
+      isCheckedInput: e.target.checked,
+    };
+
+    dispatch(filterActions.setCurrentBrandNames(payload));
+    dispatch(filterProducts());
+  };
+
+  const brands = _.uniqWith(initialProducts.map((product) => product.brand.toLowerCase()))
+    .map((brand) => brand.replace(/^\w/, (c) => c.toUpperCase()));
+
+  return (
+    <div className={classNames('filter-list brand-list m-0 p-0 no-wrap', {
+      opened: isOpenFilterMenu,
+    })}>
+      {brands.map((brand) => (
+        <div className="item p-2 d-flex align-items-center" key={brand}>
+          <input
+            type="checkbox"
+            name={brand}
+            onChange={handleCurrentBrandName}
+          />
+          <label htmlFor={brand}>{brand}</label>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+const CategoryList: React.FC<MenuOpenHandlers> = ({ handleOpenFilterMenu }) => {
+  const dispatch = useDispatch<AppDispatch>();
   const { t } = useTranslation();
   const { isOpenFilterMenu } = useSelector(getFilterState);
   const { categories } = useSelector(getDatabaseState);
@@ -20,6 +59,7 @@ const FilterList: React.FC<MenuOpenHandlers> = ({ handleOpenFilterMenu }) => {
     const payload = { id, isFilteredValue: value };
 
     dispatch(filterActions.setCurrentCategoryID(payload));
+    dispatch(filterProducts());
     handleOpenFilterMenu();
   };
 
@@ -28,7 +68,7 @@ const FilterList: React.FC<MenuOpenHandlers> = ({ handleOpenFilterMenu }) => {
       opened: isOpenFilterMenu,
     })}>
       <li
-        className="p-2"
+        className="item p-2"
         onClick={() => handleCurrentCategory(null, !isOpenFilterMenu)}
       >
         {t('toggleMenu.filterList.reset')}
@@ -36,44 +76,10 @@ const FilterList: React.FC<MenuOpenHandlers> = ({ handleOpenFilterMenu }) => {
       {categories.map(({ id }) => (
         <li
           key={id}
-          className="p-2"
+          className="p-2 item"
           onClick={() => handleCurrentCategory(id, isOpenFilterMenu)}
         >
           {t(`toggleMenu.filterList.categories.${id}`)}
-        </li>
-      ))}
-    </ul>
-  );
-};
-
-const SortList: React.FC<MenuOpenHandlers> = ({ handleOpenSortMenu }) => {
-  const dispatch = useDispatch();
-  const { isOpenSortMenu } = useSelector(getSortState);
-  const { t } = useTranslation();
-  const sortValues = t('toggleMenu.sortValues', { returnObjects: true });
-
-  const handleCurrentValue = (value: string): void => {
-    dispatch(sortActions.setCurrentValue(value));
-    handleOpenSortMenu();
-  };
-
-  return (
-    <ul className={classNames('sort-list m-0 p-0 no-wrap', {
-      opened: isOpenSortMenu,
-    })}>
-      <li
-        className="p-2"
-        onClick={() => handleCurrentValue('')}
-      >
-        {t('toggleMenu.filterList.reset')}
-      </li>
-      {Object.entries(sortValues).map(([key, value]) => (
-        <li
-          key={key}
-          className="p-2"
-          onClick={() => handleCurrentValue(key)}
-        >
-          {value}
         </li>
       ))}
     </ul>
@@ -102,8 +108,43 @@ const FilterMenu: React.FC = () => {
         })}
         />
       </button>
-      <FilterList handleOpenFilterMenu={handleOpenFilterMenu} />
+      <CategoryList handleOpenFilterMenu={handleOpenFilterMenu} />
+      <BrandList />
     </div>
+  );
+};
+
+const SortList: React.FC<MenuOpenHandlers> = ({ handleOpenSortMenu }) => {
+  const dispatch = useDispatch();
+  const { isOpenSortMenu } = useSelector(getSortState);
+  const { t } = useTranslation();
+  const sortValues = t('toggleMenu.sortValues', { returnObjects: true });
+
+  const handleCurrentValue = (value: string): void => {
+    dispatch(sortActions.setCurrentValue(value));
+    handleOpenSortMenu();
+  };
+
+  return (
+    <ul className={classNames('sort-list m-0 p-0 no-wrap', {
+      opened: isOpenSortMenu,
+    })}>
+      <li
+        className="p-2 item"
+        onClick={() => handleCurrentValue('')}
+      >
+        {t('toggleMenu.filterList.reset')}
+      </li>
+      {Object.entries(sortValues).map(([key, value]) => (
+        <li
+          key={key}
+          className="p-2 item"
+          onClick={() => handleCurrentValue(key)}
+        >
+          {value}
+        </li>
+      ))}
+    </ul>
   );
 };
 

@@ -40,5 +40,5 @@ export const createOrderMessage = (
   return `${userInfo}
           Товары:
           ${order}\n
-          Сумма заказа: ${total}`;
+          Сумма заказа: ${total}₽`;
 };

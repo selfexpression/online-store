@@ -4,10 +4,12 @@ import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
-import { useFirestore } from '../hooks/index.ts';
-import { getDatabaseState, getFilterState } from '../utils/selectors.ts';
+import { useFirestore, useScrollY } from '../hooks/index.ts';
+import { getDatabaseState } from '../utils/selectors.ts';
 import { loadData } from '../thunks/databaseThunks.ts';
 import type { AppDispatch } from '../types/aliases.ts';
+import { actions as filterActions } from '../slices/filterMenuSlice.ts';
+import { actions as sortActions } from '../slices/sortMenuSlice.ts';
 
 import { ToggleMenu } from './ToggleMenu.tsx';
 
@@ -15,20 +17,29 @@ export const Store: React.FC = () => {
   const db = useFirestore();
   const dispatch = useDispatch<AppDispatch>();
   const { t } = useTranslation();
-  const { products, filteredProducts, isLoaded } = useSelector(getDatabaseState);
-  const { isFiltered } = useSelector(getFilterState);
-  const currentProducts = !isFiltered ? products : filteredProducts;
+  const { products, isLoaded } = useSelector(getDatabaseState);
+  const { scrollY } = useScrollY();
+
+  const handleToggleOpenMenu = () => {
+    dispatch(filterActions.openFilterMenu(false));
+    dispatch(sortActions.openSortMenu(false));
+  };
 
   useEffect(() => {
     dispatch(loadData({ db }));
-  }, []);
+
+    if (scrollY >= 140) {
+      dispatch(filterActions.openFilterMenu(false));
+      dispatch(sortActions.openSortMenu(false));
+    }
+  }, [scrollY, dispatch]);
 
   return (
     <header>
       <ToggleMenu />
       <main className="collection-products">
-        <div className="collection-wrapper">
-          {currentProducts.map(({
+        <div className="collection-wrapper" onClick={handleToggleOpenMenu}>
+          {products.map(({
             name, id, price, brand, inStock, imageURL,
           }) => (
             <div key={id} className="collection-item scale-up">

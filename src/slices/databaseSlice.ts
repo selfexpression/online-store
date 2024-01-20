@@ -1,16 +1,16 @@
 import { createSlice } from '@reduxjs/toolkit';
+// import _ from 'lodash';
 
 import type { DatabaseState, ProductCategoryData } from '../types/interfaces.ts';
-import { sortedMap, sortedByStock, SortedMap } from '../utils/helpers.ts';
+import { sortedMap, sortedByStock, type SortedMap } from '../utils/helpers.ts';
 
-import { actions as filterActions } from './filterMenuSlice.ts';
 import { actions as sortActions } from './sortMenuSlice.ts';
 
 const initialState: DatabaseState = {
   categories: [],
   products: [],
-  filteredProducts: [],
   initialProducts: [],
+  filteredProducts: [],
   isLoaded: false,
 };
 
@@ -27,25 +27,42 @@ const slice = createSlice({
       state.products = sortedByStock(products);
       state.initialProducts = sortedByStock(products);
     },
+    filterProducts: (state, { payload }:
+      { payload: { currentBrandNames: string[], currentCategoryID: number| null } }) => {
+      const { initialProducts } = state;
+      const { currentBrandNames, currentCategoryID } = payload;
+
+      state.filteredProducts = initialProducts;
+
+      if (currentBrandNames.length) {
+        state.filteredProducts = state.filteredProducts
+          .filter((product) => currentBrandNames.includes(product.brand.toLowerCase()));
+      }
+
+      if (currentCategoryID) {
+        state.filteredProducts = state.filteredProducts
+          .filter((product) => product.categoryID === currentCategoryID);
+      }
+
+      state.products = state.filteredProducts;
+    },
   },
   extraReducers: (builder) => {
     builder
-      .addCase(filterActions.setCurrentCategoryID, (state, { payload }) => {
-        const { id: currentCategoryID } = payload;
-        const { products } = state;
-        const filtered = products.filter(({ categoryID }) => categoryID === currentCategoryID);
-        state.filteredProducts = sortedByStock(filtered);
-      })
       .addCase(sortActions.setCurrentValue, (state, { payload: currentValue }) => {
         const { initialProducts } = state;
-        if (currentValue === '') {
+
+        if (!currentValue) {
           state.products = initialProducts;
           return;
         }
 
         const sortingFunction = sortedMap[currentValue as keyof SortedMap];
         const sortedProducts = sortedByStock(sortingFunction(state.products));
-        const sortedFilteredProducts = sortedByStock(sortingFunction(state.filteredProducts));
+        const sortedFilteredProducts = sortedByStock(
+          sortingFunction(state.filteredProducts),
+        );
+
         state.products = sortedProducts;
         state.filteredProducts = sortedFilteredProducts;
       });

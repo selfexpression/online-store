@@ -85,7 +85,7 @@
       overflow: hidden;
       transition: #{$toggle-prop} .3s ease-in-out 0s;
 
-      li {
+      .item {
         background-color: $white;
         border: $white-grey-border;
         border-top: none;
@@ -101,7 +101,7 @@
       &.opened {
         #{$toggle-prop}: #{$toggle-value};
 
-        li {
+        .item {
           opacity: 1;
         }
       }
@@ -138,6 +138,10 @@
         .toggle-line {
           @include toggle-line;
         }
+      }
+
+      .brand-list {
+        border-top: 0.5em solid $aqua;
       }
   
       @include toggle-menu(sort, 11em, height, 10em) {

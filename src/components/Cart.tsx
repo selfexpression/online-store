@@ -147,7 +147,7 @@ const OrderForm: React.FC = () => {
 
         dispatch(actions.toggleOrderStatus(true));
         dispatch(emptyTrash({ userUID, db }));
-        setTimeout(() => dispatch(actions.toggleOrderStatus(false)), 10000);
+        setTimeout(() => dispatch(actions.toggleOrderStatus(false)), 5000);
       } catch (error) {
         console.error('Form submit request error:', error);
         throw error;

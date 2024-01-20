@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit';
-// import _ from 'lodash';
 
 import type { DatabaseState, ProductCategoryData } from '../types/interfaces.ts';
 import { sortedMap, sortedByStock, type SortedMap } from '../utils/helpers.ts';
@@ -50,18 +49,9 @@ const slice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(sortActions.setCurrentValue, (state, { payload: currentValue }) => {
-        const { initialProducts } = state;
-
-        if (!currentValue) {
-          state.products = initialProducts;
-          return;
-        }
-
         const sortingFunction = sortedMap[currentValue as keyof SortedMap];
         const sortedProducts = sortedByStock(sortingFunction(state.products));
-        const sortedFilteredProducts = sortedByStock(
-          sortingFunction(state.filteredProducts),
-        );
+        const sortedFilteredProducts = sortedByStock(sortingFunction(state.filteredProducts));
 
         state.products = sortedProducts;
         state.filteredProducts = sortedFilteredProducts;

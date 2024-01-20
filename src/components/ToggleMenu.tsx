@@ -129,12 +129,6 @@ const SortList: React.FC<MenuOpenHandlers> = ({ handleOpenSortMenu }) => {
     <ul className={classNames('sort-list m-0 p-0 no-wrap', {
       opened: isOpenSortMenu,
     })}>
-      <li
-        className="p-2 item"
-        onClick={() => handleCurrentValue('')}
-      >
-        {t('toggleMenu.filterList.reset')}
-      </li>
       {Object.entries(sortValues).map(([key, value]) => (
         <li
           key={key}

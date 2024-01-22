@@ -25,6 +25,8 @@ export const ru = {
     store: {
       inStock: 'В наличии',
       outOfStock: 'Нет в наличии',
+      notFound: 'По вашему запросу товары не найдены.',
+      changeCriteria: 'Попробуйте изменить критерии поиска.',
     },
     productCard: {
       addToCart: 'Добавить в корзину',

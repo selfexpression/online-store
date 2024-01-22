@@ -49,6 +49,7 @@ const slice = createSlice({
       const { items } = state;
       const { id, type } = payload;
       const currentItem = items.find((item) => item.id === id);
+      const filteredItems = items.filter((item) => item.id !== id);
 
       if (!currentItem) {
         return;
@@ -60,7 +61,6 @@ const slice = createSlice({
           break;
         case 'decrement': {
           if (currentItem.quantity <= 1) {
-            const filteredItems = items.filter((item) => item.id !== id);
             state.items = filteredItems;
           }
 

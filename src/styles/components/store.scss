@@ -27,6 +27,16 @@
           }
          }
       }
+
+      .not-found-items {
+        @include flex-center;
+        height: 100vh;
+        width: 100%;
+
+        text-align: center;
+        font-size: 1.2em;
+        font-family: TenorSans-Regular, "Times New Roman", serif;
+      }
     }
 }
 
@@ -45,6 +55,10 @@
     .collection-wrapper {
       .collection-item {
         flex-basis: 100%;
+      }
+
+      .not-found-items {
+        font-size: 1em;
       }
     }
   }

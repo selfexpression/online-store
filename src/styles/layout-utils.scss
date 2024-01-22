@@ -25,6 +25,13 @@ $flex-align-items-values: (
   stretch: stretch
 );
 
+$flex-self-values: (
+  stretch: stretch,
+  center: center,
+  start: start,
+  end: end,
+);
+
 $auto-value: (auto: auto);
 
 $flex-align-self-values: map.merge($auto-value, $flex-align-items-values);
@@ -41,9 +48,13 @@ $flex-align-self-values: map.merge($auto-value, $flex-align-items-values);
   }
 }
 
-@each $key, $value in $flex-align-self-values {
+@each $key, $value in $flex-self-values {
   .align-self-#{$key} {
     align-self: $value;
+  }
+
+  .justify-self-#{$key} {
+    justify-self: $value;
   }
 }
 

@@ -33,15 +33,15 @@ const slice = createSlice({
 
       state.filteredProducts = initialProducts;
 
-      if (currentBrandNames.length) {
-        state.filteredProducts = state.filteredProducts
-          .filter((product) => currentBrandNames.includes(product.brand.toLowerCase()));
-      }
+      state.filteredProducts = currentBrandNames.length
+        ? state.filteredProducts
+          .filter((product) => currentBrandNames.includes(product.brand.toLowerCase()))
+        : state.filteredProducts;
 
-      if (currentCategoryID) {
-        state.filteredProducts = state.filteredProducts
-          .filter((product) => product.categoryID === currentCategoryID);
-      }
+      state.filteredProducts = currentCategoryID
+        ? state.filteredProducts
+          .filter((product) => product.categoryID === currentCategoryID)
+        : state.filteredProducts;
 
       state.products = state.filteredProducts;
     },
@@ -50,8 +50,8 @@ const slice = createSlice({
     builder
       .addCase(sortActions.setCurrentValue, (state, { payload: currentValue }) => {
         const sortingFunction = sortedMap[currentValue as keyof SortedMap];
-        const sortedProducts = sortedByStock(sortingFunction(state.products));
-        const sortedFilteredProducts = sortedByStock(sortingFunction(state.filteredProducts));
+        const sortedProducts = sortingFunction(state.products);
+        const sortedFilteredProducts = sortingFunction(state.filteredProducts);
 
         state.products = sortedProducts;
         state.filteredProducts = sortedFilteredProducts;

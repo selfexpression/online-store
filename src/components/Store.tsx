@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
-import { useFirestore, useScrollY } from '../hooks/index.ts';
+import { useFirestore } from '../hooks/index.ts';
 import { getDatabaseState } from '../utils/selectors.ts';
 import { loadData } from '../thunks/databaseThunks.ts';
 import type { AppDispatch } from '../types/aliases.ts';
@@ -18,7 +18,6 @@ export const Store: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { t } = useTranslation();
   const { products, isLoaded } = useSelector(getDatabaseState);
-  const { scrollY } = useScrollY();
 
   const handleToggleOpenMenu = () => {
     dispatch(filterActions.openFilterMenu(false));
@@ -27,12 +26,7 @@ export const Store: React.FC = () => {
 
   useEffect(() => {
     dispatch(loadData({ db }));
-
-    if (scrollY >= 140) {
-      dispatch(filterActions.openFilterMenu(false));
-      dispatch(sortActions.openSortMenu(false));
-    }
-  }, [scrollY, dispatch]);
+  }, []);
 
   return (
     <header>

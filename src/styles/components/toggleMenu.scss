@@ -80,7 +80,7 @@
     
       color: $aqua;
       list-style: none;
-      z-index: 999;
+      z-index: 1;
       #{$toggle-prop}: 0;
       overflow: hidden;
       transition: #{$toggle-prop} .3s ease-in-out 0s;

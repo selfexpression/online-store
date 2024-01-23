@@ -39,6 +39,7 @@ const BrandList: React.FC = () => {
         <div className="item p-2 d-flex align-items-center" key={brand}>
           <input
             type="checkbox"
+            id={brand}
             name={brand}
             onChange={handleCurrentBrandName}
           />

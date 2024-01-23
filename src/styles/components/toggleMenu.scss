@@ -132,7 +132,7 @@
     .toggle-menu {
       height: 100%;
   
-      @include toggle-menu(filter, 11em, width, 100%) {
+      @include toggle-menu(filter, 12em, width, 100%) {
         .toggle-line {
           @include toggle-line;
         }
@@ -142,7 +142,7 @@
         border-top: 0.5em solid $aqua;
       }
   
-      @include toggle-menu(sort, 11em, height, 10em) {
+      @include toggle-menu(sort, 12em, height, 10em) {
         .sort-icon {
           width: 1.6em;
           height: auto;

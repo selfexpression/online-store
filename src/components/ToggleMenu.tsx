@@ -1,4 +1,4 @@
-import React, { type ChangeEvent } from 'react';
+import React, { ChangeEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
@@ -18,7 +18,7 @@ const BrandList: React.FC = () => {
   const { initialProducts } = useSelector(getDatabaseState);
   const { isOpenFilterMenu } = useSelector(getFilterState);
 
-  const handleCurrentBrandName = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleToggleCheckbox = (e: ChangeEvent<HTMLInputElement>) => {
     const payload = {
       name: e.target.name.toLowerCase(),
       isCheckedInput: e.target.checked,
@@ -28,7 +28,8 @@ const BrandList: React.FC = () => {
     dispatch(filterProducts());
   };
 
-  const brands = _.uniqWith(initialProducts.map((product) => product.brand.toLowerCase()))
+  const brands = _.uniqWith(initialProducts
+    .map((product) => product.brand.toLowerCase()))
     .map((brand) => brand.replace(/^\w/, (c) => c.toUpperCase()));
 
   return (
@@ -41,9 +42,9 @@ const BrandList: React.FC = () => {
             type="checkbox"
             id={brand}
             name={brand}
-            onChange={handleCurrentBrandName}
+            onChange={handleToggleCheckbox}
           />
-          <label htmlFor={brand}>{brand}</label>
+          <label className="w-100" htmlFor={brand}>{brand}</label>
         </div>
       ))}
     </div>

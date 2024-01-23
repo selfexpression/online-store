@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-export interface FilterState {
+interface FilterState {
   isOpenFilterMenu: boolean;
   currentCategoryID: number | null;
   currentBrandNames: string[];
@@ -19,9 +19,9 @@ const slice = createSlice({
     openFilterMenu: (state, { payload }: { payload: boolean }) => {
       state.isOpenFilterMenu = payload;
     },
-    setCurrentCategoryID: (state, { payload }:
-      { payload: { id: number | null, isFilteredValue: boolean } }) => {
+    setCurrentCategoryID: (state, { payload }: { payload: { id: number | null } }) => {
       const { id } = payload;
+
       state.currentCategoryID = id;
     },
     setCurrentBrandNames: (state, { payload }:
@@ -29,8 +29,8 @@ const slice = createSlice({
       const { name, isCheckedInput } = payload;
 
       if (!isCheckedInput) {
-        const filtered = state.currentBrandNames.filter((item) => item !== name);
-        state.currentBrandNames = filtered;
+        const emptyFilters = state.currentBrandNames.filter((item) => item !== name);
+        state.currentBrandNames = emptyFilters;
         return;
       }
 

@@ -55,8 +55,8 @@ const CategoryList: React.FC<MenuOpenHandlers> = ({ handleOpenFilterMenu }) => {
   const { isOpenFilterMenu } = useSelector(getFilterState);
   const { categories } = useSelector(getDatabaseState);
 
-  const handleCurrentCategory = (id: number | null, value: boolean): void => {
-    const payload = { id, isFilteredValue: value };
+  const handleCurrentCategory = (id: number | null): void => {
+    const payload = { id };
 
     dispatch(filterActions.setCurrentCategoryID(payload));
     dispatch(filterProducts());
@@ -69,7 +69,7 @@ const CategoryList: React.FC<MenuOpenHandlers> = ({ handleOpenFilterMenu }) => {
     })}>
       <li
         className="item p-2"
-        onClick={() => handleCurrentCategory(null, !isOpenFilterMenu)}
+        onClick={() => handleCurrentCategory(null)}
       >
         {t('toggleMenu.filterList.reset')}
       </li>
@@ -77,7 +77,7 @@ const CategoryList: React.FC<MenuOpenHandlers> = ({ handleOpenFilterMenu }) => {
         <li
           key={id}
           className="p-2 item"
-          onClick={() => handleCurrentCategory(id, isOpenFilterMenu)}
+          onClick={() => handleCurrentCategory(id)}
         >
           {t(`toggleMenu.filterList.categories.${id}`)}
         </li>

@@ -54,6 +54,8 @@
 
 .counter-items {
   display: flex;
+  justify-content: space-between;
+  width: 10em;
   height: 3em;
   align-items: center;
   border: $white-grey-border;

@@ -1,5 +1,6 @@
+import dotenv from 'dotenv';
+
 import { runApp } from './runApp';
 
-require('dotenv').config();
-
+dotenv.config();
 runApp();

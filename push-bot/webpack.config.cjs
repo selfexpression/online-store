@@ -1,4 +1,6 @@
-module.exports = {
+import path from 'path';
+
+export default {
   mode: 'development', // production
   entry: './src/index.ts',
   target: 'node',
@@ -16,6 +18,6 @@ module.exports = {
   },
   output: {
     filename: 'bundle.js',
-    path: require('path').resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, 'dist'),
   },
 };

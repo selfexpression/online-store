@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 
-import { runApp } from './runApp';
+import { init } from './init';
 
 dotenv.config();
-runApp();
+init();

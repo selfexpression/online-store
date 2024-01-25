@@ -4,6 +4,7 @@ import { getAuth, signInAnonymously } from 'firebase/auth';
 import type { ReactNode } from 'react';
 
 import { AuthContext } from '../contexts/index.ts';
+import { routes } from '../utils/routes.ts';
 
 import { Store } from './Store.tsx';
 import { ProductCard } from './ProductCard.tsx';
@@ -43,9 +44,9 @@ export const App: React.FC = () => (
         <Navbar />
         <CartLoader />
         <Routes>
-          <Route path='/' element={<Store />} />
-          <Route path='/product/:productId' element={<ProductCard />} />
-          <Route path='/cart' element={<Cart />} />
+          <Route path={routes.mainPage()} element={<Store />} />
+          <Route path={routes.productPage()} element={<ProductCard />} />
+          <Route path={routes.cartPage()} element={<Cart />} />
         </Routes>
       </div>
     </Router>

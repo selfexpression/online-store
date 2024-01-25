@@ -217,10 +217,10 @@ $flex-align-self-values: map.merge($auto-value, $flex-align-items-values);
 }
 
 .no-decoration {
-  text-decoration: none;
-  color: inherit;
+  text-decoration: none !important;
+  color: inherit !important;
 }
 
 .bold {
-  font-weight: bold;
+  font-weight: bold !important;
 }

@@ -1,13 +1,10 @@
 /* eslint-disable no-unused-vars */
+import type { FormikValues } from 'formik';
+
 import type { Product, CartItem } from '../types/interfaces.ts';
 
 export interface SortedMap {
   [key: string]: (products: Product[]) => Product[];
-}
-
-interface FormValues {
-  firstname: string;
-  phoneNumber: string;
 }
 
 export const sortedMap: SortedMap = {
@@ -25,7 +22,7 @@ export const formatMessage = (message: string): string => {
 };
 
 export const createOrderMessage = (
-  formValues: FormValues,
+  formValues: FormikValues,
   cartItems: CartItem[],
   total: number,
 ): string => {

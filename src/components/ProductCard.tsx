@@ -11,8 +11,7 @@ import { loadData } from '../thunks/databaseThunks.ts';
 import { addProductToCart } from '../thunks/cartThunks.ts';
 import type { AppDispatch } from '../types/aliases.ts';
 
-import { MinusIcon } from './Icons/MinusIcon.tsx';
-import { PlusIcon } from './Icons/PlusIcon.tsx';
+import { QuantityControl } from './QuantityControl.tsx';
 
 const MainInfo: React.FC = () => {
   const { t } = useTranslation();
@@ -82,25 +81,11 @@ const CounterAdjust: React.FC = () => {
   };
 
   return (
-    <div className="counter-items m-3">
-      <button
-        type="button"
-        aria-label="decrement"
-        onClick={() => handleCounterСontrol('decrement')}
-        disabled={disabled}
-      >
-        <MinusIcon />
-      </button>
-      <span className="p-4">{productsCount}</span>
-      <button
-        type="button"
-        aria-label="increment"
-        onClick={() => handleCounterСontrol('increment')}
-        disabled={disabled}
-      >
-        <PlusIcon />
-      </button>
-    </div>
+    <QuantityControl
+      handler={handleCounterСontrol}
+      quantity={productsCount}
+      disabled={disabled}
+    />
   );
 };
 

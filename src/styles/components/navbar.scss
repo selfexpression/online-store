@@ -9,12 +9,13 @@
   z-index: 2;
   background-color: $dark-grey;
 
-  .navbar-brand {
+  .navbar-logo {
     grid-column: 1 / 2;
 
     .logo {
       width: 6em;
       height: auto;
+      margin-left: 1em;
     }
   }
 
@@ -26,7 +27,7 @@
     .cart-icon {
       width: 2em;
       height: auto;
-      margin-right: 2em;
+      margin-right: 1em;
     }
 
     .items-in-cart {
@@ -50,6 +51,7 @@
     .home-icon {
       width: 2em;
       height: auto;
+      margin-right: 1.5em;
     }
   }
 }

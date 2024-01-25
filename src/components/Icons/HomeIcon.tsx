@@ -3,7 +3,7 @@ import React from 'react';
 export const HomeIcon: React.FC = () => (
   <svg xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 64 64" width="64px" height="64px"
-    className="home-icon mr-4"
+    className="home-icon"
   >
     <path d="M 32 3 L 1 28 L 1.4921875 28.654297
     C 2.8591875 30.477297 5.4694688 30.791703

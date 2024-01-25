@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { useFormik } from 'formik';
+import { useFormik, type FormikValues } from 'formik';
 import * as Yup from 'yup';
 import classNames from 'classnames';
 import type { TFunction } from 'i18next';
@@ -16,22 +16,24 @@ import type { AppDispatch } from '../types/aliases.ts';
 import cartImage from '../assets/images/cart-image.png';
 import { formatMessage, createOrderMessage } from '../utils/helpers.ts';
 import { actions } from '../slices/index.ts';
+import { routes as frontendRoutes, routes } from '../utils/routes.ts';
 
-import { MinusIcon } from './Icons/MinusIcon.tsx';
-import { PlusIcon } from './Icons/PlusIcon.tsx';
+import { QuantityControl } from './QuantityControl.tsx';
 
-const QuantityAdjust: React.FC<{ currentId: number }> = ({ currentId }: { currentId: number }) => {
+const CartQuantityControl: React.FC<{ currentId: number }> = ({ currentId }) => {
   const userUID = useAuth();
   const db = useFirestore();
   const dispatch = useDispatch<AppDispatch>();
   const { items } = useSelector(getCartState);
-  const currentItem = items.find(({ id }) => id === currentId);
+  const currentItem = items.find((item) => item.id === currentId);
+  const id = currentItem?.id as number;
+  const quantity = currentItem?.quantity as number;
 
   const handleUpdate = (type: string) => {
     const payload = {
       userUID,
       db,
-      id: currentItem?.id as number,
+      id,
       type,
     };
 
@@ -39,29 +41,45 @@ const QuantityAdjust: React.FC<{ currentId: number }> = ({ currentId }: { curren
   };
 
   return (
-    <div className="counter-items m-2">
-      <button
-        type="button"
-        aria-label="decrement"
-        onClick={() => handleUpdate('decrement')}
-      >
-        <MinusIcon />
-      </button>
-      <span className="p-4">{currentItem?.quantity}</span>
-      <button
-        type="button"
-        aria-label="increment"
-        onClick={() => handleUpdate('increment')}
-      >
-        <PlusIcon />
-      </button>
-    </div>
+    <QuantityControl
+      handler={handleUpdate}
+      quantity={quantity}
+    />
+  );
+};
+
+const CartItem: React.FC = () => {
+  const { items } = useSelector(getCartState);
+
+  return (
+    useMemo(() => items.map(({
+      brand, name, price, id, imageURL,
+    }) => (
+      <tr key={id} className="cart-item">
+        <td className="cart-product-img p-2">
+          <img src={imageURL} alt={name} className="mr-5"/>
+          <div className="small-screen-item">
+            <div className="aqua-color p-2">
+              <Link className="no-decoration" to={frontendRoutes.productLink(id)} >{`${brand} ${name}`}</Link>
+            </div>
+            <div className="p-2 aqua-color">{`${price}₽`}</div>
+          </div>
+        </td>
+        <td className="item-name text-start aqua-color">
+          <Link className="no-decoration" to={frontendRoutes.productLink(id)} >{`${brand} ${name}`}</Link>
+        </td>
+        <td className="item-price text-center mr-5">{`${price}₽`}</td>
+        <td className="text-center">
+          <CartQuantityControl currentId={id} />
+        </td>
+      </tr>
+    )), [items])
   );
 };
 
 const CartOuter: React.FC = () => {
   const { t } = useTranslation();
-  const { items, totalAmount } = useSelector(getCartState);
+  const { totalAmount } = useSelector(getCartState);
 
   return (
     <div className="cart-outer">
@@ -76,28 +94,7 @@ const CartOuter: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          {useMemo(() => items.map(({
-            brand, name, price, id, imageURL,
-          }) => (
-            <tr key={id} className="cart-item">
-              <td className="cart-product-img p-2">
-                <img src={imageURL} alt={name} className="mr-5"/>
-                <div className="small-table">
-                  <div className="aqua-color p-2">
-                    <Link className="no-decoration" to={`/product/${id}`} >{`${brand} ${name}`}</Link>
-                  </div>
-                  <div className="p-2 aqua-color">{`${price}₽`}</div>
-                </div>
-              </td>
-              <td className="item-name text-start aqua-color">
-                <Link className="no-decoration" to={`/product/${id}`} >{`${brand} ${name}`}</Link>
-              </td>
-              <td className="item-price text-center mr-5">{`${price}₽`}</td>
-              <td className="text-center">
-                <QuantityAdjust currentId={id} />
-              </td>
-            </tr>
-          )), [items])}
+          <CartItem />
         </tbody>
       </table>
       <div className="d-flex align-items-center justify-content-between">
@@ -118,14 +115,53 @@ const schema = (t: TFunction) => Yup.object().shape({
     .matches(/(.*\d.*){11}/, t('cart.inputErrors.matches')),
 });
 
-type FormField = 'firstname' | 'phoneNumber';
+type FormField = 'phoneNumber' | 'firstname'
+
+interface FieldProps {
+  fieldName: FormField;
+  formik: FormikValues;
+}
+
+const FirstnameField: React.FC<FieldProps> = ({ fieldName, formik }) => {
+  const { t } = useTranslation();
+
+  return (
+    <input
+      type="text"
+      id={fieldName}
+      name={fieldName}
+      placeholder={t(`cart.formFields.${fieldName}`)}
+      onChange={formik.handleChange}
+      value={formik.values[fieldName]}
+      className={classNames('form-field p-2 rounded-2', {
+        'is-valid': !formik.errors[fieldName],
+        'is-invalid': formik.errors[fieldName],
+      })}
+    />
+  );
+};
+
+const PhoneNumberField: React.FC<FieldProps> = ({ fieldName, formik }) => (
+  <PatternFormat
+    format="+7 (###) - ### - ####"
+    mask=" "
+    allowEmptyFormatting
+    type="tel"
+    name={fieldName}
+    value={formik.values[fieldName]}
+    onChange={formik.handleChange}
+    className={classNames('form-field p-2 rounded-2', {
+      'is-valid': !formik.errors[fieldName],
+      'is-invalid': formik.errors[fieldName],
+    })}
+  />
+);
 
 const OrderForm: React.FC = () => {
   const userUID = useAuth();
   const db = useFirestore();
   const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
-  // const inputRef = useRef<HTMLInputElement>(null);
   const { items, totalAmount } = useSelector(getCartState);
   // const apiURL = process.env.NODE_ENV === 'production'
   //   ? process.env.REACT_APP_API_URL_PRODUCTION
@@ -141,7 +177,7 @@ const OrderForm: React.FC = () => {
 
       try {
         await axios.post(
-          `${process.env.REACT_APP_API_URL_DEVELOPMENT}/send-message`,
+          `${process.env.REACT_APP_API_URL_DEVELOPMENT}${routes.sendMessageApi()}`,
           { message: formatMessage(orderMessage) },
         );
 
@@ -157,10 +193,6 @@ const OrderForm: React.FC = () => {
     },
   });
 
-  // useEffect(() => {
-  //   inputRef.current?.focus();
-  // }, []);
-
   return (
     <div className="order-form">
       <h2 className="p-3">{t('cart.orderForm.title')}</h2>
@@ -168,36 +200,11 @@ const OrderForm: React.FC = () => {
         {Object.entries(formik.values).map(([fieldName]) => (
           <div key={fieldName} className="m-3">
             {fieldName === 'phoneNumber' ? (
-              <PatternFormat
-                format="+7 (###) - ### - ####"
-                mask=" "
-                allowEmptyFormatting
-                type="tel"
-                name={fieldName}
-                value={formik.values[fieldName]}
-                onChange={formik.handleChange}
-                className={classNames('form-field p-2 rounded-2', {
-                  'is-valid': !formik.errors[fieldName],
-                  'is-invalid': formik.errors[fieldName],
-                })}
-              />
+              <PhoneNumberField fieldName={fieldName} formik={formik} />
             ) : (
-              <input
-                type="text"
-                id={fieldName}
-                name={fieldName}
-                placeholder={t(`cart.formFields.${fieldName}`)}
-                onChange={formik.handleChange}
-                value={formik.values[fieldName as FormField]}
-                className={classNames('form-field p-2 rounded-2', {
-                  'is-valid': !formik.errors[fieldName as FormField],
-                  'is-invalid': formik.errors[fieldName as FormField],
-                })}
-              />
+              <FirstnameField fieldName={fieldName as FormField} formik={formik} />
             )}
-            {formik.errors[fieldName as FormField] && (
-              <div className="invalid-tooltip m-2">{formik.errors[fieldName as FormField]}</div>
-            )}
+            <div className="invalid-tooltip m-2">{formik.errors[fieldName as FormField]}</div>
             <label htmlFor={fieldName}></label>
           </div>
         ))}
@@ -232,7 +239,7 @@ const EmptyCart: React.FC = () => {
               <span>{`${t('cart.emptyCart')} `}</span>
             </>
           )}
-          <Link to={'/'}>{t('cart.continueShopping')}</Link>
+          <Link to={routes.mainPage()}>{t('cart.continueShopping')}</Link>
         </div>
       </div>
     ) : (

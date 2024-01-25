@@ -1,3 +1,3 @@
-const apiPath = '/send-message';
-
-export const sendMessage = () => apiPath;
+export const apiRoutes = {
+  sendMessage: () => '/send-message',
+};

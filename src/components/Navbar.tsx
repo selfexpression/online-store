@@ -10,7 +10,7 @@ import { CartIcon } from './Icons/CartIcon.tsx';
 
 const navItems = [
   {
-    path: '/', className: 'navbar-brand', Icon: Logo, id: 1,
+    path: '/', className: 'navbar-logo', Icon: Logo, id: 1,
   },
   {
     path: '/cart', className: 'to-cart-button', Icon: CartIcon, id: 2,

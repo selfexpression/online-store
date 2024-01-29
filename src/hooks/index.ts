@@ -1,8 +1,7 @@
 import { useContext } from 'react';
-import type { Firestore } from '@firebase/firestore';
 
-import { DataApiContext, AuthContext } from '../contexts/index.ts';
+import { FirestoreContext, AuthContext } from '../contexts/index.ts';
 
-export const useFirestore = (): Firestore => useContext(DataApiContext);
+export const useFirestore = () => useContext(FirestoreContext);
 
 export const useAuth = () => useContext(AuthContext);

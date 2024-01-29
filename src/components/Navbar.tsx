@@ -29,7 +29,7 @@ export const Navbar: React.FC = () => {
       {navItems.map(({
         path, className, Icon, id,
       }) => (
-        id === 2 && !!items.length ? (
+        id === 2 && items.length ? (
           <div key={id} className={className}>
             <Link className="no-decoration" to={path}>
               <Icon />

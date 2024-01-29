@@ -20,91 +20,6 @@ import { routes as frontendRoutes, routes } from '../utils/routes.ts';
 
 import { QuantityControl } from './QuantityControl.tsx';
 
-const CartQuantityControl: React.FC<{ currentId: number }> = ({ currentId }) => {
-  const userUID = useAuth();
-  const db = useFirestore();
-  const dispatch = useDispatch<AppDispatch>();
-  const { items } = useSelector(getCartState);
-  const currentItem = items.find((item) => item.id === currentId);
-  const id = currentItem?.id as number;
-  const quantity = currentItem?.quantity as number;
-
-  const handleUpdate = (type: string) => {
-    const payload = {
-      userUID,
-      db,
-      id,
-      type,
-    };
-
-    dispatch(updateCart(payload));
-  };
-
-  return (
-    <QuantityControl
-      handler={handleUpdate}
-      quantity={quantity}
-    />
-  );
-};
-
-const CartItem: React.FC = () => {
-  const { items } = useSelector(getCartState);
-
-  return (
-    useMemo(() => items.map(({
-      brand, name, price, id, imageURL,
-    }) => (
-      <tr key={id} className="cart-item">
-        <td className="cart-product-img p-2">
-          <img src={imageURL} alt={name} className="mr-5"/>
-          <div className="small-screen-item">
-            <div className="aqua-color p-2">
-              <Link className="no-decoration" to={frontendRoutes.productLink(id)} >{`${brand} ${name}`}</Link>
-            </div>
-            <div className="p-2 aqua-color">{`${price}₽`}</div>
-          </div>
-        </td>
-        <td className="item-name text-start aqua-color">
-          <Link className="no-decoration" to={frontendRoutes.productLink(id)} >{`${brand} ${name}`}</Link>
-        </td>
-        <td className="item-price text-center mr-5">{`${price}₽`}</td>
-        <td className="text-center">
-          <CartQuantityControl currentId={id} />
-        </td>
-      </tr>
-    )), [items])
-  );
-};
-
-const CartOuter: React.FC = () => {
-  const { t } = useTranslation();
-  const { totalAmount } = useSelector(getCartState);
-
-  return (
-    <div className="cart-outer">
-      <h2 className="p-3">{t('cart.cartOuter.title')}</h2>
-      <table className="mt-4">
-        <thead>
-          <tr>
-            <th />
-            <th className="item-name text-start p-3">{t('cart.cartOuter.productCol')}</th>
-            <th className="item-price p-3 mr-5">{t('cart.cartOuter.priceCol')}</th>
-            <th className="item-quantity p-3">{t('cart.cartOuter.quantityCol')}</th>
-          </tr>
-        </thead>
-        <tbody>
-          <CartItem />
-        </tbody>
-      </table>
-      <div className="d-flex align-items-center justify-content-between">
-        <Link className="p-2 align-self-start no-decoration" to={'/'}>{t('cart.continueShopping')}</Link>
-        <div className="p-2 align-self-end">{`${t('cart.cartOuter.total')} ${totalAmount}₽`}</div>
-      </div>
-    </div>
-  );
-};
-
 const schema = (t: TFunction) => Yup.object().shape({
   firstname: Yup
     .string()
@@ -121,6 +36,127 @@ interface FieldProps {
   fieldName: FormField;
   formik: FormikValues;
 }
+
+const ItemQuantityControl: React.FC<{ currentId: number }> = ({ currentId }) => {
+  const userUID = useAuth();
+  const db = useFirestore();
+  const dispatch = useDispatch<AppDispatch>();
+  const { items } = useSelector(getCartState);
+  const currentItem = items.find((item) => item.id === currentId);
+
+  if (!currentItem) return null;
+
+  const { id, quantity } = currentItem;
+
+  const handleUpdate = (type: string) => {
+    dispatch(updateCart({
+      userUID, db, id, type,
+    }));
+  };
+
+  return (
+    <QuantityControl
+      handler={handleUpdate}
+      quantity={quantity}
+    />
+  );
+};
+
+const SmallScreenItem: React.FC<{
+  brand: string,
+   name: string,
+   id: number,
+   price: number
+  }> = ({
+    brand, name, id, price,
+  }) => (
+    <div className="small-screen-item p-2 aqua-color">
+      <Link
+        className="no-decoration d-block"
+        to={frontendRoutes.productLink(id)}
+      >
+        {`${brand} ${name}`}
+      </Link>
+      <span>{`${price}₽`}</span>
+    </div>
+  );
+
+const CartItems: React.FC = () => {
+  const { items } = useSelector(getCartState);
+
+  return (
+    useMemo(() => items.map(({
+      brand, name, price, id, imageURL,
+    }) => (
+      <tr key={id} className="cart-item">
+        <td className="cart-product-img p-2">
+          <img src={imageURL} alt={name} className="mr-5"/>
+          <SmallScreenItem
+            brand={brand}
+            name={name}
+            id={id}
+            price={price!}
+          />
+        </td>
+        <td className="item-name text-start aqua-color">
+          <Link
+            className="no-decoration"
+            to={frontendRoutes.productLink(id)}
+          >
+            {`${brand} ${name}`}
+          </Link>
+        </td>
+        <td className="item-price text-center mr-5">{`${price}₽`}</td>
+        <td className="text-center">
+          <ItemQuantityControl currentId={id} />
+        </td>
+      </tr>
+    )), [items])
+  );
+};
+
+const CartFooter: React.FC = () => {
+  const { t } = useTranslation();
+  const { totalAmount } = useSelector(getCartState);
+
+  return (
+    <div className="d-flex align-items-center justify-content-between">
+      <Link
+        className="p-2 align-self-start no-decoration"
+        to={routes.mainPage()}
+      >
+        {t('cart.continueShopping')}
+      </Link>
+      <div className="p-2 align-self-end">
+        {`${t('cart.cartOuter.total')} ${totalAmount}₽`}
+      </div>
+    </div>
+  );
+};
+
+const CartOuter: React.FC = () => {
+  const { t } = useTranslation();
+
+  return (
+    <div className="cart-outer">
+      <h2 className="p-3">{t('cart.cartOuter.title')}</h2>
+      <table className="mt-4">
+        <thead>
+          <tr>
+            <th />
+            <th className="item-name text-start p-3">{t('cart.cartOuter.productCol')}</th>
+            <th className="item-price p-3 mr-5">{t('cart.cartOuter.priceCol')}</th>
+            <th className="item-quantity p-3">{t('cart.cartOuter.quantityCol')}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <CartItems />
+        </tbody>
+      </table>
+      <CartFooter />
+    </div>
+  );
+};
 
 const FirstnameField: React.FC<FieldProps> = ({ fieldName, formik }) => {
   const { t } = useTranslation();
@@ -155,6 +191,20 @@ const PhoneNumberField: React.FC<FieldProps> = ({ fieldName, formik }) => (
       'is-invalid': formik.errors[fieldName],
     })}
   />
+);
+
+const Fields: React.FC<FormikValues> = ({ formik }) => (
+  Object.entries(formik.values).map(([fieldName]) => (
+    <div key={fieldName} className="m-3">
+      {fieldName === 'phoneNumber' ? (
+        <PhoneNumberField fieldName={fieldName} formik={formik} />
+      ) : (
+        <FirstnameField fieldName={fieldName as FormField} formik={formik} />
+      )}
+      <div className="invalid-tooltip m-2">{formik.errors[fieldName as FormField]}</div>
+      <label htmlFor={fieldName}></label>
+    </div>
+  ))
 );
 
 const OrderForm: React.FC = () => {
@@ -197,17 +247,7 @@ const OrderForm: React.FC = () => {
     <div className="order-form">
       <h2 className="p-3">{t('cart.orderForm.title')}</h2>
       <form onSubmit={formik.handleSubmit}>
-        {Object.entries(formik.values).map(([fieldName]) => (
-          <div key={fieldName} className="m-3">
-            {fieldName === 'phoneNumber' ? (
-              <PhoneNumberField fieldName={fieldName} formik={formik} />
-            ) : (
-              <FirstnameField fieldName={fieldName as FormField} formik={formik} />
-            )}
-            <div className="invalid-tooltip m-2">{formik.errors[fieldName as FormField]}</div>
-            <label htmlFor={fieldName}></label>
-          </div>
-        ))}
+        <Fields formik={formik} />
         <button
           type="submit"
           aria-label="submit-btn"

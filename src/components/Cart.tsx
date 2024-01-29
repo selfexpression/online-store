@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useMemo, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
@@ -30,10 +31,10 @@ const schema = (t: TFunction) => Yup.object().shape({
     .matches(/(.*\d.*){11}/, t('cart.inputErrors.matches')),
 });
 
-type FormField = 'phoneNumber' | 'firstname'
+type FormFieldMap = Record<string, (fieldName: string) => React.ReactNode>;
 
 interface FieldProps {
-  fieldName: FormField;
+  fieldName: string;
   formik: FormikValues;
 }
 
@@ -193,19 +194,22 @@ const PhoneNumberField: React.FC<FieldProps> = ({ fieldName, formik }) => (
   />
 );
 
-const Fields: React.FC<FormikValues> = ({ formik }) => (
-  Object.entries(formik.values).map(([fieldName]) => (
-    <div key={fieldName} className="m-3">
-      {fieldName === 'phoneNumber' ? (
-        <PhoneNumberField fieldName={fieldName} formik={formik} />
-      ) : (
-        <FirstnameField fieldName={fieldName as FormField} formik={formik} />
-      )}
-      <div className="invalid-tooltip m-2">{formik.errors[fieldName as FormField]}</div>
-      <label htmlFor={fieldName}></label>
-    </div>
-  ))
-);
+const Fields: React.FC<FormikValues> = ({ formik }) => {
+  const mapping: FormFieldMap = {
+    phoneNumber: (fieldName) => <PhoneNumberField fieldName={fieldName} formik={formik} />,
+    firstname: (fieldName) => <FirstnameField fieldName={fieldName} formik={formik} />,
+  };
+
+  return (
+    Object.entries(formik.values).map(([fieldName]) => (
+      <div key={fieldName} className="m-3">
+        {mapping[fieldName](fieldName)}
+        <div className="invalid-tooltip m-2">{formik.errors[fieldName]}</div>
+        <label htmlFor={fieldName}></label>
+      </div>
+    ))
+  );
+};
 
 const OrderForm: React.FC = () => {
   const userUID = useAuth();

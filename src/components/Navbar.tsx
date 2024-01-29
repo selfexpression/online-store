@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 import { getCartState } from '../utils/selectors.ts';
+import { routes } from '../utils/routes.ts';
 
 import { Logo } from './Icons/Logo.tsx';
 import { HomeIcon } from './Icons/HomeIcon.tsx';
@@ -10,13 +11,13 @@ import { CartIcon } from './Icons/CartIcon.tsx';
 
 const navItems = [
   {
-    path: '/', className: 'navbar-logo', Icon: Logo, id: 1,
+    path: routes.mainPage(), className: 'navbar-logo', Icon: Logo, id: 1,
   },
   {
-    path: '/cart', className: 'to-cart-button', Icon: CartIcon, id: 2,
+    path: routes.cartPage(), className: 'to-cart-button', Icon: CartIcon, id: 2,
   },
   {
-    path: '/', className: 'to-home-button', Icon: HomeIcon, id: 3,
+    path: routes.mainPage(), className: 'to-home-button', Icon: HomeIcon, id: 3,
   },
 ];
 
@@ -29,22 +30,14 @@ export const Navbar: React.FC = () => {
       {navItems.map(({
         path, className, Icon, id,
       }) => (
-        id === 2 && items.length ? (
-          <div key={id} className={className}>
-            <Link className="no-decoration" to={path}>
-              <Icon />
-            </Link>
-            <div className="items-in-cart">
-              {itemsCount}
-            </div>
-          </div>
-        ) : (
-          <div key={id} className={className}>
-            <Link className="no-decoration" to={path}>
-              <Icon />
-            </Link>
-          </div>
-        )
+        <div key={id} className={className}>
+          <Link className="no-decoration" to={path}>
+            <Icon />
+          </Link>
+          {id === 2 && items.length
+            ? <div className="items-in-cart">{itemsCount}</div>
+            : ''}
+        </div>
       ))}
     </nav>
   );

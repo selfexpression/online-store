@@ -12,14 +12,22 @@ import type { AppDispatch } from '../types/aliases.ts';
 
 import { SortIcon } from './Icons/SortIcon.tsx';
 
-interface MenuOpenHandlers {
+interface ToggleMenuHandler {
   [key: string]: () => void;
+}
+
+interface MenuProps {
+  toggleMenu: boolean;
+  handleToggleMenu: () => void;
+  List: React.FC<ToggleMenuHandler>;
+  TogglerIcon: React.FC;
+  marker: string;
 }
 
 const BrandList: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { initialProducts } = useSelector(getDatabaseState);
-  const { isOpenFilterMenu } = useSelector(getFilterState);
+  const { isOpenMenu } = useSelector(getFilterState);
 
   const handleToggleCheckbox = (e: ChangeEvent<HTMLInputElement>) => {
     const payload = {
@@ -37,7 +45,7 @@ const BrandList: React.FC = () => {
 
   return (
     <div className={classNames('filter-list brand-list m-0 p-0 no-wrap', {
-      opened: isOpenFilterMenu,
+      opened: isOpenMenu,
     })}>
       {brands.map((brand) => (
         <div className="item p-2 d-flex align-items-center" key={brand}>
@@ -54,10 +62,10 @@ const BrandList: React.FC = () => {
   );
 };
 
-const CategoryList: React.FC<MenuOpenHandlers> = ({ handleOpenFilterMenu }) => {
+const CategoryList: React.FC<ToggleMenuHandler> = ({ handleToggleMenu }) => {
   const dispatch = useDispatch<AppDispatch>();
   const { t } = useTranslation();
-  const { isOpenFilterMenu } = useSelector(getFilterState);
+  const { isOpenMenu } = useSelector(getFilterState);
   const { categories } = useSelector(getDatabaseState);
 
   const handleCurrentCategory = (id: number | null): void => {
@@ -65,12 +73,12 @@ const CategoryList: React.FC<MenuOpenHandlers> = ({ handleOpenFilterMenu }) => {
 
     dispatch(filterActions.setCurrentCategoryID(payload));
     dispatch(filterProducts());
-    handleOpenFilterMenu();
+    handleToggleMenu();
   };
 
   return (
     <ul className={classNames('filter-list m-0 p-0 no-wrap', {
-      opened: isOpenFilterMenu,
+      opened: isOpenMenu,
     })}>
       <li
         className="item p-2"
@@ -91,20 +99,20 @@ const CategoryList: React.FC<MenuOpenHandlers> = ({ handleOpenFilterMenu }) => {
   );
 };
 
-const SortList: React.FC<MenuOpenHandlers> = ({ handleOpenSortMenu }) => {
+const SortList: React.FC<ToggleMenuHandler> = ({ handleToggleMenu }) => {
   const dispatch = useDispatch();
-  const { isOpenSortMenu } = useSelector(getSortState);
+  const { isOpenMenu } = useSelector(getSortState);
   const { t } = useTranslation();
   const sortValues = t('toggleMenu.sortValues', { returnObjects: true });
 
   const handleCurrentValue = (value: string): void => {
     dispatch(sortActions.setCurrentValue(value));
-    handleOpenSortMenu();
+    handleToggleMenu();
   };
 
   return (
     <ul className={classNames('sort-list m-0 p-0 no-wrap', {
-      opened: isOpenSortMenu,
+      opened: isOpenMenu,
     })}>
       {Object.entries(sortValues).map(([key, value]) => (
         <li
@@ -119,56 +127,72 @@ const SortList: React.FC<MenuOpenHandlers> = ({ handleOpenSortMenu }) => {
   );
 };
 
-const FilterMenu: React.FC = () => {
-  const dispatch = useDispatch();
+const Menu: React.FC<MenuProps> = ({
+  toggleMenu, handleToggleMenu, List, TogglerIcon, marker,
+}) => {
   const { t } = useTranslation();
-  const { isOpenFilterMenu } = useSelector(getFilterState);
-
-  const handleOpenFilterMenu = (): void => {
-    dispatch(filterActions.openFilterMenu(!isOpenFilterMenu));
-  };
 
   return (
-    <div className="filter-menu">
+    <div className={`${marker}-menu`}>
       <button
         type="button"
-        aria-label={t('toggleMenu.filterMenuToggle')}
-        aria-expanded={isOpenFilterMenu}
-        onClick={handleOpenFilterMenu}
+        aria-label={t(`toggleMenu.${marker}MenuToggle`)}
+        aria-expanded={toggleMenu}
+        onClick={handleToggleMenu}
       >
-        <span className={classNames('toggle-line', {
-          opened: isOpenFilterMenu,
-        })}
-        />
+        <TogglerIcon />
       </button>
-      <CategoryList handleOpenFilterMenu={handleOpenFilterMenu} />
-      <BrandList />
+      <List handleToggleMenu={handleToggleMenu} />
     </div>
+  );
+};
+
+const FilterList: React.FC<ToggleMenuHandler> = ({ handleToggleMenu }) => (
+  <>
+    <CategoryList handleToggleMenu={handleToggleMenu} />
+    <BrandList />
+  </>
+);
+
+const FilterMenu: React.FC = () => {
+  const dispatch = useDispatch();
+  const { isOpenMenu } = useSelector(getFilterState);
+
+  const handleToggleMenu = (): void => {
+    dispatch(filterActions.toggleMenu(!isOpenMenu));
+  };
+
+  const TogglerIcon = () => <span className={classNames('toggle-line', {
+    opened: isOpenMenu,
+  })}/>;
+
+  return (
+    <Menu
+      toggleMenu={isOpenMenu}
+      handleToggleMenu={handleToggleMenu}
+      List={FilterList}
+      TogglerIcon={TogglerIcon}
+      marker={'filter'}
+    />
   );
 };
 
 const SortMenu: React.FC = () => {
   const dispatch = useDispatch();
-  const { t } = useTranslation();
-  const { isOpenSortMenu } = useSelector(getSortState);
+  const { isOpenMenu } = useSelector(getSortState);
 
-  const handleOpenSortMenu = (): void => {
-    dispatch(sortActions.openSortMenu(!isOpenSortMenu));
+  const handleToggleMenu = (): void => {
+    dispatch(sortActions.openSortMenu(!isOpenMenu));
   };
 
   return (
-    <div className="sort-menu">
-      <button
-        type="button"
-        aria-label={t('toggleMenu.sortMenuToggle')}
-        aria-expanded={isOpenSortMenu}
-        onClick={handleOpenSortMenu}
-        className="font-large"
-      >
-        <SortIcon />
-      </button>
-      <SortList handleOpenSortMenu={handleOpenSortMenu} />
-    </div>
+    <Menu
+      toggleMenu={isOpenMenu}
+      handleToggleMenu={handleToggleMenu}
+      List={SortList}
+      TogglerIcon={SortIcon}
+      marker={'sort'}
+    />
   );
 };
 

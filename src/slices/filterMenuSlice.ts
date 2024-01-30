@@ -1,13 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 interface FilterState {
-  isOpenFilterMenu: boolean;
+  isOpenMenu: boolean;
   currentCategoryID: number | null;
   currentBrandNames: string[];
 }
 
 const initialState: FilterState = {
-  isOpenFilterMenu: false,
+  isOpenMenu: false,
   currentCategoryID: null,
   currentBrandNames: [],
 };
@@ -16,8 +16,8 @@ const slice = createSlice({
   name: 'filter',
   initialState,
   reducers: {
-    openFilterMenu: (state, { payload }: { payload: boolean }) => {
-      state.isOpenFilterMenu = payload;
+    toggleMenu: (state, { payload }: { payload: boolean }) => {
+      state.isOpenMenu = payload;
     },
     setCurrentCategoryID: (state, { payload }: { payload: { id: number | null } }) => {
       const { id } = payload;

@@ -60,7 +60,7 @@ export const Store: React.FC = () => {
   const { products, isLoaded } = useSelector(getDatabaseState);
 
   const handleToggleOpenMenu = () => {
-    dispatch(filterActions.openFilterMenu(false));
+    dispatch(filterActions.toggleMenu(false));
     dispatch(sortActions.openSortMenu(false));
   };
 

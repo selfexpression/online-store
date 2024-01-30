@@ -1,6 +1,4 @@
-import React from 'react';
-
-export const HomeIcon: React.FC = () => (
+export const HomeIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 64 64" width="64px" height="64px"
     className="home-icon"

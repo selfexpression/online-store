@@ -1,12 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 interface SortState {
-  isOpenSortMenu: boolean;
+  isOpenMenu: boolean;
   currentValue: string;
 }
 
 const initialState: SortState = {
-  isOpenSortMenu: false,
+  isOpenMenu: false,
   currentValue: '',
 };
 
@@ -15,7 +15,7 @@ const slice = createSlice({
   initialState,
   reducers: {
     openSortMenu: (state, { payload }: { payload: boolean }) => {
-      state.isOpenSortMenu = payload;
+      state.isOpenMenu = payload;
     },
     setCurrentValue: (state, { payload }: { payload: string }) => {
       state.currentValue = payload;

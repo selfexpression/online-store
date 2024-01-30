@@ -224,3 +224,7 @@ $flex-align-self-values: map.merge($auto-value, $flex-align-items-values);
 .bold {
   font-weight: bold !important;
 }
+
+.max-content {
+  height: max-content;
+}

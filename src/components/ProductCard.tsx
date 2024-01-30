@@ -17,24 +17,26 @@ const MainInfo: React.FC = () => {
   const { t } = useTranslation();
   const { currentProduct } = useSelector(getProductCardState);
 
+  if (!currentProduct) return null;
+
   return (
-    <div className="product-card-main-info p-3 m-3">
+    <div className="product-card-main-info m-3">
       <h1 className="product-brand m-0">
-        {currentProduct?.brand}
+        {currentProduct.brand}
       </h1>
       <h1 className="product-name m-0">
-        {currentProduct?.name}
+        {currentProduct.name}
       </h1>
       <span
         className={classNames('d-block', {
-          'product-stock': currentProduct?.inStock,
-          'product-out-stock': !currentProduct?.inStock,
+          'product-stock': currentProduct.inStock,
+          'product-out-stock': !currentProduct.inStock,
         })}
       >
-        {currentProduct?.inStock ? t('store.inStock') : t('store.outOfStock')}
+        {currentProduct.inStock ? t('store.inStock') : t('store.outOfStock')}
       </span>
       <span className="product-price mt-3 d-block">
-        {currentProduct?.inStock ? `${currentProduct.price}₽` : ''}
+        {currentProduct.inStock ? `${currentProduct.price}₽` : ''}
       </span>
     </div>
   );
@@ -128,7 +130,7 @@ const ProductAddToCard: React.FC = () => {
   };
 
   return (
-    <div className="product-counter mb-5 mt-5">
+    <div className="product-counter">
       <CounterAdjust />
       <button type="button"
         aria-label="add to cart"
@@ -160,7 +162,7 @@ export const ProductCard: React.FC = () => {
   }, [currentProduct]);
 
   return (
-    <div className="vh-100">
+    <div className="max-content">
       {!currentProduct ? (
         <div className="spinner-loader" />
       ) : (

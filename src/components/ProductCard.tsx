@@ -70,12 +70,10 @@ const CounterAdjust: React.FC = () => {
   const [disabled, setDisabled] = useState(false);
   const { productsCount, currentProduct } = useSelector(getProductCardState);
 
-  if (!currentProduct) return null;
-
   useEffect(() => {
-    setDisabled(!currentProduct.inStock);
+    setDisabled(!currentProduct?.inStock);
     dispatch(actions.resetCount());
-  }, [currentProduct.inStock]);
+  }, [currentProduct?.inStock]);
 
   const handleCounterСontrol = (type: string) => {
     dispatch(actions.updateCounter(type));
@@ -98,13 +96,13 @@ const ProductAddToCard: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { t } = useTranslation();
 
-  if (!currentProduct) return null;
-
   useEffect(() => {
-    setDisabled(!currentProduct.inStock);
+    setDisabled(!currentProduct?.inStock);
   }, [currentProduct]);
 
   const handleAddToCart = () => {
+    if (!currentProduct) return;
+
     const cartItem = {
       id: currentProduct.id,
       brand: currentProduct.brand,
@@ -122,8 +120,8 @@ const ProductAddToCard: React.FC = () => {
 
     dispatch(addProductToCart(payload));
     dispatch(actions.setProductAdded(true));
-    setTimeout(() => dispatch(actions.setProductAdded(false)), 3000);
     dispatch(actions.resetCount());
+    setTimeout(() => dispatch(actions.setProductAdded(false)), 3000);
   };
 
   return (
@@ -148,10 +146,9 @@ export const ProductCard: React.FC = () => {
   const databaseState = useSelector(getDatabaseState);
   const currentProduct = databaseState.products.find(({ id }) => `${id}` === productId);
 
-  if (!currentProduct) return null;
-
   useEffect(() => {
     dispatch(loadData({ db }));
+    if (!currentProduct) return;
 
     dispatch(actions.setCurrentProduct(currentProduct));
   }, [currentProduct]);

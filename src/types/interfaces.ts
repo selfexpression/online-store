@@ -25,10 +25,6 @@ export interface DatabaseState extends ProductCategoryData {
   isLoaded: boolean;
 }
 
-export interface MenuOpenHandlers {
-  [key: string]: () => void;
-}
-
 export interface CartItem {
   id: number;
   brand: string;

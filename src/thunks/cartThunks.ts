@@ -32,16 +32,12 @@ export const addProductToCart = createAsyncThunk(
 export const syncCartWithDatabase = createAsyncThunk(
   'cart/syncWithDatabase',
   async ({ userUID, db }: { userUID: string, db: Firestore }, { dispatch }) => {
-    if (!userUID) {
-      return;
-    }
+    if (!userUID) return;
 
     try {
       const cartItems: CartItem[] = await getCurrentUserCart(userUID, db);
 
-      if (!cartItems) {
-        return;
-      }
+      if (!cartItems) return;
 
       dispatch(actions.setCartItems(cartItems));
     } catch (error) {

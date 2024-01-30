@@ -16,8 +16,8 @@ import { updateCart, emptyTrash } from '../thunks/cartThunks.ts';
 import type { AppDispatch } from '../types/aliases.ts';
 import cartImage from '../assets/images/cart-image.png';
 import { formatMessage, createOrderMessage } from '../utils/helpers.ts';
-import { actions } from '../slices/index.ts';
-import { routes as frontendRoutes, routes } from '../utils/routes.ts';
+import { actions } from '../slices/cartSlice.ts';
+import { routes as frontendRoutes, serverApiRoutes } from '../utils/routes.ts';
 
 import { QuantityControl } from './QuantityControl.tsx';
 
@@ -124,7 +124,7 @@ const CartFooter: React.FC = () => {
     <div className="cart-footer">
       <Link
         className="p-2 align-self-start no-decoration"
-        to={routes.mainPage()}
+        to={frontendRoutes.mainPage()}
       >
         {t('cart.continueShopping')}
       </Link>
@@ -231,7 +231,7 @@ const OrderForm: React.FC = () => {
 
       try {
         await axios.post(
-          `${process.env.REACT_APP_API_URL_DEVELOPMENT}${routes.sendMessageApi()}`,
+          `${process.env.REACT_APP_API_URL_DEVELOPMENT}${serverApiRoutes.sendMessage()}`,
           { message: formatMessage(orderMessage) },
         );
 
@@ -283,7 +283,7 @@ const EmptyCart: React.FC = () => {
               <span>{`${t('cart.emptyCart')} `}</span>
             </>
           )}
-          <Link to={routes.mainPage()}>{t('cart.continueShopping')}</Link>
+          <Link to={frontendRoutes.mainPage()}>{t('cart.continueShopping')}</Link>
         </div>
       </div>
     ) : (

@@ -51,9 +51,7 @@ const slice = createSlice({
       const currentItem = items.find((item) => item.id === id);
       const filteredItems = items.filter((item) => item.id !== id);
 
-      if (!currentItem) {
-        return;
-      }
+      if (!currentItem) return;
 
       switch (type) {
         case 'increment':

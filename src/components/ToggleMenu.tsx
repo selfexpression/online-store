@@ -7,11 +7,14 @@ import _ from 'lodash';
 import { actions as filterActions } from '../slices/filterMenuSlice.ts';
 import { actions as sortActions } from '../slices/sortMenuSlice.ts';
 import { getFilterState, getSortState, getDatabaseState } from '../utils/selectors.ts';
-import type { MenuOpenHandlers } from '../types/interfaces.ts';
 import { filterProducts } from '../thunks/databaseThunks.ts';
 import type { AppDispatch } from '../types/aliases.ts';
 
 import { SortIcon } from './Icons/SortIcon.tsx';
+
+interface MenuOpenHandlers {
+  [key: string]: () => void;
+}
 
 const BrandList: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -88,34 +91,6 @@ const CategoryList: React.FC<MenuOpenHandlers> = ({ handleOpenFilterMenu }) => {
   );
 };
 
-const FilterMenu: React.FC = () => {
-  const dispatch = useDispatch();
-  const { t } = useTranslation();
-  const { isOpenFilterMenu } = useSelector(getFilterState);
-
-  const handleOpenFilterMenu = (): void => {
-    dispatch(filterActions.openFilterMenu(!isOpenFilterMenu));
-  };
-
-  return (
-    <div className="filter-menu">
-      <button
-        type="button"
-        aria-label={t('toggleMenu.filterMenuToggle')}
-        aria-expanded={isOpenFilterMenu}
-        onClick={handleOpenFilterMenu}
-      >
-        <span className={classNames('toggle-line', {
-          opened: isOpenFilterMenu,
-        })}
-        />
-      </button>
-      <CategoryList handleOpenFilterMenu={handleOpenFilterMenu} />
-      <BrandList />
-    </div>
-  );
-};
-
 const SortList: React.FC<MenuOpenHandlers> = ({ handleOpenSortMenu }) => {
   const dispatch = useDispatch();
   const { isOpenSortMenu } = useSelector(getSortState);
@@ -141,6 +116,34 @@ const SortList: React.FC<MenuOpenHandlers> = ({ handleOpenSortMenu }) => {
         </li>
       ))}
     </ul>
+  );
+};
+
+const FilterMenu: React.FC = () => {
+  const dispatch = useDispatch();
+  const { t } = useTranslation();
+  const { isOpenFilterMenu } = useSelector(getFilterState);
+
+  const handleOpenFilterMenu = (): void => {
+    dispatch(filterActions.openFilterMenu(!isOpenFilterMenu));
+  };
+
+  return (
+    <div className="filter-menu">
+      <button
+        type="button"
+        aria-label={t('toggleMenu.filterMenuToggle')}
+        aria-expanded={isOpenFilterMenu}
+        onClick={handleOpenFilterMenu}
+      >
+        <span className={classNames('toggle-line', {
+          opened: isOpenFilterMenu,
+        })}
+        />
+      </button>
+      <CategoryList handleOpenFilterMenu={handleOpenFilterMenu} />
+      <BrandList />
+    </div>
   );
 };
 
@@ -172,7 +175,7 @@ const SortMenu: React.FC = () => {
 export const ToggleMenu: React.FC = () => {
   const { t } = useTranslation();
   const { currentCategoryID } = useSelector(getFilterState);
-  const currentFilterValue = currentCategoryID !== null
+  const currentFilterValue = currentCategoryID
     ? t(`toggleMenu.filterList.categories.${currentCategoryID}`)
     : t('toggleMenu.defaultFilter');
 

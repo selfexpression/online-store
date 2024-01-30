@@ -7,13 +7,14 @@ import {
 } from 'firebase/firestore';
 
 import type { CartItem } from '../types/interfaces.ts';
+import { firebaseApiRoutes } from '../utils/routes.ts';
 
 export const addToDatabaseCart = async (
   userUID: string,
   items: CartItem[],
   db: Firestore,
 ) => {
-  const cartRef = doc(db, 'carts', userUID);
+  const cartRef = doc(db, firebaseApiRoutes.carts(), userUID);
 
   await setDoc(cartRef, {
     items,
@@ -25,17 +26,15 @@ export const updateCartItems = async (
   updatedCartItems: CartItem[],
   db: Firestore,
 ) => {
-  const cartRef = doc(db, 'carts', userUID);
+  const cartRef = doc(db, firebaseApiRoutes.carts(), userUID);
   await updateDoc(cartRef, { items: updatedCartItems });
 };
 
 export const getCurrentUserCart = async (userUID: string, db: Firestore) => {
-  const cartRef = doc(db, 'carts', userUID);
+  const cartRef = doc(db, firebaseApiRoutes.carts(), userUID);
   const cartSnap = await getDoc(cartRef);
 
-  if (!cartSnap.exists()) {
-    return null;
-  }
+  if (!cartSnap.exists()) return null;
 
   return cartSnap.data().items;
 };

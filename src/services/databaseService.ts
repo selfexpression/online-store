@@ -5,11 +5,12 @@ import {
   ref, getDownloadURL, getStorage,
 } from 'firebase/storage';
 
+import { firebaseApiRoutes } from '../utils/routes.ts';
 import type { Product, Category, ProductCategoryData } from '../types/interfaces.ts';
 import { isValidProduct } from '../types/predicates.ts';
 
 const getProducts = async (db: Firestore): Promise<Product[]> => {
-  const queryCollection = query(collection(db, 'products'));
+  const queryCollection = query(collection(db, firebaseApiRoutes.products()));
   const querySnapshotByProducts = await getDocs(queryCollection);
   const storage = getStorage();
 
@@ -20,7 +21,7 @@ const getProducts = async (db: Firestore): Promise<Product[]> => {
       console.error('Invalid data received from the database');
     }
 
-    const imageRef = ref(storage, `product-images/${product.id}.jpg`);
+    const imageRef = ref(storage, firebaseApiRoutes.productImagesApi(product.id));
 
     try {
       const imageURL = await getDownloadURL(imageRef);
@@ -37,7 +38,7 @@ const getProducts = async (db: Firestore): Promise<Product[]> => {
 };
 
 const getCategories = async (db: Firestore): Promise<Category[]> => {
-  const queryCategories = query(collection(db, 'categories'));
+  const queryCategories = query(collection(db, firebaseApiRoutes.categories()));
   const querySnapshotByCategories = await getDocs(queryCategories);
 
   const categories: Category[] = querySnapshotByCategories.docs.map((doc) => {

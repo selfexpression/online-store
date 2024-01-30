@@ -11,9 +11,7 @@ export const loadData = createAsyncThunk(
     const state = getState() as RootState;
     const { categories, products } = state.database;
 
-    if (!!categories.length || !!products.length) {
-      return;
-    }
+    if (!!categories.length || !!products.length) return;
 
     try {
       const database = await getProductCategoryData(db);

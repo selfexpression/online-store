@@ -50,10 +50,7 @@ const AddInfo: React.FC = () => {
   return (
     <div className="add-info">
       {Object.keys(categoriesInfo).map((category) => (
-        <div
-          key={category}
-          className="ml-3 mr-3 p-3"
-        >
+        <div key={category} className="p-3">
           <span
             className="category-type"
           >{

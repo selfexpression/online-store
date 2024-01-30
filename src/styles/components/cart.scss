@@ -103,7 +103,13 @@
   color: red;
 }
 
-@media screen and (max-width: 860px) {
+.cart-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+ }
+
+@media screen and (max-width: 1024px) {
   .cart-container {
     .cart-wrapper {
       flex-direction: column;
@@ -129,5 +135,18 @@
 
   .small-screen-item {
     display: block;
+  }
+}
+
+@media screen and (max-width: 360px) {
+  .cart-footer {
+    display: block;
+    padding: 1em;
+    text-align: center;
+  }
+
+  .form-field,
+    .submit-btn {
+      width: 20em;
   }
 }

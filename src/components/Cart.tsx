@@ -90,7 +90,7 @@ const CartItems: React.FC = () => {
       brand, name, price, id, imageURL,
     }) => (
       <tr key={id} className="cart-item">
-        <td className="cart-product-img p-2">
+        <td className="cart-product-img p-4">
           <img src={imageURL} alt={name} className="mr-5"/>
           <SmallScreenItem
             brand={brand}
@@ -108,7 +108,7 @@ const CartItems: React.FC = () => {
           </Link>
         </td>
         <td className="item-price text-center mr-5">{`${price}₽`}</td>
-        <td className="text-center">
+        <td className="item-counter text-center">
           <ItemQuantityControl currentId={id} />
         </td>
       </tr>
@@ -121,7 +121,7 @@ const CartFooter: React.FC = () => {
   const { totalAmount } = useSelector(getCartState);
 
   return (
-    <div className="d-flex align-items-center justify-content-between">
+    <div className="cart-footer">
       <Link
         className="p-2 align-self-start no-decoration"
         to={routes.mainPage()}
@@ -140,7 +140,7 @@ const CartOuter: React.FC = () => {
 
   return (
     <div className="cart-outer">
-      <h2 className="p-3">{t('cart.cartOuter.title')}</h2>
+      <h2 className="p-4 ml-1">{t('cart.cartOuter.title')}</h2>
       <table className="mt-4">
         <thead>
           <tr>
@@ -202,7 +202,7 @@ const Fields: React.FC<FormikValues> = ({ formik }) => {
 
   return (
     Object.entries(formik.values).map(([fieldName]) => (
-      <div key={fieldName} className="m-3">
+      <div key={fieldName} className="mt-3">
         {mapping[fieldName](fieldName)}
         <div className="invalid-tooltip m-2">{formik.errors[fieldName]}</div>
         <label htmlFor={fieldName}></label>
@@ -248,14 +248,14 @@ const OrderForm: React.FC = () => {
   });
 
   return (
-    <div className="order-form">
-      <h2 className="p-3">{t('cart.orderForm.title')}</h2>
+    <div className="text-center">
+      <h2 className="p-4">{t('cart.orderForm.title')}</h2>
       <form onSubmit={formik.handleSubmit}>
         <Fields formik={formik} />
         <button
           type="submit"
           aria-label="submit-btn"
-          className="submit-btn m-3"
+          className="submit-btn mt-3"
           disabled={formik.isSubmitting}
         >
           {t('cart.submitButton')}
@@ -293,13 +293,13 @@ const EmptyCart: React.FC = () => {
 };
 
 export const Cart: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const { items } = useSelector(getCartState);
-  const totalAmount = items.reduce((acc, item) => acc + (item.price as number) * item.quantity, 0);
+  const totalAmount = items.reduce((acc, item) => acc + (item.price!) * item.quantity, 0);
 
   useEffect(() => {
     dispatch(actions.setTotalAmount(totalAmount));
-  });
+  }, [totalAmount]);
 
   return (
     !items.length

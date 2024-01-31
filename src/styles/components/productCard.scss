@@ -3,12 +3,13 @@
   grid-template-rows: repeat(12, calc(100vh / 12));
   grid-template-columns: repeat(12, calc(100vw / 12));
   margin-top: 4em;
+  padding: 0.5em;
   height: 100%;
 
   font-family: TenorSans-Regular, "Times New Roman", serif;
 
   .product-card-image {
-    grid-column: 2 / 6;
+    grid-column: 1 / 6;
     grid-row: 1 / 7;
     max-width: 100%;
     height: auto;
@@ -114,14 +115,18 @@
   .product-card-wrapper {
     grid-template-rows: repeat(12, calc(100% / 12));
 
+    .product-card-image {
+      grid-column: 1 / 5;
+    }
+
     .product-counter {
       grid-column: 6 / -1;
-      grid-row: 4 / 6;
+      grid-row: 5 / 6;
     }
 
     .add-info {
       grid-column: 1 / -1;
-      grid-row: 6 / -1;
+      grid-row: 7 / -1;
     }
   }
 }

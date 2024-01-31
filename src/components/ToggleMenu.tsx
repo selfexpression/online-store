@@ -12,8 +12,8 @@ import type { AppDispatch } from '../types/aliases.ts';
 
 import { SortIcon } from './Icons/SortIcon.tsx';
 
-interface ToggleMenuHandler {
-  [key: string]: () => void;
+type ToggleMenuHandler = {
+  handleToggleMenu: () => void;
 }
 
 interface MenuProps {

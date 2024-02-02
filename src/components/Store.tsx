@@ -10,6 +10,7 @@ import { loadData } from '../thunks/databaseThunks.ts';
 import type { AppDispatch } from '../types/aliases.ts';
 import { actions as filterActions } from '../slices/filterMenuSlice.ts';
 import { actions as sortActions } from '../slices/sortMenuSlice.ts';
+import { routes } from '../utils/routes.ts';
 
 import { ToggleMenu } from './ToggleMenu.tsx';
 
@@ -22,7 +23,7 @@ const ProductsList: React.FC = () => {
       name, id, price, brand, inStock, imageURL,
     }) => (
       <div key={id} className="collection-item scale-up">
-        <Link className="no-decoration" to={`/product/${id}`}>
+        <Link className="no-decoration" to={routes.productLink(id)}>
           <img
             src={imageURL}
             alt={name}

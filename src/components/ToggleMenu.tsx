@@ -1,6 +1,6 @@
 import React, { ChangeEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import classNames from 'classnames';
+import cn from 'classnames';
 import { useTranslation } from 'react-i18next';
 import _ from 'lodash';
 
@@ -17,10 +17,10 @@ type ToggleMenuHandler = {
 }
 
 interface MenuProps {
-  toggleMenu: boolean;
+  isOpenMenu: boolean;
   handleToggleMenu: () => void;
   List: React.FC<ToggleMenuHandler>;
-  TogglerIcon: React.FC;
+  TogglerIcon: React.JSX.Element;
   marker: string;
 }
 
@@ -44,7 +44,7 @@ const BrandList: React.FC = () => {
     .map((brand) => brand.replace(/^\w/, (c) => c.toUpperCase()));
 
   return (
-    <div className={classNames('filter-list brand-list m-0 p-0 no-wrap', {
+    <div className={cn('filter-list brand-list m-0 p-0 no-wrap', {
       opened: isOpenMenu,
     })}>
       {brands.map((brand) => (
@@ -77,7 +77,7 @@ const CategoryList: React.FC<ToggleMenuHandler> = ({ handleToggleMenu }) => {
   };
 
   return (
-    <ul className={classNames('filter-list m-0 p-0 no-wrap', {
+    <ul className={cn('filter-list m-0 p-0 no-wrap', {
       opened: isOpenMenu,
     })}>
       <li
@@ -111,7 +111,7 @@ const SortList: React.FC<ToggleMenuHandler> = ({ handleToggleMenu }) => {
   };
 
   return (
-    <ul className={classNames('sort-list m-0 p-0 no-wrap', {
+    <ul className={cn('sort-list m-0 p-0 no-wrap', {
       opened: isOpenMenu,
     })}>
       {Object.entries(sortValues).map(([key, value]) => (
@@ -128,7 +128,11 @@ const SortList: React.FC<ToggleMenuHandler> = ({ handleToggleMenu }) => {
 };
 
 const Menu: React.FC<MenuProps> = ({
-  toggleMenu, handleToggleMenu, List, TogglerIcon, marker,
+  isOpenMenu,
+  handleToggleMenu,
+  List,
+  TogglerIcon,
+  marker,
 }) => {
   const { t } = useTranslation();
 
@@ -137,10 +141,10 @@ const Menu: React.FC<MenuProps> = ({
       <button
         type="button"
         aria-label={t(`toggleMenu.${marker}MenuToggle`)}
-        aria-expanded={toggleMenu}
+        aria-expanded={isOpenMenu}
         onClick={handleToggleMenu}
       >
-        <TogglerIcon />
+        {TogglerIcon}
       </button>
       <List handleToggleMenu={handleToggleMenu} />
     </div>
@@ -162,16 +166,16 @@ const FilterMenu: React.FC = () => {
     dispatch(filterActions.toggleMenu(!isOpenMenu));
   };
 
-  const TogglerIcon = () => <span className={classNames('toggle-line', {
+  const TogglerIcon = () => <span className={cn('toggle-line', {
     opened: isOpenMenu,
   })}/>;
 
   return (
     <Menu
-      toggleMenu={isOpenMenu}
+      isOpenMenu={isOpenMenu}
       handleToggleMenu={handleToggleMenu}
       List={FilterList}
-      TogglerIcon={TogglerIcon}
+      TogglerIcon={TogglerIcon()}
       marker={'filter'}
     />
   );
@@ -187,10 +191,10 @@ const SortMenu: React.FC = () => {
 
   return (
     <Menu
-      toggleMenu={isOpenMenu}
+      isOpenMenu={isOpenMenu}
       handleToggleMenu={handleToggleMenu}
       List={SortList}
-      TogglerIcon={SortIcon}
+      TogglerIcon={SortIcon()}
       marker={'sort'}
     />
   );
